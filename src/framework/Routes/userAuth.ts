@@ -1,10 +1,11 @@
-import express, { Router } from "express"
+import express, { Request, Response, Router } from "express"
 
 const router:Router=express.Router()
 
 
-router.get('/val',(req,res)=>{
-     res.send('hii')
+router.post('/login',(req:Request,res:Response)=>{
+      console.log(req.body)
+      res.json('hiiiii')
 })
 
 

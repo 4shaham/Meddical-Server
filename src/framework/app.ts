@@ -17,6 +17,11 @@ dotenv.config()
 const PORT: string= process.env.PORT!  
 
 
+//  same usage of bodyparser
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))   
+
+
 
 /// mongodb connect 
 connectDB()
@@ -25,11 +30,11 @@ connectDB()
 // morgan for using console all request
 app.use(morgan('dev'))  
 
-
-
+// user Router 
 app.use("/",userRouter)  
 
 
 
-app.listen(PORT,()=>console.log('server running'))
+app.listen(PORT,()=>console.log(`server running Port:http://localhost:${PORT}`))  
+
 
