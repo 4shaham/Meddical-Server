@@ -1,6 +1,6 @@
 
 import mongoose, {Schema,Model } from "mongoose";
-import  IUser  from "../../entity/userEntity";
+import { userCollection,userDocument } from "../../interface/collection/userInterface";
 
 
 const UserSchema:Schema=new Schema({
@@ -40,7 +40,7 @@ const UserSchema:Schema=new Schema({
 })
 
 
-const Users=mongoose.model<IUser>('Users',UserSchema)
+const Users:userCollection=mongoose.model<userDocument>('Users',UserSchema)
 
 export default Users
 

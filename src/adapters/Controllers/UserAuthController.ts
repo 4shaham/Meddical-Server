@@ -16,23 +16,23 @@ class UserAuthController{
 
     }
 
-    async login(req:Request,res:Response){
-     const{email,password}=req.body
-     try{
+   //  async login(req:Request,res:Response){
+   //   const{email,password}=req.body
+   //   try{
 
-        await this.userAuthUseCase.loginUser(email,password)
+   //      await this.userAuthUseCase.loginUser(email,password)
 
-     }catch(error){
+   //   }catch(error){
 
-     }    
+   //   }    
 
       
 
-    }
+   //  }
 
-    async verifyOrp(){
+   //  async verifyOrp(){
         
-    }
+   //  }
     
   
 }

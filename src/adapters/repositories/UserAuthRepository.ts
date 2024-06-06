@@ -8,9 +8,9 @@ class UserAuthRepository {
     this.users = users;
   }
 
-  async findByEmail(email: string): Promise<IUser | null> {
-    return await this.users.findOne({ email: email });
-  }
+  // async findByEmail(email: string): Promise<IUser | null> {
+  //   return await this.users.findOne({ email: email });
+  // }
 
   async RegisterUser(
     email: string,
