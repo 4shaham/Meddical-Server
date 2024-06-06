@@ -5,24 +5,33 @@ import IuserUseCase from "../interface/useCase/IUseruseCase";
 class UserAuthUseCase implements IuserUseCase {
 
   private userAuthRepository: UserAuthRepository;
-
   constructor(userAuthRepository: UserAuthRepository) {
     this.userAuthRepository = userAuthRepository;
   }
   
+  
+
   async registerUser(data:registerBody): Promise<void> {
 
     try {
 
     let emailExists= await this.userAuthRepository.checkEmailExists(data.email)
+    let phoneNumberExists=await this.userAuthRepository.checkPhoneNumberExists(data.phoneNumber)
+    
 
     if(emailExists){
       throw new Error('Email already exists');
     }
 
-    await this.userAuthRepository.createUser(data)
-      
+    if(phoneNumberExists){
+      throw new Error('This phone Number is already used')
+    }
+
+     await this.userAuthRepository.createUser(data)  
+                 
     } catch (error) {
+  
+      throw error
        
     }
     
@@ -30,39 +39,7 @@ class UserAuthUseCase implements IuserUseCase {
 
   } 
 
-   
-  // async loginUser(email:string,password:string){
-
-       
-  //   let user=await this.userAuthRepository.findByEmail(email);
-    
-  //   if(!user){
-  //       console.log("the email is not valid")
-  //   }
-
-  //    console.log(user)
-  // }
-
-  // async registerUser(email:string,password:string,age:number,gender:string,userName:string,phoneNumber:Number) {
-
-  //   try{
-        
-  //    if (!email || !password || !age || !gender || !userName || !phoneNumber) {
-  //       throw new Error('Missing required fields');
-  //    }
   
-       
-  //   let user=  await this.userAuthRepository.createUser(email,password,age,gender,userName,phoneNumber)
-    
-
-  //   }catch(err){
-         
-          
-
-
-  //   }
-
-  // }
 }
   
 export default UserAuthUseCase;

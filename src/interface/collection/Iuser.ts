@@ -11,6 +11,7 @@ export default interface IUser extends Document {
     gender: string;
     status: boolean;
     image?:string;
+    otpVerified:boolean;
 
 }
 

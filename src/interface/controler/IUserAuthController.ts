@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 export default interface IUserAuthController{
 
     register(req:Request,res:Response):Promise<void>
-     
+    otpVerification(req:Request,res:Response):Promise<void>
 
 }
 
@@ -17,4 +17,9 @@ export interface registerBody{
     password:Number,
     phoneNumber:Number
 
+}
+
+export interface otpVerificationBody{
+    email:string,
+    otp:number
 }

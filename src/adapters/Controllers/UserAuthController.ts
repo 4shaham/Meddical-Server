@@ -12,6 +12,8 @@ class UserAuthController implements IUserAuthController {
     this.userAuthUseCase = userAuthUseCase;
   }
 
+  
+
   async register(
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
     res: Response<any, Record<string, any>>
@@ -27,9 +29,25 @@ class UserAuthController implements IUserAuthController {
         phoneNumber
       };
       await this.userAuthUseCase.registerUser(data);
+      res.json({message:"user Created successfully"})
     } catch (error) {
-
+            console.log(error)
+            res.json({eremessage:error})   
     }
+
+  }
+
+  async otpVerification(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
+
+    try{
+
+     
+ 
+
+    }catch(err){
+      console.log(err)
+    }
+    
   }
 
 

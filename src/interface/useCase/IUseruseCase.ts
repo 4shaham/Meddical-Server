@@ -5,4 +5,4 @@ export default interface IuserUseCase{
 
     registerUser(data:registerBody):Promise<void>
     
-}
+}   

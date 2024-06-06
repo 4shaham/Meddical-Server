@@ -37,6 +37,10 @@ const UserSchema:Schema=new Schema({
     status:{
         type:Boolean,
         default:false
+    },
+    otpVerified:{
+        type:Boolean,
+        default:false
     }
 },
 {
@@ -45,9 +49,9 @@ const UserSchema:Schema=new Schema({
 
 
 const Users=mongoose.model<Iuser>('Users',UserSchema)
-
+  
 export default Users
-
+   
 
 
 
