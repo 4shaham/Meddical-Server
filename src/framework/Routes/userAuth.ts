@@ -12,7 +12,7 @@ const userAuthRepository = new UserAuthRepository(Users);
 const userAuthUseCase = new UserAuthUseCase(userAuthRepository);
 const userAuthController = new UserAuthController(userAuthUseCase);
 
-// router.post("/login", userAuthController.login.bind(userAuthController));
-router.post("/register", userAuthController.Register.bind(userAuthController));
-// router.post("verifyOtp",userAuthController.verifyOrp.bind(userAuthController))
+
+router.post("/register", userAuthController.register.bind(userAuthController));
+
 export default router;

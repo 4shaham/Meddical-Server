@@ -1,16 +1,39 @@
 import UserAuthRepository from "../adapters/repositories/UserAuthRepository";
+import { registerBody } from "../interface/controler/IUserAuthController";
+import IuserUseCase from "../interface/useCase/IUseruseCase";
 
-class UserAuthUseCase {
+class UserAuthUseCase implements IuserUseCase {
 
   private userAuthRepository: UserAuthRepository;
 
   constructor(userAuthRepository: UserAuthRepository) {
     this.userAuthRepository = userAuthRepository;
   }
+  
+  async registerUser(data:registerBody): Promise<void> {
 
+    try {
+
+    let emailExists= await this.userAuthRepository.checkEmailExists(data.email)
+
+    if(emailExists){
+      throw new Error('Email already exists');
+    }
+
+    await this.userAuthRepository.createUser(data)
+      
+    } catch (error) {
+       
+    }
+    
+
+
+  } 
+
+   
   // async loginUser(email:string,password:string){
 
-     
+       
   //   let user=await this.userAuthRepository.findByEmail(email);
     
   //   if(!user){
@@ -20,26 +43,26 @@ class UserAuthUseCase {
   //    console.log(user)
   // }
 
-  async registerUser(email:string,password:string,age:number,gender:string,userName:string,phoneNumber:Number) {
+  // async registerUser(email:string,password:string,age:number,gender:string,userName:string,phoneNumber:Number) {
 
-    try{
+  //   try{
         
-     if (!email || !password || !age || !gender || !userName || !phoneNumber) {
-        throw new Error('Missing required fields');
-     }
+  //    if (!email || !password || !age || !gender || !userName || !phoneNumber) {
+  //       throw new Error('Missing required fields');
+  //    }
   
        
-    let user=  await this.userAuthRepository.RegisterUser(email,password,age,gender,userName,phoneNumber)
+  //   let user=  await this.userAuthRepository.createUser(email,password,age,gender,userName,phoneNumber)
     
 
-    }catch(err){
+  //   }catch(err){
          
           
 
 
-    }
+  //   }
 
-  }
+  // }
 }
   
 export default UserAuthUseCase;

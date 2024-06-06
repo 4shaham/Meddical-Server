@@ -1,6 +1,6 @@
 
 import mongoose, {Schema,Model } from "mongoose";
-import { userCollection,userDocument } from "../../interface/collection/userInterface";
+import Iuser from "../../interface/collection/Iuser";
 
 
 const UserSchema:Schema=new Schema({
@@ -30,6 +30,10 @@ const UserSchema:Schema=new Schema({
         type:String,
         required:true
     },
+    image:{
+        type:String,
+        default:null
+    },
     status:{
         type:Boolean,
         default:false
@@ -40,7 +44,7 @@ const UserSchema:Schema=new Schema({
 })
 
 
-const Users:userCollection=mongoose.model<userDocument>('Users',UserSchema)
+const Users=mongoose.model<Iuser>('Users',UserSchema)
 
 export default Users
 
