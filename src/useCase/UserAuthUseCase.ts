@@ -2,17 +2,21 @@ import UserAuthRepository from "../adapters/repositories/UserAuthRepository";
 import { registerBody } from "../interface/controler/IUserAuthController";
 import IuserUseCase from "../interface/useCase/IUseruseCase";
 import HashingServices from "../framework/utils/hashingService";
+import OtpService from "../framework/utils/otpService";
 
 class UserAuthUseCase implements IuserUseCase {
   private userAuthRepository: UserAuthRepository;
   private hashingServices: HashingServices;
+  private otpServices:OtpService
 
   constructor(
     userAuthRepository: UserAuthRepository,
-    hashingServices: HashingServices
+    hashingServices: HashingServices,
+    otpServices:OtpService
   ) {
     this.userAuthRepository = userAuthRepository;
     this.hashingServices = hashingServices;
+    this.otpServices=otpServices
   }
 
   async registerUser(data: registerBody): Promise<void> {
@@ -39,12 +43,17 @@ class UserAuthUseCase implements IuserUseCase {
       data.password = bcryptPassword;
 
       await this.userAuthRepository.createUser(data);
+
+      const otp = await this.otpServices.generateOtp()
+      console.log(otp,"this is  otp")
+      await this.userAuthRepository.saveOtp(data.email,otp)
+
     } catch (error) {
       throw error;
     }
   }
 
-  
+
 }
 
 export default UserAuthUseCase;

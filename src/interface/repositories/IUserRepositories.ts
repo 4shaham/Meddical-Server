@@ -7,6 +7,6 @@ export default interface IuserRepositories {
     createUser(data:registerBody):Promise<IUser>
     checkEmailExists(email:string):Promise<IUser|null>
     checkPhoneNumberExists(phoneNumber:Number):Promise<IUser|null>
-    
+    saveOtp(email:string,otp:string):Promise<void>
 
 }

@@ -5,14 +5,15 @@ import IUserOtp from '../../interface/collection/IotpUser';
 
 const OtpSchema: Schema = new Schema({
 
-  Email: { type: String },
-  Number: { type: String },
+  email: { type: String },
+  otp: { type: String },
   createdAt: { type: Date, default: Date.now }
 
 });
 
 
-OtpSchema.index({ createdAt: 1 }, { expireAfterSeconds: 300 });
+OtpSchema.index({ createdAt: 1 }, { expireAfterSeconds: 120 });
+
 
 const Otp = mongoose.model<IUserOtp>('Otp', OtpSchema);                
 

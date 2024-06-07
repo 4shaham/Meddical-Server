@@ -3,7 +3,7 @@ import { Model } from "mongoose";
 import IuserRepositories from "../../interface/repositories/IUserRepositories";
 import { registerBody } from "../../interface/controler/IUserAuthController";
 import IUserOtp from "../../interface/collection/IotpUser";
-import { Mode } from "fs";
+
 
 class UserAuthRepository implements IuserRepositories {
   private users: Model<IUser>;
@@ -43,6 +43,23 @@ class UserAuthRepository implements IuserRepositories {
     } catch (error) {
       throw new Error(`Failed to check if email exists: ${error}`);
     }
+  }
+
+  async saveOtp(email: string, otp: string): Promise<void> {
+
+    try {
+
+
+      const data=new this.otp({
+        email:email,
+        otp:otp,
+      })
+      await data.save()
+      
+    } catch (error) {
+       console.log(error,"'dfhdjhfjdfhjdhfj")
+    }
+    
   }
 
  
