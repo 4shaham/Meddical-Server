@@ -3,6 +3,7 @@ import morgan from "morgan";
 import dotenv from "dotenv"
 import connectDB from "./config/db"
 import userRouter from "./Routes/userAuth"
+import cookieParser from "cookie-parser";
 
 
 
@@ -15,6 +16,10 @@ dotenv.config()
 
 // port 
 const PORT: string= process.env.PORT!  
+
+
+//  set up cookieParser
+app.use(cookieParser());
 
 
 //  same usage of bodyparser
