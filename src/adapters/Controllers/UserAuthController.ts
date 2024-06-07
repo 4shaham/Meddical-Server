@@ -47,24 +47,19 @@ class UserAuthController implements IUserAuthController {
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
     res: Response<any, Record<string, any>>
   ): Promise<void> {
-
     try {
+      const { email, password } = req.body;
 
-      const {email,password}=req.body
-  
-      const data={
+      const data = {
         email,
-        password
-      }
+        password,
+      };
 
-      console.log(data)
+      let token = await this.userAuthUseCase.authenticateUser(data);
 
-      this.userAuthUseCase.authenticateUser(data)
-      
-    } catch (error) {
-      
-    }
-
+      res.cookie("token", token, { maxAge: 3600000 });
+      res.json({ message: "Login successful", token: token });
+    } catch (error) {}
   }
 }
 

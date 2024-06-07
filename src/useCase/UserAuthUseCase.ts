@@ -76,8 +76,8 @@ class UserAuthUseCase implements IuserUseCase {
          }
 
        let token=await this.jwtServices.createToken(payload)
-          
-         return token
+      
+      return token
    
       }else{
         throw new Error("this email is not valid")
@@ -85,6 +85,7 @@ class UserAuthUseCase implements IuserUseCase {
     } catch (error) {
      
         console.log(error)
+        throw error
         return "eriu"
 
     }
