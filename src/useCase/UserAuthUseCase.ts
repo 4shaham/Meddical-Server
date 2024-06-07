@@ -7,16 +7,16 @@ import OtpService from "../framework/utils/otpService";
 class UserAuthUseCase implements IuserUseCase {
   private userAuthRepository: UserAuthRepository;
   private hashingServices: HashingServices;
-  private otpServices:OtpService
+  private otpServices: OtpService;
 
   constructor(
     userAuthRepository: UserAuthRepository,
     hashingServices: HashingServices,
-    otpServices:OtpService
+    otpServices: OtpService
   ) {
     this.userAuthRepository = userAuthRepository;
     this.hashingServices = hashingServices;
-    this.otpServices=otpServices
+    this.otpServices = otpServices;
   }
 
   async registerUser(data: registerBody): Promise<void> {
@@ -44,16 +44,14 @@ class UserAuthUseCase implements IuserUseCase {
 
       await this.userAuthRepository.createUser(data);
 
-      const otp = await this.otpServices.generateOtp()
-      console.log(otp,"this is  otp")
-      await this.userAuthRepository.saveOtp(data.email,otp)
+      const otp: string = await this.otpServices.generateOtp();
 
+      await this.userAuthRepository.saveOtp(data.email, otp);
+      await this.otpServices.sendOtpEmail(data.email, otp,data.userName);
     } catch (error) {
       throw error;
     }
   }
-
-
 }
 
 export default UserAuthUseCase;
