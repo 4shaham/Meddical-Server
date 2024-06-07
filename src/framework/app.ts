@@ -3,6 +3,7 @@ import morgan from "morgan";
 import dotenv from "dotenv"
 import connectDB from "./config/db"
 import userRouter from "./Routes/userAuth"
+import doctorAuthRouter from "./Routes/doctorAuth"
 import cookieParser from "cookie-parser";
 
 
@@ -39,7 +40,8 @@ app.use(morgan('dev'))
 
 
 // user Router 
-app.use("/",userRouter)  
+app.use("/api",userRouter)  
+app.use("/api/doctor",doctorAuthRouter)
 
 
 
