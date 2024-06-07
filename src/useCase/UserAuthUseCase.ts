@@ -1,5 +1,5 @@
 import UserAuthRepository from "../adapters/repositories/UserAuthRepository";
-import { registerBody } from "../interface/controler/IUserAuthController";
+import { loginBody, registerBody } from "../interface/controler/IUserAuthController";
 import IuserUseCase from "../interface/useCase/IUseruseCase";
 import HashingServices from "../framework/utils/hashingService";
 import OtpService from "../framework/utils/otpService";
@@ -51,6 +51,35 @@ class UserAuthUseCase implements IuserUseCase {
     } catch (error) {
       throw error;
     }
+  }
+
+  async authenticateUser(data: loginBody): Promise<void> {
+
+    try {
+      let values=await this.userAuthRepository.checkEmailExists(data.email)
+    
+      if(values){
+ 
+      const status=await this.hashingServices.compare(data.password,values.password)
+         console.log(status,"dfhdhfjdf")
+         if(!status){
+            throw new Error("the passsword is not match")
+         }
+ 
+         console.log("the user is loged successsfully")
+ 
+      }else{
+        throw new Error("this email is not valid")
+      }
+    } catch (error) {
+     
+        console.log(error)
+    
+
+    }
+    
+    
+
   }
 }
 

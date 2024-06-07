@@ -5,9 +5,10 @@ export default interface IUserAuthController{
 
     register(req:Request,res:Response):Promise<void>
     otpVerification(req:Request,res:Response):Promise<void>
+    login(req:Request,res:Response):Promise<void>
 
 }
-
+  
 export interface registerBody{
  
     email:string,
@@ -23,3 +24,9 @@ export interface otpVerificationBody{
     email:string,
     otp:number
 }
+
+export interface loginBody{
+    email:string,
+    password:string
+}
+

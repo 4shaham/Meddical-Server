@@ -32,5 +32,6 @@ const userAuthController = new UserAuthController(userAuthUseCase);
 
 router.post("/register", userAuthController.register.bind(userAuthController));
 router.post("/otpVerification",userAuthController.otpVerification.bind(userAuthController))
+router.post("/login",userAuthController.login.bind(userAuthController))
 
 export default router;
