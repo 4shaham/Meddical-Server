@@ -23,6 +23,7 @@ app.use(cookieParser());
 
 
 //  same usage of bodyparser
+
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))   
 
@@ -32,8 +33,10 @@ app.use(express.urlencoded({extended:true}))
 connectDB()
 
 
+
 // morgan for using console all request
 app.use(morgan('dev'))  
+
 
 // user Router 
 app.use("/",userRouter)  

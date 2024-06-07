@@ -1,6 +1,8 @@
 import express, { Request, Response, Router } from "express";
 
+
 const router: Router = express.Router();
+
 
 import UserAuthRepository from "./../../adapters/repositories/UserAuthRepository";
 import UserAuthUseCase from "./../../useCase/UserAuthUseCase";
@@ -16,17 +18,19 @@ import Otp from "../model/UserOtpSchema";
 
 import HashingServices from "../utils/hashingService";
 import OtpService from "../utils/otpService";
+import JwtService from "../utils/jwtService";
 
 
 // utiles object creation 
 
 const hashingServices=new HashingServices()
 const otpServices=new OtpService()
+const jwtServices=new JwtService()
 
 
 // create a object and connect all controllers and  usecase and useRepositorys
 const userAuthRepository = new UserAuthRepository(Users,Otp);
-const userAuthUseCase = new UserAuthUseCase(userAuthRepository,hashingServices,otpServices);
+const userAuthUseCase = new UserAuthUseCase(userAuthRepository,hashingServices,otpServices,jwtServices);
 const userAuthController = new UserAuthController(userAuthUseCase);
 
 

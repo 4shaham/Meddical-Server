@@ -3,20 +3,24 @@ import { loginBody, registerBody } from "../interface/controler/IUserAuthControl
 import IuserUseCase from "../interface/useCase/IUseruseCase";
 import HashingServices from "../framework/utils/hashingService";
 import OtpService from "../framework/utils/otpService";
+import JwtService from "../framework/utils/jwtService";
 
 class UserAuthUseCase implements IuserUseCase {
   private userAuthRepository: UserAuthRepository;
   private hashingServices: HashingServices;
   private otpServices: OtpService;
+  private jwtServices:JwtService
 
   constructor(
     userAuthRepository: UserAuthRepository,
     hashingServices: HashingServices,
-    otpServices: OtpService
+    otpServices: OtpService,
+    jwtServices:JwtService
   ) {
     this.userAuthRepository = userAuthRepository;
     this.hashingServices = hashingServices;
     this.otpServices = otpServices;
+    this.jwtServices=jwtServices
   }
 
   async registerUser(data: registerBody): Promise<void> {
@@ -53,7 +57,7 @@ class UserAuthUseCase implements IuserUseCase {
     }
   }
 
-  async authenticateUser(data: loginBody): Promise<void> {
+  async authenticateUser(data: loginBody): Promise<string> {
 
     try {
       let values=await this.userAuthRepository.checkEmailExists(data.email)
@@ -61,20 +65,27 @@ class UserAuthUseCase implements IuserUseCase {
       if(values){
  
       const status=await this.hashingServices.compare(data.password,values.password)
-         console.log(status,"dfhdhfjdf")
+      
          if(!status){
             throw new Error("the passsword is not match")
          }
- 
-         console.log("the user is loged successsfully")
- 
+
+         let payload={
+           userId:values._id,
+           userName:values.userName
+         }
+
+       let token=await this.jwtServices.createToken(payload)
+          
+         return token
+   
       }else{
         throw new Error("this email is not valid")
       }
     } catch (error) {
      
         console.log(error)
-    
+        return "eriu"
 
     }
     

@@ -30,3 +30,8 @@ export interface loginBody{
     password:string
 }
 
+export interface tokenData{
+    userId:string,
+    userName:string
+}
+
