@@ -14,7 +14,7 @@ export interface registerBody{
     userName:string,
     age:number,
     gender:string,
-    password:Number,
+    password:string,
     phoneNumber:Number
 
 }

@@ -17,7 +17,10 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
     "@types/dotenv": "^8.2.0",
+    "bcrypt": "^5.1.1",
     "express": "^4.19.2",
     "mongoose": "^8.4.1",
     "morgan": "^1.10.0",
