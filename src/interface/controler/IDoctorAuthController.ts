@@ -7,7 +7,7 @@ export default interface IDoctorAuthController{
 
 }
 
-export interface doctorRegisterBody{
+// export interface doctorRegisterBody{
     // doctorName:String;
     // specialtie: String;
     // email:String;
@@ -29,4 +29,4 @@ export interface doctorRegisterBody{
     // }[];
     // AppliedStatus: String | null;
     // Fees: Double | null;
-}
+// }

@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import DoctorAuthUseCase from "../../useCase/DoctorAuthUseCase";
 import IDoctorAuthController from "../../interface/controler/IDoctorAuthController";
+import IDoctorUseCase from "../../interface/useCase/IDoctorUseCase";
 
 export default class DoctorAuthController implements IDoctorAuthController {
-  private doctorAuthUseCase: DoctorAuthUseCase;
-  constructor(doctorAuthUseCase: DoctorAuthUseCase) {
+  private doctorAuthUseCase:IDoctorUseCase;
+  constructor(doctorAuthUseCase:IDoctorUseCase) {
     this.doctorAuthUseCase = doctorAuthUseCase;
   }
 

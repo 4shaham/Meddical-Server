@@ -1,21 +1,24 @@
-import UserAuthRepository from "../adapters/repositories/UserAuthRepository";
+
+
 import { loginBody, registerBody } from "../interface/controler/IUserAuthController";
 import IuserUseCase from "../interface/useCase/IUseruseCase";
-import HashingServices from "../framework/utils/hashingService";
-import OtpService from "../framework/utils/otpService";
-import JwtService from "../framework/utils/jwtService";
+import IhasingService from "../interface/utils/IHasingService";
+import IuserRepositories from "../interface/repositories/IUserRepositories";
+import IOtpServices from "../interface/utils/IOtpServices";
+import IJwtService from "../interface/utils/IJwtService";
+
 
 class UserAuthUseCase implements IuserUseCase {
-  private userAuthRepository: UserAuthRepository;
-  private hashingServices: HashingServices;
-  private otpServices: OtpService;
-  private jwtServices:JwtService
+  private userAuthRepository:IuserRepositories;
+  private hashingServices:IhasingService;
+  private otpServices:IOtpServices;
+  private jwtServices:IJwtService
 
   constructor(
-    userAuthRepository: UserAuthRepository,
-    hashingServices: HashingServices,
-    otpServices: OtpService,
-    jwtServices:JwtService
+    userAuthRepository:IuserRepositories,
+    hashingServices:IhasingService,
+    otpServices:IOtpServices,
+    jwtServices:IJwtService
   ) {
     this.userAuthRepository = userAuthRepository;
     this.hashingServices = hashingServices;

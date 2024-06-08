@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
-import UserAuthUseCase from "../../useCase/UserAuthUseCase";
 import IUserAuthController from "../../interface/controler/IUserAuthController";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
+import IuserUseCase from "../../interface/useCase/IUseruseCase";
 
 class UserAuthController implements IUserAuthController {
-  private userAuthUseCase: UserAuthUseCase;
+  private userAuthUseCase:IuserUseCase;
 
-  constructor(userAuthUseCase: UserAuthUseCase) {
-    this.userAuthUseCase = userAuthUseCase;
+  constructor(userAuthUseCase:IuserUseCase) {
+    this.userAuthUseCase =userAuthUseCase;
   }
 
   async register(
@@ -38,6 +38,7 @@ class UserAuthController implements IUserAuthController {
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
+   
     } catch (err) {
       console.log(err);
     }

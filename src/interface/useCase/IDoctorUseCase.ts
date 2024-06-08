@@ -2,7 +2,7 @@
 
 export default interface IDoctorUseCase{
   
-    registerDoctor():Promise<string>
+    registerDoctor():Promise<void>
 
 
 }
