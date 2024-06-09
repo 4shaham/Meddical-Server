@@ -4,6 +4,7 @@ import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import IuserUseCase from "../../interface/useCase/IUseruseCase";
 
+
 class UserAuthController implements IUserAuthController {
   private userAuthUseCase:IuserUseCase;
 
@@ -33,6 +34,7 @@ class UserAuthController implements IUserAuthController {
         password,
         phoneNumber,
       };
+  
       await this.userAuthUseCase.registerUser(data);
       res.json({status:true,message: "user Created successfully" });
     } catch (error) {

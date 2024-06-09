@@ -26,6 +26,7 @@ class UserAuthUseCase implements IuserUseCase {
     this.jwtServices=jwtServices
   }
 
+  
   async registerUser(data: registerBody): Promise<void> {
     try {
       let emailExists = await this.userAuthRepository.checkEmailExists(
@@ -96,8 +97,6 @@ class UserAuthUseCase implements IuserUseCase {
         throw error
     }
     
-    
-
   }
 }
 
