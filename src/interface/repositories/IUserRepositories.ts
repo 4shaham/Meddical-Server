@@ -10,5 +10,6 @@ export default interface IuserRepositories {
     saveOtp(email:string,otp:string):Promise<void>
     verifyOTP(email:string):Promise<IUserOtp|null>
     updateOtpVerified(email:string):Promise<IUser|null>
+    changePassword(email:string,password:string):Promise<void>
 
 }

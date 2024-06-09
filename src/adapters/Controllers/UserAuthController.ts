@@ -5,14 +5,12 @@ import { ParsedQs } from "qs";
 import IuserUseCase from "../../interface/useCase/IUseruseCase";
 import { stat } from "fs";
 
-
 class UserAuthController implements IUserAuthController {
-  private userAuthUseCase:IuserUseCase;
+  private userAuthUseCase: IuserUseCase;
 
-  constructor(userAuthUseCase:IuserUseCase) {
-    this.userAuthUseCase =userAuthUseCase;
+  constructor(userAuthUseCase: IuserUseCase) {
+    this.userAuthUseCase = userAuthUseCase;
   }
-
 
   /// user Register
 
@@ -22,71 +20,65 @@ class UserAuthController implements IUserAuthController {
   ): Promise<void> {
     try {
       const { email, userName, age, gender, password, phoneNumber } = req.body;
-     
-      if(!email||!userName||!age||!gender||!password||!phoneNumber){
+
+      if (!email || !userName || !age || !gender || !password || !phoneNumber) {
         res.status(400).json({
           status: false,
-          message: "All fields are required."
-      });
+          message: "All fields are required.",
+        });
       }
 
       const data = {
-        email,  
+        email,
         userName,
         age,
         gender,
         password,
         phoneNumber,
       };
-  
+
       await this.userAuthUseCase.registerUser(data);
-      res.json({status:true,message: "user Created successfully and Otp send successfully"});
+      res.json({
+        status: true,
+        message: "user Created successfully and Otp send successfully",
+      });
     } catch (error) {
       console.log(error);
       res.json({ eremessage: error });
     }
   }
 
+  // otp verification
 
-  // otp verification 
-  
   async otpVerification(
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
+      const { otp, email } = req.body;
 
-    const {otp,email}=req.body  
+      const data = {
+        email,
+        otp,
+      };
 
-    const data={
-      email,
-      otp
-    }
+      const status = await this.userAuthUseCase.verifyOtp(data);
 
-    const status=await this.userAuthUseCase.verifyOtp(data)
+      if (!status?.status) {
+        res.status(401).json(status);
+      }
 
-    if(!status?.status){
-        res.status(401).json(status)
-    }
-    
-    
-    
-    res.cookie("token",status?.token,{ maxAge:3600000});    
-    res.status(200).json(status)
-     
-     
-    res.status(200).json({
-      message: "OTP verification successful",
-      token:status?.token
-    }
+      res.cookie("token", status?.token, { maxAge: 3600000 });
+      res.status(200).json(status);
 
-  )
-   
+      res.status(200).json({
+        message: "OTP verification successful",
+        token: status?.token,
+      });
     } catch (err) {
       console.log(err);
     }
   }
-
 
   // login
 
@@ -103,27 +95,58 @@ class UserAuthController implements IUserAuthController {
       };
 
       let response = await this.userAuthUseCase.authenticateUser(data);
-      
-      if(!response?.status && response?.message=="otp is not verified"){
-           
-          res.status(401).json({otpVerified:"false"})
 
-      }else if(response?.status){
-
-        const {token}=response
-        res.cookie("token", token, { maxAge: 3600000 });    
-        res.status(200).json(response)
-        
-
-      }else{
-
-        res.status(401).json(response)
-
+      if (!response?.status && response?.message == "otp is not verified") {
+        res.status(401).json({ otpVerified: "false" });
+      } else if (response?.status) {
+        const { token } = response;
+        res.cookie("token", token, { maxAge: 3600000 });
+        res.status(200).json(response);
+      } else {
+        res.status(401).json(response);
       }
-      
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
+  }
+
+  // forget Password
+
+  async forgetPassword(
+    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+    res: Response<any, Record<string, any>>
+  ): Promise<void> {
+    try {
+      const { email } = req.body;
+
+      let response = await this.userAuthUseCase.validateForgotPassword(email);
+
+      res.json(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+ async updatePassword(
+    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+    res: Response<any, Record<string, any>>
+  ): Promise<void> {
+
+    try {
+      
+      const {password,email}=req.body
+
+      console.log("password",req.body)
+      
+      await this.userAuthUseCase.verifyingUpdatePassword(email,password)
+
+     res.status(200).json({message:"password changed"})
+
+    } catch (error) {
+         console.log(error)      
+    }
+
+
   }
 }
 

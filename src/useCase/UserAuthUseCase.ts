@@ -149,6 +149,45 @@ class UserAuthUseCase implements IuserUseCase {
         
    }
 
+
+   async validateForgotPassword(email: string): Promise<string> {
+       
+    try {
+      
+      let userData=await this.userAuthRepository.checkEmailExists(email)
+      
+      if(!userData){
+          return "this email user Is not here"
+      }
+      const otp:string=await this.otpServices.generateOtp();
+      await this.userAuthRepository.saveOtp(email,otp);
+      await this.otpServices.sendOtpEmail(email,otp,userData.userName);
+      return "otp send"
+    } catch (error) {
+      throw Error()
+    }
+
+   }
+
+  
+  async verifyingUpdatePassword(email: string, password: string): Promise<void> {
+       
+   try {
+
+    const hashedPassword:string=await this.hashingServices.hashing(password)
+       
+    console.log("had",hashedPassword)
+    await this.userAuthRepository.changePassword(email,hashedPassword)
+    
+   } catch (error) {
+      throw Error()
+   }
+
+  
+
+   }
+
+
 }
 
 export default UserAuthUseCase;

@@ -85,6 +85,22 @@ class UserAuthRepository implements IuserRepositories {
     
   }
 
+ async changePassword(email: string, password: string): Promise<void> {
+
+   try {
+
+    const res= await this.users.updateOne({email:email},{$set:{password:password}})
+    console.log(res)
+   } catch (error) {
+
+    throw Error()
+    
+   }
+         
+  
+
+  }
+
    
 }
 

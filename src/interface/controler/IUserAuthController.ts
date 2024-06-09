@@ -6,6 +6,8 @@ export default interface IUserAuthController{
     register(req:Request,res:Response):Promise<void>
     otpVerification(req:Request,res:Response):Promise<void>
     login(req:Request,res:Response):Promise<void>
+    forgetPassword(req:Request,res:Response):Promise<void>
+    updatePassword(req:Request,res:Response):Promise<void>
 
 }
   
