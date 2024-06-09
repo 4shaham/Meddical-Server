@@ -8,9 +8,10 @@ export  interface resObj{
     token?:string
 }
 
+
 export default interface IuserUseCase{
 
     registerUser(data:registerBody):Promise<void>
     authenticateUser(data:loginBody):Promise<resObj|null>
-    verifyOtp(data:otpVerifyData):Promise<boolean>
+    verifyOtp(data:otpVerifyData):Promise<resObj|null>
 }   

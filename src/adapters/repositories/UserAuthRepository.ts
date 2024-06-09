@@ -65,7 +65,7 @@ class UserAuthRepository implements IuserRepositories {
  async verifyOTP(email: string): Promise<IUserOtp|null> {
 
   try{
-    
+
     return await this.otp.findOne({email:email})
 
   }catch(error){
@@ -73,6 +73,16 @@ class UserAuthRepository implements IuserRepositories {
   }
     
 
+  }
+
+   async updateOtpVerified(email: string): Promise<IUser | null> {
+         
+    try{
+      return await this.users.findOneAndUpdate({email:email},{$set:{otpVerified:true}})
+    }catch(err){
+      throw Error()
+    }
+    
   }
 
    

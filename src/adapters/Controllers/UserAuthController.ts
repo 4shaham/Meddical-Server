@@ -13,6 +13,9 @@ class UserAuthController implements IUserAuthController {
     this.userAuthUseCase =userAuthUseCase;
   }
 
+
+  /// user Register
+
   async register(
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
     res: Response<any, Record<string, any>>
@@ -37,12 +40,15 @@ class UserAuthController implements IUserAuthController {
       };
   
       await this.userAuthUseCase.registerUser(data);
-      res.json({status:true,message: "user Created successfully" });
+      res.json({status:true,message: "user Created successfully and Otp send successfully"});
     } catch (error) {
       console.log(error);
       res.json({ eremessage: error });
     }
   }
+
+
+  // otp verification 
   
   async otpVerification(
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
@@ -51,7 +57,7 @@ class UserAuthController implements IUserAuthController {
     try {
 
     const {otp,email}=req.body  
-    
+
     const data={
       email,
       otp
@@ -59,21 +65,30 @@ class UserAuthController implements IUserAuthController {
 
     const status=await this.userAuthUseCase.verifyOtp(data)
 
-    if(!status){
-        res.status(401).json({error: "Invalid OTP",
-        message: "The provided OTP is invalid. Please try again"
-        })
+    if(!status?.status){
+        res.status(401).json(status)
+    }
+    
+    
+    
+    res.cookie("token",status?.token,{ maxAge:3600000});    
+    res.status(200).json(status)
+     
+     
+    res.status(200).json({
+      message: "OTP verification successful",
+      token:status?.token
     }
 
-    res.status(200).json({
-      message: "OTP verification successful"
-    }
   )
    
     } catch (err) {
       console.log(err);
     }
   }
+
+
+  // login
 
   async login(
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
@@ -88,13 +103,17 @@ class UserAuthController implements IUserAuthController {
       };
 
       let response = await this.userAuthUseCase.authenticateUser(data);
+      
+      if(!response?.status && response?.message=="otp is not verified"){
+           
+          res.status(401).json({otpVerified:"false"})
 
-      if(response?.status){
+      }else if(response?.status){
 
         const {token}=response
         res.cookie("token", token, { maxAge: 3600000 });    
         res.status(200).json(response)
-       
+        
 
       }else{
 

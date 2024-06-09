@@ -52,8 +52,7 @@ class UserAuthUseCase implements IuserUseCase {
 
       await this.userAuthRepository.createUser(data);
 
-      const otp: string = await this.otpServices.generateOtp();
-
+      const otp:string=await this.otpServices.generateOtp();
       await this.userAuthRepository.saveOtp(data.email, otp);
       await this.otpServices.sendOtpEmail(data.email, otp,data.userName);
     } catch (error) {
@@ -75,6 +74,16 @@ class UserAuthUseCase implements IuserUseCase {
          if(!status){
             // return 401 eroor
             return {status:false,message:"the password is not match"}
+         }
+         
+         if(values.otpVerified==false){
+                  
+          const otp:string=await this.otpServices.generateOtp();
+          await this.userAuthRepository.saveOtp(values.email, otp);
+          await this.otpServices.sendOtpEmail(values.email, otp,values.userName);
+            
+          return {status:false,message:"otp is not verified"}
+           
          }
 
 
@@ -100,20 +109,39 @@ class UserAuthUseCase implements IuserUseCase {
   }
 
   
-  async verifyOtp(data: otpVerifyData): Promise<boolean> {
+  async verifyOtp(data: otpVerifyData): Promise<resObj|null> {
 
       try {
        
        let otpDatas=await this.userAuthRepository.verifyOTP(data.email)
        
-       console.log(otpDatas)
+       
        if(otpDatas && otpDatas.otp==data.otp){
-        console.log('is verified')
-        return true
+      
 
+        let values=await this.userAuthRepository.updateOtpVerified(data.email)
+        
+        if(values){
+
+          let payload={
+            userId:values?._id,
+            userName:values?.userName
+          }
+                     // it generate token
+          let token=await this.jwtServices.createToken(payload)
+
+          return {status:true,message:"the Otp verification is completed",token}
+           
+        }
+       
+        
+       
+         
        }
 
-       return false
+       return {status:false,message:"the Otp verification is failed"}
+
+      
         
       } catch (error) {
         throw Error() 
