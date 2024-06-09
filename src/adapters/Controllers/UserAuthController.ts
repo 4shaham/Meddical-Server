@@ -3,6 +3,7 @@ import IUserAuthController from "../../interface/controler/IUserAuthController";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import IuserUseCase from "../../interface/useCase/IUseruseCase";
+import { stat } from "fs";
 
 
 class UserAuthController implements IUserAuthController {
@@ -42,12 +43,32 @@ class UserAuthController implements IUserAuthController {
       res.json({ eremessage: error });
     }
   }
-
+  
   async otpVerification(
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
+
+    const {otp,email}=req.body  
+    
+    const data={
+      email,
+      otp
+    }
+
+    const status=await this.userAuthUseCase.verifyOtp(data)
+
+    if(!status){
+        res.status(401).json({error: "Invalid OTP",
+        message: "The provided OTP is invalid. Please try again"
+        })
+    }
+
+    res.status(200).json({
+      message: "OTP verification successful"
+    }
+  )
    
     } catch (err) {
       console.log(err);

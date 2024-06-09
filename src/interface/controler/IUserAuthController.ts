@@ -35,3 +35,8 @@ export interface tokenData{
     userName:string
 }
 
+export interface otpVerifyData{
+    otp:string,
+    email:string
+}
+

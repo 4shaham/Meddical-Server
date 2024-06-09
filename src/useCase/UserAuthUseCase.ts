@@ -1,6 +1,6 @@
 
 
-import { loginBody, registerBody } from "../interface/controler/IUserAuthController";
+import { loginBody, otpVerifyData, registerBody } from "../interface/controler/IUserAuthController";
 import IuserUseCase, { resObj } from "../interface/useCase/IUseruseCase";
 import IhasingService from "../interface/utils/IHasingService";
 import IuserRepositories from "../interface/repositories/IUserRepositories";
@@ -26,7 +26,7 @@ class UserAuthUseCase implements IuserUseCase {
     this.jwtServices=jwtServices
   }
 
-  
+
   async registerUser(data: registerBody): Promise<void> {
     try {
       let emailExists = await this.userAuthRepository.checkEmailExists(
@@ -98,6 +98,29 @@ class UserAuthUseCase implements IuserUseCase {
     }
     
   }
+
+  
+  async verifyOtp(data: otpVerifyData): Promise<boolean> {
+
+      try {
+       
+       let otpDatas=await this.userAuthRepository.verifyOTP(data.email)
+       
+       console.log(otpDatas)
+       if(otpDatas && otpDatas.otp==data.otp){
+        console.log('is verified')
+        return true
+
+       }
+
+       return false
+        
+      } catch (error) {
+        throw Error() 
+      }
+        
+   }
+
 }
 
 export default UserAuthUseCase;

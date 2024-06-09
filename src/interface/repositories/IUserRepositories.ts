@@ -8,5 +8,6 @@ export default interface IuserRepositories {
     checkEmailExists(email:string):Promise<IUser|null>
     checkPhoneNumberExists(phoneNumber:Number):Promise<IUser|null>
     saveOtp(email:string,otp:string):Promise<void>
+    verifyOTP(email:string):Promise<IUserOtp|null>
 
 }

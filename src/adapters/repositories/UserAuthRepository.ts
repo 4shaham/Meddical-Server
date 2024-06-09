@@ -62,10 +62,20 @@ class UserAuthRepository implements IuserRepositories {
     
   }
 
- 
+ async verifyOTP(email: string): Promise<IUserOtp|null> {
 
+  try{
+    
+    return await this.otp.findOne({email:email})
 
+  }catch(error){
+    throw Error()
+  }
+    
 
+  }
+
+   
 }
 
 export default UserAuthRepository;
