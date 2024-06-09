@@ -17,8 +17,16 @@ class UserAuthController implements IUserAuthController {
   ): Promise<void> {
     try {
       const { email, userName, age, gender, password, phoneNumber } = req.body;
+     
+      if(!email||!userName||!age||!gender||!password||!phoneNumber){
+        res.status(400).json({
+          status: false,
+          message: "All fields are required."
+      });
+      }
+
       const data = {
-        email,
+        email,  
         userName,
         age,
         gender,
@@ -26,7 +34,7 @@ class UserAuthController implements IUserAuthController {
         phoneNumber,
       };
       await this.userAuthUseCase.registerUser(data);
-      res.json({ message: "user Created successfully" });
+      res.json({status:true,message: "user Created successfully" });
     } catch (error) {
       console.log(error);
       res.json({ eremessage: error });
@@ -56,11 +64,24 @@ class UserAuthController implements IUserAuthController {
         password,
       };
 
-      let token = await this.userAuthUseCase.authenticateUser(data);
+      let response = await this.userAuthUseCase.authenticateUser(data);
 
-      res.cookie("token", token, { maxAge: 3600000 });
-      res.json({ message: "Login successful", token: token });
-    } catch (error) {}
+      if(response?.status){
+
+        const {token}=response
+        res.cookie("token", token, { maxAge: 3600000 });    
+        res.status(200).json(response)
+       
+
+      }else{
+
+        res.status(401).json(response)
+
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 

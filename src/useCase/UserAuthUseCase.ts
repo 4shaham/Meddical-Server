@@ -1,7 +1,7 @@
 
 
 import { loginBody, registerBody } from "../interface/controler/IUserAuthController";
-import IuserUseCase from "../interface/useCase/IUseruseCase";
+import IuserUseCase, { resObj } from "../interface/useCase/IUseruseCase";
 import IhasingService from "../interface/utils/IHasingService";
 import IuserRepositories from "../interface/repositories/IUserRepositories";
 import IOtpServices from "../interface/utils/IOtpServices";
@@ -60,37 +60,40 @@ class UserAuthUseCase implements IuserUseCase {
     }
   }
 
-  async authenticateUser(data: loginBody): Promise<string> {
+  async authenticateUser(data: loginBody): Promise<resObj|null> {
 
     try {
+
+                       // this will check the email user is valid or notvalid
       let values=await this.userAuthRepository.checkEmailExists(data.email)
     
       if(values){
  
-      const status=await this.hashingServices.compare(data.password,values.password)
-      
+                            // comparing passwrod
+         const status=await this.hashingServices.compare(data.password,values.password)   
          if(!status){
-            throw new Error("the passsword is not match")
+            // return 401 eroor
+            return {status:false,message:"the password is not match"}
          }
 
+
+        // token data paylod
          let payload={
            userId:values._id,
            userName:values.userName
          }
-
-       let token=await this.jwtServices.createToken(payload)
+                    // it generate token
+         let token=await this.jwtServices.createToken(payload)
       
-      return token
+        // success response send 
+       return {token,status:true,message:"the login sucesss"}   
    
       }else{
-        throw new Error("this email is not valid")
+        // return 401 eroor
+        return {status:false,message:"this email is not valid"}
       }
     } catch (error) {
-     
-        console.log(error)
         throw error
-        return "eriu"
-
     }
     
     
