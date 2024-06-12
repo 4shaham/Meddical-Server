@@ -20,7 +20,7 @@ class UserAuthController implements IUserAuthController {
   ): Promise<void> {
     try {
       const { email, userName, age, gender, password, phoneNumber } = req.body;
-
+      console.log(req.body);
       if (!email || !userName || !age || !gender || !password || !phoneNumber) {
         res.status(400).json({
           status: false,
@@ -38,6 +38,7 @@ class UserAuthController implements IUserAuthController {
       };
 
       await this.userAuthUseCase.registerUser(data);
+      console.log("hdfdhfjdh sucesssf ully saved ");
       res.json({
         status: true,
         message: "user Created successfully and Otp send successfully",
@@ -88,7 +89,6 @@ class UserAuthController implements IUserAuthController {
   ): Promise<void> {
     try {
       const { email, password } = req.body;
-
       const data = {
         email,
         password,
@@ -97,18 +97,42 @@ class UserAuthController implements IUserAuthController {
       let response = await this.userAuthUseCase.authenticateUser(data);
 
       if (!response?.status && response?.message == "otp is not verified") {
-        res.status(401).json({ otpVerified: "false" });
+        res.status(403).json({ otpVerified: "false" });
       } else if (response?.status) {
         const { token } = response;
         res.cookie("token", token, { maxAge: 3600000 });
         res.status(200).json(response);
       } else {
-        res.status(401).json(response);
+        res.status(403).json(response);
       }
     } catch (error) {
       console.log(error);
     }
   }
+
+  // resend Otp 
+
+   async resendOtp(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
+    
+      try {
+         
+        const {email}=req.body
+        let response=await this.userAuthUseCase.resendOtp(email)
+        
+        if(response=="resendOtp sucussess"){
+          res.json({status:true})
+        }
+
+      } catch (error) {
+        
+        res.json({error})
+
+      }
+  
+  }
+
+
+
 
   // forget Password
 
@@ -127,26 +151,21 @@ class UserAuthController implements IUserAuthController {
     }
   }
 
- async updatePassword(
+  async updatePassword(
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
     res: Response<any, Record<string, any>>
   ): Promise<void> {
-
     try {
-      
-      const {password,email}=req.body
+      const { password, email } = req.body;
 
-      console.log("password",req.body)
-      
-      await this.userAuthUseCase.verifyingUpdatePassword(email,password)
+      console.log("password", req.body);
 
-     res.status(200).json({message:"password changed"})
+      await this.userAuthUseCase.verifyingUpdatePassword(email, password);
 
+      res.status(200).json({ message: "password changed" });
     } catch (error) {
-         console.log(error)      
+      console.log(error);
     }
-
-
   }
 }
 

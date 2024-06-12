@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import morgan from "morgan";
 import dotenv from "dotenv"
-
+import cors from "cors"
 import userRouter from "../Routes/userAuth"
 import doctorAuthRouter from "../Routes/doctorAuth"
 import cookieParser from "cookie-parser";
@@ -20,6 +20,12 @@ dotenv.config()
 
 //  set up cookieParser
 app.use(cookieParser());
+
+
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials:true
+}))
 
 
 //  same usage of bodyparser

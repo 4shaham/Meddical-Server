@@ -72,7 +72,7 @@ class UserAuthUseCase implements IuserUseCase {
                             // comparing passwrod
          const status=await this.hashingServices.compare(data.password,values.password)   
          if(!status){
-            // return 401 eroor
+            // return 403 eroor
             return {status:false,message:"the password is not match"}
          }
          
@@ -99,7 +99,7 @@ class UserAuthUseCase implements IuserUseCase {
        return {token,status:true,message:"the login sucesss"}   
    
       }else{
-        // return 401 eroor
+        // return 403 eroor
         return {status:false,message:"this email is not valid"}
       }
     } catch (error) {
@@ -150,6 +150,29 @@ class UserAuthUseCase implements IuserUseCase {
    }
 
 
+    async resendOtp(email: string): Promise<string | null> {
+   
+      try {
+          
+          let values=await this.userAuthRepository.checkEmailExists(email)
+          const otp:string=await this.otpServices.generateOtp();
+          await this.userAuthRepository.saveOtp(email, otp);
+          if(values){
+            await this.otpServices.sendOtpEmail(email, otp,values.userName); 
+          }
+          
+          return "resendOtp sucussess"
+
+      } catch (error) {
+
+        throw error
+        
+      }
+      
+
+   }
+
+
    async validateForgotPassword(email: string): Promise<string> {
        
     try {
@@ -175,8 +198,6 @@ class UserAuthUseCase implements IuserUseCase {
    try {
 
     const hashedPassword:string=await this.hashingServices.hashing(password)
-       
-    console.log("had",hashedPassword)
     await this.userAuthRepository.changePassword(email,hashedPassword)
     
    } catch (error) {

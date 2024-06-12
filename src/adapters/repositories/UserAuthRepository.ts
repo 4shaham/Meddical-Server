@@ -26,7 +26,7 @@ class UserAuthRepository implements IuserRepositories {
   }
 
 
-  async checkPhoneNumberExists(phoneNumber: Number): Promise<IUser | null> {
+  async checkPhoneNumberExists(phoneNumber:string): Promise<IUser | null> {
      try {
       return  await this.users.findOne({phoneNumber:phoneNumber})
      } catch (error) {
@@ -39,6 +39,7 @@ class UserAuthRepository implements IuserRepositories {
   async createUser(data: registerBody): Promise<IUser> {
     try {
       const user = new this.users(data);
+      console.log("sucesss saved")
       return await user.save();
     } catch (error) {
       throw new Error(`Failed to check if email exists: ${error}`);

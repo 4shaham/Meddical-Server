@@ -9,6 +9,10 @@ export  interface resObj{
 }
 
 
+
+
+
+
 export default interface IuserUseCase{
 
     registerUser(data:registerBody):Promise<void>
@@ -16,4 +20,5 @@ export default interface IuserUseCase{
     verifyOtp(data:otpVerifyData):Promise<resObj|null>
     validateForgotPassword(email:string):Promise<string>
     verifyingUpdatePassword(email:string,password:string):Promise<void>
+    resendOtp(email:string):Promise<string|null>
 }   

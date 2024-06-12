@@ -39,5 +39,8 @@ router.post("/otpVerification",userAuthController.otpVerification.bind(userAuthC
 router.post("/login",userAuthController.login.bind(userAuthController))
 router.post("/forgotPassword",userAuthController.forgetPassword.bind(userAuthController))
 router.patch("/updatePassword",userAuthController.updatePassword.bind(userAuthController))
+router.post("/resendOtp",userAuthController.resendOtp.bind(userAuthController))
+
 
 export default router;
+ 
