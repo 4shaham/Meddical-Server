@@ -100,7 +100,10 @@ class UserAuthController implements IUserAuthController {
         res.status(403).json({ otpVerified: "false" });
       } else if (response?.status) {
         const { token } = response;
-        res.cookie("token", token, { maxAge: 3600000 });
+        res.cookie("token", token, {
+          httpOnly: true,
+          maxAge: 3600000,
+        });
         res.status(200).json(response);
       } else {
         res.status(403).json(response);
@@ -110,29 +113,23 @@ class UserAuthController implements IUserAuthController {
     }
   }
 
-  // resend Otp 
+  // resend Otp
 
-   async resendOtp(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
-    
-      try {
-         
-        const {email}=req.body
-        let response=await this.userAuthUseCase.resendOtp(email)
-        
-        if(response=="resendOtp sucussess"){
-          res.json({status:true})
-        }
+  async resendOtp(
+    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+    res: Response<any, Record<string, any>>
+  ): Promise<void> {
+    try {
+      const { email } = req.body;
+      let response = await this.userAuthUseCase.resendOtp(email);
 
-      } catch (error) {
-        
-        res.json({error})
-
+      if (response == "resendOtp sucussess") {
+        res.json({ status: true });
       }
-  
+    } catch (error) {
+      res.json({ error });
+    }
   }
-
-
-
 
   // forget Password
 
@@ -163,6 +160,36 @@ class UserAuthController implements IUserAuthController {
       await this.userAuthUseCase.verifyingUpdatePassword(email, password);
 
       res.status(200).json({ message: "password changed" });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // logoout
+
+  async logOut(
+    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+    res: Response<any, Record<string, any>>
+  ): Promise<void> {
+    try {
+      res.cookie("token", "", { httpOnly: true, expires: new Date() });
+      res.status(200).json({ status: true });
+    } catch (error) {
+      res.json(error);
+    }
+  }
+
+  async getToken(
+    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+    res: Response<any, Record<string, any>>
+  ): Promise<void> {
+    try {
+      const token = req.cookies.token;
+      if (token != "") {
+        res.json({ token });
+      } else {
+        res.json({ token: null });
+      }
     } catch (error) {
       console.log(error);
     }

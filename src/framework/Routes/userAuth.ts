@@ -40,6 +40,8 @@ router.post("/login",userAuthController.login.bind(userAuthController))
 router.post("/forgotPassword",userAuthController.forgetPassword.bind(userAuthController))
 router.patch("/updatePassword",userAuthController.updatePassword.bind(userAuthController))
 router.post("/resendOtp",userAuthController.resendOtp.bind(userAuthController))
+router.post("/logOut",userAuthController.logOut.bind(userAuthController))
+router.get("/getToken",userAuthController.getToken.bind(userAuthController))
 
 
 export default router;

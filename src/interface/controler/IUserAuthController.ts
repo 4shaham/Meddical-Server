@@ -7,6 +7,8 @@ export default interface IUserAuthController {
   forgetPassword(req: Request, res: Response): Promise<void>;
   updatePassword(req: Request, res: Response): Promise<void>;
   resendOtp(req:Request,res:Response):Promise<void>;
+  logOut(req:Request,res:Response):Promise<void>;
+  getToken(req:Request,res:Response):Promise<void>;
 }
 
 export interface registerBody {
