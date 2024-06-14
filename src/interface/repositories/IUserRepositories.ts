@@ -1,5 +1,5 @@
 import IUserOtp from "../collection/IotpUser"
-import IUser from "../collection/Iuser"
+import IUser from "../../entity/userEntity"
 import { registerBody } from "../controler/IUserAuthController"
 
 export default interface IuserRepositories {

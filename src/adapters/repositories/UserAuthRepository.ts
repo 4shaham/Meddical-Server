@@ -1,4 +1,5 @@
-import IUser from "../../interface/collection/Iuser";
+// import IUser from "../../interface/collection/Iuser";
+import IUser from "../../entity/userEntity";
 import { Model } from "mongoose";
 import IuserRepositories from "../../interface/repositories/IUserRepositories";
 import { registerBody } from "../../interface/controler/IUserAuthController";
