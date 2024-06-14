@@ -41,6 +41,10 @@ const UserSchema:Schema=new Schema({
     otpVerified:{
         type:Boolean,
         default:false
+    },
+    isBlock:{
+        type:Boolean,
+        default:false
     }
 },
 {

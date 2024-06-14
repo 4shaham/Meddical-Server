@@ -12,5 +12,6 @@ export default interface IUser extends Document {
     status: boolean;
     image?:string;
     otpVerified:boolean;
+    isBlock:boolean
        
 }
