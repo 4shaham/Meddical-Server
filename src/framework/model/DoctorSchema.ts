@@ -1,32 +1,68 @@
-
-
-import mongoose, { Schema, Document, ObjectId } from 'mongoose';
-import IDoctor from '../../interface/collection/IDoctor';
-
+import mongoose, { Schema, Document, ObjectId } from "mongoose";
+import IDoctor from "../../interface/collection/IDoctor";
 
 const DoctorSchema: Schema = new Schema({
-  name: { type: String },
-  specialist: { type: String },
-  email: { type: String },
-  licenseNumber: { type: String },
-  password: { type: String },
-  phoneNumber: { type: String },
-  licenseImage: { type: String },
-  yearsOfExperience: { type: Date },
-  languages: [{ type: String }],
-  approved: { type: Boolean },
-  createdAt: { type: Date },
-  updatedAt: { type: Date },
-  achievements: [{
-    date: { type: Date },
-    description: { type: String },
-    title: { type: String },
+  name: {
+    type: String,
+    required: true,
+  },
+  specialist: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  licenseNumber: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required:true,
+  },
+  phoneNumber: {
+    type: String,
+    required: true,
+  },
+  licenseImage: {
+    type: String,
+    required: true,
+  },
+  yearsOfExperience: {
+    type: Date,
+    required:true
+  },
+  languages: [{
+     type: String ,
+     required:true
   }],
-  experiences: [{}],
-  appliedStatus: { type: String },
-  fees: { type: Number },
+  approved:{ 
+    type: Boolean,
+    default:false
+  },
+  achievements: [
+    {
+      date: { type: Date },
+      description: { type: String },
+      title: { type: String },
+    },
+  ],
+  experiences:[{type:String}],
+  appliedStatus:{
+    type: String,
+    default:"applied" 
+   },
+  fees:{
+    type: Number,
+    required:true 
+  },
+  image:{
+    type:String
+  }
 });
 
-const Doctor = mongoose.model<IDoctor>('Doctor', DoctorSchema);
+const Doctor = mongoose.model<IDoctor>("Doctor", DoctorSchema);
 
 export default Doctor;
