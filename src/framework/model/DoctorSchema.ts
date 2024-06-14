@@ -18,11 +18,11 @@ const DoctorSchema: Schema = new Schema({
     type: String,
     required: true,
   },
-  password: {
+  password:{
     type: String,
     required:true,
   },
-  phoneNumber: {
+  phoneNumber:{
     type: String,
     required: true,
   },
@@ -50,10 +50,11 @@ const DoctorSchema: Schema = new Schema({
     },
   ],
   experiences:[{type:String}],
-  appliedStatus:{
+  appliedStatus: {
     type: String,
-    default:"applied" 
-   },
+    enum: ["approved", "applied", "rejected"], 
+    default: "applied",
+  },
   fees:{
     type: Number,
     required:true 

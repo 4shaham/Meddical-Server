@@ -1,6 +1,31 @@
 import { Document } from "mongoose";
 
+interface Achievements {
+  data: Date;
+  description: string;
+  title: string;
+}
 
-export default interface IDoctor{
-    
+enum AppliedStatus {
+  Approved = "approved",
+  Applied = "applied",
+  Rejected = "rejected",
+}
+
+export default interface IDoctor {
+  name: string;
+  specialist: string;
+  email: string;
+  licenseNumber: string;
+  password: string;
+  phoneNumber: string;
+  licenseImage: string;
+  yearsOfExperience: Date;
+  languages: string[];
+  approved: boolean;
+  achievements: Achievements[];
+  experiences: string[];
+  appliedStatus: AppliedStatus;
+  fees: number;
+  image: string;
 }

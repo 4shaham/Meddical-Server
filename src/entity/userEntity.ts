@@ -13,5 +13,4 @@ export default interface IUser extends Document {
     image?:string;
     otpVerified:boolean;
     isBlock:boolean
-       
 }
