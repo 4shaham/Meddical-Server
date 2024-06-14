@@ -26,14 +26,27 @@ export default class AdminController implements IAdminController {
         adminEmail,
         AdminPassword
       );
-      if(response.status){
-        res.cookie("adminToken",response.token, { maxAge:3600000});
-        res.status(200).json(response)
-      }else{
-        res.status(401).json(response)
+      if (response.status) {
+        res.cookie("adminToken", response.token, { maxAge: 3600000 });
+        res.status(200).json(response);
+      } else {
+        res.status(401).json(response);
       }
     } catch (error) {
-        console.log(error)
+      console.log(error);
     }
   }
+
+  async adminLogOut(
+    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+    res: Response<any, Record<string, any>>
+  ): Promise<void> {
+
+   try {
+    res.cookie("adminToken", "", { httpOnly: true, expires: new Date() });
+    res.status(200).json({ status: true });
+   } catch (error) {
+        console.log(error)    
+   }
+  }     
 }

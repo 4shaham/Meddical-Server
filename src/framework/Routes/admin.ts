@@ -18,6 +18,7 @@ const adminUseCase=new AdminUseCase(adminRepository,jwtService)
 const adminController=new AdminController(adminUseCase)
 
 router.post("/login",adminController.adminLogin.bind(adminController))
+router.post("/logout",adminController.adminLogOut.bind(adminController))
 
 
 
