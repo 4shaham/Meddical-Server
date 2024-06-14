@@ -174,7 +174,7 @@ class UserAuthController implements IUserAuthController {
     try {
       res.cookie("token", "", { httpOnly: true, expires: new Date() });
       res.status(200).json({ status: true });
-    } catch (error) {
+    } catch (error) { 
       res.json(error);
     }
   }
