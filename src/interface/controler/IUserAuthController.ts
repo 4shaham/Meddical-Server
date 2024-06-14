@@ -31,8 +31,9 @@ export interface loginBody {
 }
 
 export interface tokenData {
+  type?:string,
   userId: string;
-  userName: string;
+  userName?: string;
 }
 
 export interface otpVerifyData {

@@ -12,4 +12,6 @@ const doctorAuthUseCase=new DoctorAuthUseCase(doctorAuthRepository)
 const doctorAuthController=new DoctorAuthController(doctorAuthUseCase)
 
 
+
+
 export default router;
