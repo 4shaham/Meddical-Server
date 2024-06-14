@@ -1,9 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-
-
-
 import JwtService from "../../utils/jwtService";
-import { error } from "console";
+
 
 
 const jwtservice=new JwtService()
