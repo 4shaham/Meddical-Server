@@ -5,9 +5,13 @@ import DoctorAuthUseCase from "../../useCase/DoctorAuthUseCase";
 import DoctorAuthRepository from "../../adapters/repositories/DoctorAuthRepository";
 
 
+// collection 
+
+import Doctor from "../model/DoctorSchema";
+
 const router: Router = express.Router();
 
-const doctorAuthRepository=new DoctorAuthRepository()
+const doctorAuthRepository=new DoctorAuthRepository(Doctor)
 const doctorAuthUseCase=new DoctorAuthUseCase(doctorAuthRepository)
 const doctorAuthController=new DoctorAuthController(doctorAuthUseCase)
 

@@ -13,10 +13,12 @@ const DoctorSchema: Schema = new Schema({
   email: {
     type: String,
     required: true,
+    unique:true
   },
   licenseNumber: {
     type: String,
     required: true,
+    unique:true
   },
   password:{
     type: String,
@@ -57,7 +59,7 @@ const DoctorSchema: Schema = new Schema({
   },
   fees:{
     type: Number,
-    required:true 
+    required:true,
   },
   image:{
     type:String

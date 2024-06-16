@@ -43,7 +43,7 @@ export default class AdminController implements IAdminController {
   ): Promise<void> {
 
    try {
-    res.cookie("adminToken", "", { httpOnly: true, expires: new Date() });
+    res.cookie("adminToken","", { httpOnly: true, expires: new Date() });
     res.status(200).json({ status: true });
    } catch (error) {
         console.log(error)    
