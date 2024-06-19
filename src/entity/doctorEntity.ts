@@ -13,6 +13,7 @@ enum AppliedStatus {
 }
 
 export default interface IDoctor {
+  _id: string;
   name: string;
   specialist: string;
   email: string;

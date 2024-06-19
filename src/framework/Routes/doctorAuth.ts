@@ -6,13 +6,19 @@ import DoctorAuthRepository from "../../adapters/repositories/DoctorAuthReposito
 
 
 // collection 
-
 import Doctor from "../model/DoctorSchema";
+
+
+// services 
+
+import JwtService from "../utils/jwtService";
+
+const jwtService=new JwtService()
 
 const router: Router = express.Router();
 
 const doctorAuthRepository=new DoctorAuthRepository(Doctor)
-const doctorAuthUseCase=new DoctorAuthUseCase(doctorAuthRepository)
+const doctorAuthUseCase=new DoctorAuthUseCase(doctorAuthRepository,jwtService)
 const doctorAuthController=new DoctorAuthController(doctorAuthUseCase)
 
 

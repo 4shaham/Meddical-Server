@@ -3,7 +3,8 @@
 export interface LoginResponse{
     status:boolean,
     Message:string,
-    Err?:string
+    Err?:string,
+    token?:string
 }
 
 

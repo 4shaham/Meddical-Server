@@ -19,7 +19,7 @@ export default class AdminUseCase implements IAdminUseCase {
 
             
         
-            let token=this.jwtService.createToken({type:"amidn",userId:email})
+            let token=this.jwtService.createToken({id:email,role:"admin"})
             
                
             return {

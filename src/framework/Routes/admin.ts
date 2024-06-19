@@ -22,15 +22,10 @@ import AutherisationMidlleware from "../Middleware/Admin/Autherisation";
 const adminRepository=new AdminRepository()
 const adminUseCase=new AdminUseCase(adminRepository,jwtService)
 const adminController=new AdminController(adminUseCase)
-
+    
 
 router.post("/login",adminController.adminLogin.bind(adminController))
 router.post("/logout",AutherisationMidlleware,adminController.adminLogOut.bind(adminController))
-
-
-
-
-
 
 
 export default router

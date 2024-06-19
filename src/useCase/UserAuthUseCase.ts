@@ -89,8 +89,9 @@ class UserAuthUseCase implements IuserUseCase {
 
         // token data paylod
          let payload={
-           userId:values._id,
-           userName:values.userName
+           id:values._id,
+           userName:values.userName,
+           role:"user"
          }
                     // it generate token
          let token=await this.jwtServices.createToken(payload)
@@ -124,8 +125,9 @@ class UserAuthUseCase implements IuserUseCase {
         if(values){
 
           let payload={
-            userId:values?._id,
-            userName:values?.userName
+            id:values?._id,
+            userName:values?.userName,
+            role:"user"
           }
                      // it generate token
           let token=await this.jwtServices.createToken(payload)
