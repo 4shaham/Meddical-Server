@@ -11,5 +11,6 @@ export default interface IuserRepositories {
     verifyOTP(email:string):Promise<IUserOtp|null>
     updateOtpVerified(email:string):Promise<IUser|null>
     changePassword(email:string,password:string):Promise<void>
+    saveGooogleAuth(email:string,userName:string,image:string):Promise<void>
 
 }

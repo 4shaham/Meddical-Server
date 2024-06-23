@@ -26,6 +26,7 @@ const adminController=new AdminController(adminUseCase)
 
 router.post("/login",adminController.adminLogin.bind(adminController))
 router.post("/logout",AutherisationMidlleware,adminController.adminLogOut.bind(adminController))
+router.get("/getToken",adminController.getToken.bind(adminController))
 
 
 export default router

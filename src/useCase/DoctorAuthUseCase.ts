@@ -23,8 +23,9 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
 
 
          let payload={
-           userId:doctor._id,
-           userName:doctor.name
+           id:doctor._id,
+           userName:doctor.name,
+           role:"doctor"
          }
                     // it generate token
          let token=await this.jwtServices.createToken(payload)

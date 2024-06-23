@@ -37,12 +37,12 @@ const userAuthController = new UserAuthController(userAuthUseCase);
 router.post("/register", userAuthController.register.bind(userAuthController));
 router.post("/otpVerification",userAuthController.otpVerification.bind(userAuthController))
 router.post("/login",userAuthController.login.bind(userAuthController))
-router.post("/forgotPassword",userAuthController.forgetPassword.bind(userAuthController))
+router.post("/forgotPassword",userAuthController.forgotPassword.bind(userAuthController))
 router.patch("/updatePassword",userAuthController.updatePassword.bind(userAuthController))
 router.post("/resendOtp",userAuthController.resendOtp.bind(userAuthController))
 router.post("/logOut",userAuthController.logOut.bind(userAuthController))
 router.get("/getToken",userAuthController.getToken.bind(userAuthController))
-
+router.post("/googleAuth",userAuthController.googleAuth.bind(userAuthController))
 
 export default router;
  

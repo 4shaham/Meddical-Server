@@ -4,7 +4,6 @@ import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import IuserUseCase from "../../interface/useCase/IUseruseCase";
 
-
 class UserAuthController implements IUserAuthController {
   private userAuthUseCase: IuserUseCase;
 
@@ -38,7 +37,7 @@ class UserAuthController implements IUserAuthController {
       };
 
       await this.userAuthUseCase.registerUser(data);
-      console.log("hdfdhfjdh sucesssf ully saved ");
+      res.cookie("otpEmail", email, { maxAge: 3600000 });
       res.json({
         status: true,
         message: "user Created successfully and Otp send successfully",
@@ -56,22 +55,39 @@ class UserAuthController implements IUserAuthController {
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
-      const { otp, email } = req.body;
+      const { otp, typeOfOtp } = req.body;
+      const email = req.cookies.otpEmail;
+
+      //  confirmationOfForgotOtp varable
+
+      if (email == "") throw Error();
 
       const data = {
         email,
         otp,
+        typeOfOtp,
       };
-
+      console.log(typeOfOtp, "type of thath one");
       const status = await this.userAuthUseCase.verifyOtp(data);
 
       if (!status?.status) {
         res.status(401).json(status);
+        return;
+      }
+
+      if (typeOfOtp == "forgotPassword") {
+        res.cookie("otpEmail", "");
+        res.cookie("updatePasswordEmail", email, { maxAge: 3600000 });
+        res.status(200).json({
+          message: "OTP verification successful of forgotPassword",
+        });
+
+        return;
       }
 
       res.cookie("token", status?.token, { maxAge: 3600000 });
       res.status(200).json(status);
-
+      res.cookie("otpEmail", "");
       res.status(200).json({
         message: "OTP verification successful",
         token: status?.token,
@@ -98,6 +114,7 @@ class UserAuthController implements IUserAuthController {
 
       if (!response?.status && response?.message == "otp is not verified") {
         res.status(403).json({ otpVerified: "false" });
+        res.cookie("otpEmail", email, { maxAge: 3600000 });
       } else if (response?.status) {
         const { token } = response;
         res.cookie("token", token, {
@@ -120,10 +137,11 @@ class UserAuthController implements IUserAuthController {
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
-      const { email } = req.body;
+      const email = req.cookies.otpEmail;
       let response = await this.userAuthUseCase.resendOtp(email);
 
       if (response == "resendOtp sucussess") {
+        res.cookie("otpEmail", email, { maxAge: 3600000 });
         res.json({ status: true });
       }
     } catch (error) {
@@ -133,18 +151,25 @@ class UserAuthController implements IUserAuthController {
 
   // forget Password
 
-  async forgetPassword(
+  async forgotPassword(
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
       const { email } = req.body;
-
       let response = await this.userAuthUseCase.validateForgotPassword(email);
-
-      res.json(response);
+      console.log(response);
+      if (response == "this email user Is not here") {
+        res
+          .status(401)
+          .json({ status: false, message: "This Email user not here" });
+        return;
+      }
+      res.cookie("otpEmail", email, { maxAge: 3600000 });
+      res.status(200).json({ status: true, message: "otp Send" });
     } catch (error) {
       console.log(error);
+      throw Error();
     }
   }
 
@@ -153,15 +178,17 @@ class UserAuthController implements IUserAuthController {
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
-      const { password, email } = req.body;
+      
+      const { password } = req.body;
+      const email = req.cookies.updatePasswordEmail;
 
       console.log("password", req.body);
 
       await this.userAuthUseCase.verifyingUpdatePassword(email, password);
-
-      res.status(200).json({ message: "password changed" });
+      res.status(200).json({status:true,message:"password changed"});
     } catch (error) {
       console.log(error);
+      res.json(error)
     }
   }
 
@@ -174,7 +201,7 @@ class UserAuthController implements IUserAuthController {
     try {
       res.cookie("token", "", { httpOnly: true, expires: new Date() });
       res.status(200).json({ status: true });
-    } catch (error) { 
+    } catch (error) {
       res.json(error);
     }
   }
@@ -185,10 +212,43 @@ class UserAuthController implements IUserAuthController {
   ): Promise<void> {
     try {
       const token = req.cookies.token;
-      if (token != "") {
-        res.json({ token });
-      } else {
-        res.json({ token: null });
+      console.log(token, "shdfhdjfhd");
+      const response = await this.userAuthUseCase.verifyToken(token);
+      console.log(response, "token verified tesppoon");
+      res.status(200).json(response);
+    } catch (error) {
+      res.status(401).json(error);
+      console.log(error);
+    }
+  }
+
+  // gogleAuth
+
+  async googleAuth(
+    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+    res: Response<any, Record<string, any>>
+  ): Promise<void> {
+    try {
+      const { email, userName, image } = req.body;
+
+      let data = {
+        email,
+        userName,
+        image,
+      };
+
+      let response = await this.userAuthUseCase.googleAuthenticateUser(data);
+
+      console.log(email, userName, image, "hiiii");
+
+      if (response?.message == "googleAuthenticated Successfully") {
+        const { token } = response;
+        res.cookie("token", token, {
+          httpOnly: true,
+          maxAge: 3600000,
+        });
+
+        res.status(200).json(response);
       }
     } catch (error) {
       console.log(error);

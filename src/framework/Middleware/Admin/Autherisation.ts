@@ -9,10 +9,7 @@ const jwtservice=new JwtService()
 
     try {
         const token=req.cookies.adminToken
-        let verification= await jwtservice.verify(token,process.env.JWT_SECRET_key as string)  // ineed imple token veryifht
-         if(verification.error && !verification.decoded){
-            res.status(401).json({message:"you are not login"})
-         }
+        let verification= await jwtservice.verify(token)  // ineed imple token veryifht
          next()
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error', error: error });

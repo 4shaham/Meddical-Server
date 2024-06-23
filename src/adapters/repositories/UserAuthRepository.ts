@@ -50,12 +50,15 @@ class UserAuthRepository implements IuserRepositories {
   async saveOtp(email: string, otp: string): Promise<void> {
 
     try {
+      
 
+      await this.otp.deleteMany({email:email})
 
       const data=new this.otp({
         email:email,
         otp:otp,
       })
+      
       await data.save()
       
     } catch (error) {
@@ -101,6 +104,24 @@ class UserAuthRepository implements IuserRepositories {
          
   
 
+  }
+
+ async saveGooogleAuth(email: string, userName: string, image: string): Promise<void> {
+     try {
+      
+      const user = new this.users({
+        email:email,
+        otpVerified:true,
+        userName:userName,
+        image:image
+      })
+
+      await user.save()
+
+
+     } catch (error) {
+      
+     }
   }
 
    

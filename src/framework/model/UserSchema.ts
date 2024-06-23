@@ -15,8 +15,7 @@ const UserSchema:Schema=new Schema({
         unique:true
     },
     password:{
-        type:String,
-        required:true
+        type:String
     },
     phoneNumber:{
         type:String,
@@ -24,11 +23,9 @@ const UserSchema:Schema=new Schema({
     },
     age:{
         type:Number,
-        required:true
     },
     gender:{
         type:String,
-        required:true
     },  
     image:{
         type:String,

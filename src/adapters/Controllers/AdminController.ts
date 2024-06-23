@@ -5,6 +5,7 @@ import IAdminController from "../../interface/controler/IAdminController";
 import IAdminUseCase from "../../interface/useCase/IAdminUseCase";
 
 export default class AdminController implements IAdminController {
+  
   private adminUseCase: IAdminUseCase;
   constructor(adminUseCase: IAdminUseCase) {
     this.adminUseCase = adminUseCase;
@@ -26,7 +27,7 @@ export default class AdminController implements IAdminController {
         adminEmail,
         AdminPassword
       );
-      if (response.status) {
+      if (response.status) {  
         res.cookie("adminToken", response.token, { maxAge: 3600000 });
         res.status(200).json(response);
       } else {
@@ -41,12 +42,36 @@ export default class AdminController implements IAdminController {
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
     res: Response<any, Record<string, any>>
   ): Promise<void> {
+    try {
+      res.cookie("adminToken","", { httpOnly: true, expires: new Date() });
+      res.status(200).json({ status: true });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-   try {
-    res.cookie("adminToken","", { httpOnly: true, expires: new Date() });
-    res.status(200).json({ status: true });
-   } catch (error) {
-        console.log(error)    
-   }
-  }     
+  async getToken(
+    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+    res: Response<any, Record<string, any>>
+  ): Promise<void> {
+    try {
+      const token = req.cookies.adminToken;
+      let verificationResponse = await this.adminUseCase.verifytoken(
+        token,
+        process.env.JWT_SECRET_key as string
+      );
+    
+      if(verificationResponse.status){
+         res.status(200).json(verificationResponse)
+      }else{
+        res.status(401).json(verificationResponse)
+      }
+
+    } catch (error) {
+      console.log(error);
+      res.status(401).json(error)
+    }
+  }
+
+
 }

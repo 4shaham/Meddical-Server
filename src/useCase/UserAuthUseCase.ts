@@ -1,7 +1,7 @@
 
 
-import { loginBody, otpVerifyData, registerBody } from "../interface/controler/IUserAuthController";
-import IuserUseCase, { resObj } from "../interface/useCase/IUseruseCase";
+import { googleAuthBody, loginBody, otpVerifyData, registerBody } from "../interface/controler/IUserAuthController";
+import IuserUseCase, { VerifyTokenResponse, resObj } from "../interface/useCase/IUseruseCase";
 import IhasingService from "../interface/utils/IHasingService";
 import IuserRepositories from "../interface/repositories/IUserRepositories";
 import IOtpServices from "../interface/utils/IOtpServices";
@@ -113,12 +113,18 @@ class UserAuthUseCase implements IuserUseCase {
   async verifyOtp(data: otpVerifyData): Promise<resObj|null> {
 
       try {
-       
+       console.log(data.email,data.otp)
        let otpDatas=await this.userAuthRepository.verifyOTP(data.email)
+       console.log(otpDatas)
+        console.log(data.typeOfOtp.trim())
+        if(data.typeOfOtp.trim()=="userEmailVerification"){
+           console.log('hiii')
+        }
        
-       
-       if(otpDatas && otpDatas.otp==data.otp){
+       if(otpDatas && otpDatas.otp == data.otp && data.typeOfOtp.trim()=="userEmailVerification"){  
       
+
+        console.log("hiiiiiiiii shahama it is sucess ")
 
         let values=await this.userAuthRepository.updateOtpVerified(data.email)
         
@@ -141,6 +147,11 @@ class UserAuthUseCase implements IuserUseCase {
          
        }
 
+
+       if(otpDatas && otpDatas.otp==data.otp && data.typeOfOtp.trim() == "forgotPassword"){
+        return {status:true,message:"the Otp verification is completed"}
+       }
+
        return {status:false,message:"the Otp verification is failed"}
 
       
@@ -157,13 +168,15 @@ class UserAuthUseCase implements IuserUseCase {
       try {
           
           let values=await this.userAuthRepository.checkEmailExists(email)
-          const otp:string=await this.otpServices.generateOtp();
-          await this.userAuthRepository.saveOtp(email, otp);
-          if(values){
-            await this.otpServices.sendOtpEmail(email, otp,values.userName); 
-          }
           
-          return "resendOtp sucussess"
+          if(values){
+            const otp:string=await this.otpServices.generateOtp();
+            await this.userAuthRepository.saveOtp(email, otp);
+            await this.otpServices.sendOtpEmail(email,otp,values.userName);
+            return "resendOtp sucussess" 
+          } 
+
+          return "resednOtp Not valid email"
 
       } catch (error) {
 
@@ -184,6 +197,7 @@ class UserAuthUseCase implements IuserUseCase {
       if(!userData){
           return "this email user Is not here"
       }
+
       const otp:string=await this.otpServices.generateOtp();
       await this.userAuthRepository.saveOtp(email,otp);
       await this.otpServices.sendOtpEmail(email,otp,userData.userName);
@@ -199,6 +213,12 @@ class UserAuthUseCase implements IuserUseCase {
        
    try {
 
+    const user=this.userAuthRepository.checkEmailExists(email)
+
+    if(!user){
+       throw Error()
+    }
+
     const hashedPassword:string=await this.hashingServices.hashing(password)
     await this.userAuthRepository.changePassword(email,hashedPassword)
     
@@ -207,7 +227,61 @@ class UserAuthUseCase implements IuserUseCase {
    }
 
   
+   
+   }
+   
+   async verifyToken(token: string):Promise<VerifyTokenResponse> {
+         
+    try {
+        
+      let response=this.jwtServices.verify(token)
+      
+      if(response?.role=="user"){
+         
+        return {
 
+          status:true,
+          decoded:response
+
+        }
+
+      }
+
+      return {
+        status:false,
+      }
+      
+    } catch (error) {
+        throw Error()
+    }
+   }
+
+
+ async  googleAuthenticateUser(data: googleAuthBody): Promise<resObj | null> {
+     try {
+
+        let user=await this.userAuthRepository.checkEmailExists(data.email)
+      
+        if(!user){
+          await this.userAuthRepository.saveGooogleAuth(data.email,data.userName,data.image)
+        }
+
+        let Tuser=await this.userAuthRepository.checkEmailExists(data.email)
+
+        let payload={
+          id:Tuser?._id as string,
+          userName:Tuser?.userName as string,
+          role:"user"
+        }
+
+        // it generate token
+        let token=await this.jwtServices.createToken(payload)
+
+        return {status:true,message:"googleAuthenticated Successfully",token}
+   
+     } catch (error) {
+       throw Error()
+     }
    }
 
 
