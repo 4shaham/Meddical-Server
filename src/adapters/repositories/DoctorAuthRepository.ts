@@ -7,14 +7,18 @@ import {
   DatasOfDoctorRegistration,
 } from "../../interface/useCase/IDoctorUseCase";
 import IKyc from "../../entity/kycEntity";
+import IUserOtp from "../../interface/collection/IotpUser";
+
 
 export default class DoctorAuthRepository implements IDoctorAuthRepositories {
   private doctors: Model<IDoctor>;
   private kyc: Model<IKyc>;
+  private otp:Model<IUserOtp>;
 
-  constructor(doctors: Model<IDoctor>, kyc: Model<IKyc>) {
+  constructor(doctors: Model<IDoctor>, kyc: Model<IKyc>,otp:Model<IUserOtp>) {
     this.doctors = doctors;
     this.kyc = kyc;
+    this.otp=otp
   }
 
   async isDoctorExists(email?: string): Promise<IDoctor | null> {
@@ -80,5 +84,36 @@ export default class DoctorAuthRepository implements IDoctorAuthRepositories {
       console.log(error)
       throw error;
     }
+  }
+
+  async saveOtp(email: string, otp: string): Promise<void> {
+
+    try {
+      
+
+      await this.otp.deleteMany({email:email})
+
+      const data=new this.otp({
+        email:email,
+        otp:otp,
+      })
+      
+      await data.save()
+      
+    } catch (error) {
+       console.log(error,"'dfhdjhfjdfhjdhfj")
+    }
+    
+  }
+
+   async findOtpData(email: string): Promise<IUserOtp|null> {
+        try {
+          
+          return await this.otp.findOne({email:email})
+
+        } catch (error) {
+           console.log(error)
+           throw error
+        }  
   }
 }

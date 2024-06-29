@@ -55,7 +55,7 @@ class UserAuthController implements IUserAuthController {
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
-      const { otp, typeOfOtp } = req.body;
+      const { otp,typeOfOtp} = req.body;
       const email = req.cookies.otpEmail;
 
       //  confirmationOfForgotOtp varable
@@ -67,7 +67,7 @@ class UserAuthController implements IUserAuthController {
         otp,
         typeOfOtp,
       };
-      console.log(typeOfOtp, "type of thath one");
+      console.log(typeOfOtp,"type of thath one");
       const status = await this.userAuthUseCase.verifyOtp(data);
 
       if (!status?.status) {

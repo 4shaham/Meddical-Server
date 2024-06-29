@@ -9,20 +9,27 @@ import DoctorAuthRepository from "../../adapters/repositories/DoctorAuthReposito
 
 import Doctor from "../model/DoctorSchema";
 import Kyc from "../model/KycSchema";
+import Otp from "../model/UserOtpSchema";
 
 
 // services 
 import JwtService from "../utils/jwtService";
 import CloudinaryService from "../utils/cloudinaryService";
+import HashingServices from "../utils/hashingService";
+import OtpService from "../utils/otpService";
 
 const jwtService=new JwtService()
 const clodinaryService=new CloudinaryService()
+const hashingService=new HashingServices()
+const otpService=new OtpService()
+
 
 const router: Router = express.Router();
 
-const doctorAuthRepository=new DoctorAuthRepository(Doctor,Kyc)
-const doctorAuthUseCase=new DoctorAuthUseCase(doctorAuthRepository,jwtService,clodinaryService)
-const doctorAuthController=new DoctorAuthController(doctorAuthUseCase)
+
+const doctorAuthRepository=new DoctorAuthRepository(Doctor,Kyc,Otp)
+const doctorAuthUseCase=new DoctorAuthUseCase(doctorAuthRepository,jwtService,clodinaryService,hashingService,otpService)
+const doctorAuthController=new DoctorAuthController(doctorAuthUseCase,)
 
 
 

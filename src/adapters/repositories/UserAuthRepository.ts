@@ -63,6 +63,7 @@ class UserAuthRepository implements IuserRepositories {
       
     } catch (error) {
        console.log(error,"'dfhdjhfjdfhjdhfj")
+       throw error
     }
     
   }
