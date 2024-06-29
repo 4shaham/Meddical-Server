@@ -2,7 +2,8 @@ import connectDB from "./framework/config/db"
 import app from "./framework/config/app";
 
   
-const PORT: string= process.env.PORT!  
+const PORT: string= process.env.PORT! 
+
 
 /// mongodb connect 
 connectDB()

@@ -1,4 +1,10 @@
 import { token } from "morgan"
+import ISpecality from "../../entity/specalityEntity"
+
+export interface SpecalityResponse{
+    status:boolean,
+    message:string
+}
 
 
 export interface Response{
@@ -18,4 +24,6 @@ export default interface IAdminUseCase{
 
     verificationLogin(email:string,password:string,AdminEmail:string,AdminPassword:string):Promise<Response>
     verifytoken(token:string,secretKey:string):Promise<VerifyResponse>
+    specalityManagment(image:string,specalityName:string):Promise<SpecalityResponse>
+    getSpecality():Promise<ISpecality[]>
 }

@@ -5,7 +5,9 @@ export default interface IDoctorAuthController{
 
    register(req:Request,res:Response):Promise<void>
    login(req:Request,res:Response):Promise<void>
-
+   storeKYCDataStep1(req:Request,res:Response):Promise<void>
+   storeKYCDataStep2(req:Request,res:Response):Promise<void>
+  
 }
 
 // export interface doctorRegisterBody{

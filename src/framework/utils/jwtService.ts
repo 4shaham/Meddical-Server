@@ -23,7 +23,7 @@ export default class JwtService implements IJwtService {
   verify(token: string):DecodedJwt|null{
   
      try {
-
+      console.log("hiiiiiiiii")   
       const decoded=Jwt.verify(token,process.env.JWT_SECRET_key!)  as DecodedJwt
 
       return decoded

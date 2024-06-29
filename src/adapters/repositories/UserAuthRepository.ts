@@ -116,11 +116,12 @@ class UserAuthRepository implements IuserRepositories {
         image:image
       })
 
-      await user.save()
-
+     let a= await user.save()
+      console.log("hiii it is sved",a)  
 
      } catch (error) {
-      
+        console.log(error)
+        throw Error()
      }
   }
 

@@ -2,6 +2,9 @@ import express, { Request, Response } from "express";
 import morgan from "morgan";
 import dotenv from "dotenv"
 import cors from "cors"
+
+dotenv.config()
+
 import userRouter from "../Routes/userAuth"
 import doctorAuthRouter from "../Routes/doctorAuth"
 import adminRouter from "../Routes/admin"
@@ -14,7 +17,6 @@ import cookieParser from "cookie-parser";
 const app=express()
 
 //env 
-dotenv.config()
 
 
 

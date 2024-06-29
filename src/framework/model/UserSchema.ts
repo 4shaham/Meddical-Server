@@ -19,7 +19,6 @@ const UserSchema:Schema=new Schema({
     },
     phoneNumber:{
         type:String,
-        required:true
     },
     age:{
         type:Number,
@@ -30,7 +29,7 @@ const UserSchema:Schema=new Schema({
     image:{
         type:String,
         default:null
-    },
+    },  
     status:{
         type:Boolean,
         default:false

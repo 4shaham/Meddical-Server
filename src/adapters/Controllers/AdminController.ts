@@ -3,6 +3,7 @@ import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import IAdminController from "../../interface/controler/IAdminController";
 import IAdminUseCase from "../../interface/useCase/IAdminUseCase";
+import { Z_BEST_SPEED } from "zlib";
 
 export default class AdminController implements IAdminController {
   
@@ -72,6 +73,63 @@ export default class AdminController implements IAdminController {
       res.status(401).json(error)
     }
   }
+
+
+  async addSpecialty(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>):Promise<void> {
+        
+      try {
+        
+        const {specalityName,image}=req.body
+
+        console.log("req.boddyydyydyfydyf")
+        let response=await this.adminUseCase.specalityManagment(image,specalityName)
+       
+        if(!response.status){
+          res.status(401).json(response)
+          return 
+        }
+        res.status(200).json(response)
+
+      } catch (error) {
+         
+        console.log(error)
+        res.json(error)
+
+      }
+
+
+  }
+
+
+   async findAllSpecality(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
+      
+    try {
+      
+      let response=await this.adminUseCase.getSpecality()
+      console.log(response)
+        res.json(response)
+      
+    } catch (error) {
+      res.json(error) 
+    }
+      
+  }
+
+
+  async updateDoctorApprove(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
+         
+    try {
+      
+      console.log(req.query.doctorId)
+      
+
+    } catch (error) {
+      
+    }
+    
+  }
+
+
 
 
 }

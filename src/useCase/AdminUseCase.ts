@@ -1,14 +1,20 @@
 import { Jwt } from "jsonwebtoken";
 import IAdminRepository from "../interface/repositories/IAdminRepositories";
-import IAdminUseCase, { Response, VerifyResponse } from "../interface/useCase/IAdminUseCase";
+import IAdminUseCase, { Response, SpecalityResponse, VerifyResponse } from "../interface/useCase/IAdminUseCase";
 import IJwtService from "../interface/utils/IJwtService";
+import { errorMonitor } from "events";
+import ICloudinaryService from "../interface/utils/ICloudinaryService";
+import ISpecality from "../entity/specalityEntity";
 
 export default class AdminUseCase implements IAdminUseCase {
   private adminRepository: IAdminRepository;
   private jwtService: IJwtService;
-  constructor(adminRepository: IAdminRepository, jwtService: IJwtService) {
+  private cloudinaryService:ICloudinaryService;
+
+  constructor(adminRepository: IAdminRepository, jwtService: IJwtService,cloudinaryServices:ICloudinaryService) {
     this.adminRepository = adminRepository;
     this.jwtService = jwtService;
+    this.cloudinaryService=cloudinaryServices
   }
 
   async verificationLogin(
@@ -53,4 +59,57 @@ export default class AdminUseCase implements IAdminUseCase {
       throw(error)
     }      
   }
+
+
+
+ async specalityManagment(image: string, specalityName: string): Promise<SpecalityResponse> {
+      try {
+        
+
+        let specality=await this.adminRepository.isExists(specalityName.toLowerCase())
+
+
+        if(specality){
+              return {
+                status:false,
+                message:"This Specality already used"
+              }    
+        }
+        
+
+        let url=await this.cloudinaryService.uploadImage(image)
+
+        if(url){
+         let newSavedData=await  this.adminRepository.addSpecality(url,specalityName.toLowerCase())
+
+         if(newSavedData){
+          return {
+            status:true,
+            message:"Speciality added successfully"
+          }
+  
+         }
+
+        }
+
+        return {
+          status:false,
+          message:"Error"
+        }
+
+                
+      
+      } catch (error) {
+        throw Error()
+      }
+  }
+  
+  async getSpecality(): Promise<ISpecality[]> {
+     try {
+     return await  this.adminRepository.specalitys()
+     } catch (error) {
+       throw Error()
+     }  
+  }
+
 }

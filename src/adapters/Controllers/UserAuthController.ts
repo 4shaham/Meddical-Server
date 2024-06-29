@@ -38,8 +38,8 @@ class UserAuthController implements IUserAuthController {
 
       await this.userAuthUseCase.registerUser(data);
       res.cookie("otpEmail", email, { maxAge: 3600000 });
-      res.json({
-        status: true,
+      res.status(200).json({
+        status: true, 
         message: "user Created successfully and Otp send successfully",
       });
     } catch (error) {
@@ -104,11 +104,13 @@ class UserAuthController implements IUserAuthController {
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
+
       const { email, password } = req.body;
       const data = {
         email,
         password,
       };
+
 
       let response = await this.userAuthUseCase.authenticateUser(data);
 
@@ -173,6 +175,7 @@ class UserAuthController implements IUserAuthController {
     }
   }
 
+  
   async updatePassword(
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
     res: Response<any, Record<string, any>>

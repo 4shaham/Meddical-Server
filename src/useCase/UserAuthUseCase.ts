@@ -66,9 +66,14 @@ class UserAuthUseCase implements IuserUseCase {
 
                        // this will check the email user is valid or notvalid
       let values=await this.userAuthRepository.checkEmailExists(data.email)
-    
+       console.log(values)
       if(values){
- 
+         
+         if(!values.password){
+            return {
+              status:false,message:"this account for login only googleAuth"
+            }
+         }
                             // comparing passwrod
          const status=await this.hashingServices.compare(data.password,values.password)   
          if(!status){
@@ -225,10 +230,8 @@ class UserAuthUseCase implements IuserUseCase {
    } catch (error) {
       throw Error()
    }
-
-  
    
-   }
+  }
    
    async verifyToken(token: string):Promise<VerifyTokenResponse> {
          
@@ -260,9 +263,11 @@ class UserAuthUseCase implements IuserUseCase {
  async  googleAuthenticateUser(data: googleAuthBody): Promise<resObj | null> {
      try {
 
+
         let user=await this.userAuthRepository.checkEmailExists(data.email)
-      
+        console.log(user,"hiiiii user")
         if(!user){
+          console.log("jiiiipan")
           await this.userAuthRepository.saveGooogleAuth(data.email,data.userName,data.image)
         }
 

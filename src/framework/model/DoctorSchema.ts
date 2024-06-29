@@ -2,20 +2,16 @@ import mongoose, { Schema, Document, ObjectId } from "mongoose";
 import IDoctor from "../../entity/doctorEntity";
 
 const DoctorSchema: Schema = new Schema({
-  name: {
+  
+  name:{
     type: String,
     required: true,
   },
-  specialist: {
+  specialty:{
     type: String,
     required: true,
   },
-  email: {
-    type: String,
-    required: true,
-    unique:true
-  },
-  licenseNumber: {
+  email:{
     type: String,
     required: true,
     unique:true
@@ -28,34 +24,9 @@ const DoctorSchema: Schema = new Schema({
     type: String,
     required: true,
   },
-  licenseImage: {
-    type: String,
-    required: true,
-  },
-  yearsOfExperience: {
-    type: Date,
-    required:true
-  },
-  languages: [{
-     type: String ,
-     required:true
-  }],
   approved:{ 
     type: Boolean,
     default:false
-  },
-  achievements: [
-    {
-      date: { type: Date },
-      description: { type: String },
-      title: { type: String },
-    },
-  ],
-  experiences:[{type:String}],
-  appliedStatus: {
-    type: String,
-    enum: ["approved", "applied", "rejected"], 
-    default: "applied",
   },
   fees:{
     type: Number,
@@ -63,6 +34,10 @@ const DoctorSchema: Schema = new Schema({
   },
   image:{
     type:String
+  },
+  isBlocked:{
+    type:Boolean,
+    default:false
   }
 });
 
