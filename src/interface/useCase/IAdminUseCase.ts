@@ -1,5 +1,7 @@
 import { token } from "morgan"
 import ISpecality from "../../entity/specalityEntity"
+import IDoctor from "../../entity/doctorEntity"
+import { ObjectId } from "mongoose"
 
 export interface SpecalityResponse{
     status:boolean,
@@ -20,10 +22,14 @@ export interface VerifyResponse{
 }
 
 
+
+
 export default interface IAdminUseCase{
 
     verificationLogin(email:string,password:string,AdminEmail:string,AdminPassword:string):Promise<Response>
     verifytoken(token:string,secretKey:string):Promise<VerifyResponse>
     specalityManagment(image:string,specalityName:string):Promise<SpecalityResponse>
     getSpecality():Promise<ISpecality[]>
+    getDataNewRequestDoctor():Promise<void>
+    verifySpecialtyDeleted(id:string):Promise<void>
 }

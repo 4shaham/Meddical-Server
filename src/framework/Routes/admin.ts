@@ -12,6 +12,8 @@ import AdminUseCase from "../../useCase/AdminUseCase";
 // collection 
 
 import Specality from "../model/SpecalitySchema";
+import Doctor from "../model/DoctorSchema";
+import Kyc from "../model/KycSchema";
 
 // service 
 
@@ -29,7 +31,7 @@ const cloudinaryServices=new CloudinaryService()
 import AutherisationMidlleware from "../Middleware/Admin/Autherisation";
 
 
-const adminRepository=new AdminRepository(Specality)
+const adminRepository=new AdminRepository(Specality,Doctor,Kyc)
 const adminUseCase=new AdminUseCase(adminRepository,jwtService,cloudinaryServices)
 const adminController=new AdminController(adminUseCase)
     
@@ -39,6 +41,8 @@ router.post("/logout",AutherisationMidlleware,adminController.adminLogOut.bind(a
 router.get("/getToken",adminController.getToken.bind(adminController))
 router.post("/addSpecalities",AutherisationMidlleware,adminController.addSpecialty.bind(adminController))
 router.get("/findAllSpecaities",AutherisationMidlleware,adminController.findAllSpecality.bind(adminController))
+router.get("/findAllNewRequestDoctor",adminController.getNewDoctorRequest.bind(adminController))
+router.patch("/deleteSpecality/:specalityId",adminController.deleteSpecality.bind(adminController))
 
 
 export default router

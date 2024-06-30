@@ -13,6 +13,8 @@ export default interface IDoctorAuthRepositories{
     saveOtp(email:string,otp:string):Promise<void>
     findOtpData(email:string):Promise<IUserOtp|null>
     kycStorStep1(data:DatasKYCVerificationStep1):Promise<IKyc|null>
+    getKycDetails(email:string):Promise<IKyc|null>
     kycStorStep2(data:DatasKYCVerificationStep2):Promise<IKyc|null>
+    updateOtpVerified(email:string):Promise<IDoctor|null>
 
 }

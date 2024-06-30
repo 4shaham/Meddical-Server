@@ -38,7 +38,11 @@ const DoctorSchema: Schema = new Schema({
   isBlocked:{
     type:Boolean,
     default:false
-  }
+  },
+  otpVerified:{
+    type:Boolean,
+    default:false
+  } 
 });
 
 const Doctor = mongoose.model<IDoctor>("Doctor", DoctorSchema);

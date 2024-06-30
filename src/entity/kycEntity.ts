@@ -20,6 +20,7 @@ enum AppliedStatus {
   }
 
 export default interface IKyc{
+    _id: string;
     email:string,
     licenseNumber:string,
     licenseImage:string,

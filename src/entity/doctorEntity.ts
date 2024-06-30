@@ -15,5 +15,6 @@ export default interface IDoctor {
   approved: boolean;
   fees: number;
   image: string;
-  isBlocked:boolean;
+  isBlocked:boolean;    
+  otpVerified:boolean;
 }

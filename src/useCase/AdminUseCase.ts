@@ -1,20 +1,30 @@
 import { Jwt } from "jsonwebtoken";
 import IAdminRepository from "../interface/repositories/IAdminRepositories";
-import IAdminUseCase, { Response, SpecalityResponse, VerifyResponse } from "../interface/useCase/IAdminUseCase";
+import IAdminUseCase, {
+  Response,
+  SpecalityResponse,
+  VerifyResponse,
+} from "../interface/useCase/IAdminUseCase";
 import IJwtService from "../interface/utils/IJwtService";
 import { errorMonitor } from "events";
 import ICloudinaryService from "../interface/utils/ICloudinaryService";
 import ISpecality from "../entity/specalityEntity";
+import IDoctor from "../entity/doctorEntity";
+import { ObjectId } from "mongoose";
 
 export default class AdminUseCase implements IAdminUseCase {
   private adminRepository: IAdminRepository;
   private jwtService: IJwtService;
-  private cloudinaryService:ICloudinaryService;
+  private cloudinaryService: ICloudinaryService;
 
-  constructor(adminRepository: IAdminRepository, jwtService: IJwtService,cloudinaryServices:ICloudinaryService) {
+  constructor(
+    adminRepository: IAdminRepository,
+    jwtService: IJwtService,
+    cloudinaryServices: ICloudinaryService
+  ) {
     this.adminRepository = adminRepository;
     this.jwtService = jwtService;
-    this.cloudinaryService=cloudinaryServices
+    this.cloudinaryService = cloudinaryServices;
   }
 
   async verificationLogin(
@@ -46,70 +56,82 @@ export default class AdminUseCase implements IAdminUseCase {
   async verifytoken(token: string): Promise<VerifyResponse> {
     try {
       let response = await this.jwtService.verify(token);
-      if(response?.role=="admin"){
-          return {
-            status:true,
-            decoded:response
-          } 
+      if (response?.role == "admin") {
+        return {
+          status: true,
+          decoded: response,
+        };
       }
       return {
-        status:false,
-      }
-    } catch (error) {   
-      throw(error)
-    }      
+        status: false,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
+  async specalityManagment(
+    image: string,
+    specalityName: string
+  ): Promise<SpecalityResponse> {
+    try {
+      let specality = await this.adminRepository.isExists(
+        specalityName.toLowerCase()
+      );
 
-
- async specalityManagment(image: string, specalityName: string): Promise<SpecalityResponse> {
-      try {
-        
-
-        let specality=await this.adminRepository.isExists(specalityName.toLowerCase())
-
-
-        if(specality){
-              return {
-                status:false,
-                message:"This Specality already used"
-              }    
-        }
-        
-
-        let url=await this.cloudinaryService.uploadImage(image)
-
-        if(url){
-         let newSavedData=await  this.adminRepository.addSpecality(url,specalityName.toLowerCase())
-
-         if(newSavedData){
-          return {
-            status:true,
-            message:"Speciality added successfully"
-          }
-  
-         }
-
-        }
-
+      if (specality) {
         return {
-          status:false,
-          message:"Error"
-        }
-
-                
-      
-      } catch (error) {
-        throw Error()
+          status: false,
+          message: "This Specality already used",
+        };
       }
-  }
-  
-  async getSpecality(): Promise<ISpecality[]> {
-     try {
-     return await  this.adminRepository.specalitys()
-     } catch (error) {
-       throw Error()
-     }  
+
+      let url = await this.cloudinaryService.uploadImage(image);
+
+      if (url) {
+        let newSavedData = await this.adminRepository.addSpecality(
+          url,
+          specalityName.toLowerCase()
+        );
+
+        if (newSavedData) {
+          return {
+            status: true,
+            message: "Speciality added successfully",
+          };
+        }
+      }
+
+      return {
+        status: false,
+        message: "Error",
+      };
+    } catch (error) {
+      throw Error();
+    }
   }
 
+  async getSpecality(): Promise<ISpecality[]> {
+    try {
+      return await this.adminRepository.specalitys();
+    } catch (error) {
+      throw Error();
+    }
+  }
+
+  async getDataNewRequestDoctor(): Promise<void> {
+    try {
+      await this.adminRepository.getRequestedDoctor();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async verifySpecialtyDeleted(id:string):Promise<void> {
+    try {
+      let data = await this.adminRepository.specalityDeleted(id); 
+    } catch (error) {
+      throw error;
+    }
+  }
 }

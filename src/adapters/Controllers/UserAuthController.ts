@@ -57,7 +57,7 @@ class UserAuthController implements IUserAuthController {
     try {
       const { otp,typeOfOtp} = req.body;
       const email = req.cookies.otpEmail;
-
+      
       //  confirmationOfForgotOtp varable
 
       if (email == "") throw Error();

@@ -35,9 +35,11 @@ const doctorAuthController=new DoctorAuthController(doctorAuthUseCase,)
 
 router.post("/login",doctorAuthController.login.bind(doctorAuthController))
 router.post("/register",doctorAuthController.register.bind(doctorAuthController))
+router.patch("/otpVerification",doctorAuthController.otpVerification.bind(doctorAuthController))
+router.post("/resendOtp",doctorAuthController.resendOtp.bind(doctorAuthController))
 router.post("/storeKycData1",doctorAuthController.storeKYCDataStep1.bind(doctorAuthController))
 router.put("/storeKycData2",doctorAuthController.storeKYCDataStep2.bind(doctorAuthController))
-
+router.get("/getKycStatus/:email",doctorAuthController.getKycinformation.bind(doctorAuthController))
 
 
 export default router;

@@ -1,3 +1,4 @@
+import IKyc from "../../entity/kycEntity";
 
 
 export interface LoginResponse{
@@ -80,6 +81,7 @@ export default interface IDoctorUseCase{
     registerDoctor(data:DatasOfDoctorRegistration):Promise<RegesterResponse>
     DoctorAuth(email:string,password:string):Promise<LoginResponse>
     handleKYCVerificationStep1(data:DatasKYCVerificationStep1):Promise<ResponseKycFirstStep>
+    getKycStatus(email:string):Promise<IKyc|null>
     handleKYCVerificationStep2(data:DatasKYCVerificationStep2):Promise<ResponseKycFirstStep>
     otpVerify(otp:string,email:string):Promise<{status:boolean,message:string}>  
     sendOtp(email:string):Promise<{status:true}> 

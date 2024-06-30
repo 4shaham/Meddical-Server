@@ -14,6 +14,7 @@ import IDoctorAuthRepositories from "../interface/repositories/IDoctorAuthReposi
 import IhasingService from "../interface/utils/IHasingService";
 import OtpService from "../framework/utils/otpService";
 import IOtpServices from "../interface/utils/IOtpServices";
+import IKyc from "../entity/kycEntity";
 
 export default class DoctorAuthUseCase implements IDoctorUseCase {
   private doctorAuthRepository: IDoctorAuthRepositories;
@@ -53,20 +54,24 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
 
       // data.password=
       data.password = await this.hashingServices.hashing(data.password);
-
       const storedDb = await this.doctorAuthRepository.isRegesterd(data);
 
       const otp = this.OtpService.generateOtp();
+       
+      await this.doctorAuthRepository.saveOtp(data.email,otp)
 
-      this.OtpService.sendOtpEmail(data.email, otp, data.name);
+      await this.OtpService.sendOtpEmail(data.email, otp, data.name);
 
       return {
-        status: true,
-        message: "Otp send successesfully",
+        status:true,
+        message:"Otp send successesfully",
       };
+
     } catch (error) {
+
       console.log(error);
       throw error;
+
     }
   }
 
@@ -80,11 +85,11 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
         };
       }
 
-      if (doctor.password != password) {
-        return {
-          status: false,
-          message: "password is not match",
-        };
+      if (doctor.password != password){
+          return {
+            status:false,
+            message:"password is not match",
+          };
       }
       return {
         status: false,
@@ -131,31 +136,38 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
   }
 
   async otpVerify(
-    otp: string,
+    otp:string,
     email: string
   ): Promise<{ status: boolean; message: string }> {
     try {
+
       let otpData = await this.doctorAuthRepository.findOtpData(email);
+      console.log(otpData,email)
 
       if (!otpData) {
         return {
           status: false,
-          message: "the otp expired",
+          message:"the otp expired",
         };
       }
 
-      if (otpData?.otp == otp) {
+      if (otpData?.otp == otp){
+
+        
+      let data= await this.doctorAuthRepository.updateOtpVerified(email)
+
         return {
           status: true,
-          message: "succussfully verified",
+          message:"succussfully verified",
         };
       } else {
         return {
           status: false,
-          message: "password is not match",
+          message:"password is not match",
         };
       }
     } catch (error) {
+      console.log(error)
       throw error;
     }
   }
@@ -246,4 +258,15 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
       throw error;
     }
   }
+
+   async getKycStatus(email:string): Promise<IKyc|null> {
+       try {
+         console.log('hii entered kyc status get')
+        let data=this.doctorAuthRepository.getKycDetails(email)
+        return data
+       } catch (error) {
+          throw error
+       }
+  }
+
 }

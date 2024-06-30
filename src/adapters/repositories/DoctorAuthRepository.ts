@@ -86,6 +86,14 @@ export default class DoctorAuthRepository implements IDoctorAuthRepositories {
     }
   }
 
+ async getKycDetails(email: string): Promise<IKyc|null> {
+      try {
+       return  await this.kyc.findOne({email:email})
+      } catch (error) {
+        throw error
+      }    
+  }
+
   async saveOtp(email: string, otp: string): Promise<void> {
 
     try {
@@ -116,4 +124,15 @@ export default class DoctorAuthRepository implements IDoctorAuthRepositories {
            throw error
         }  
   }
+  
+  async updateOtpVerified(email: string): Promise<IDoctor|null>{
+         
+    try{
+      return  await this.doctors.findOneAndUpdate({email:email},{$set:{otpVerified:true}})
+    }catch(err){
+      throw Error()
+    }
+    
+  }
+
 }
