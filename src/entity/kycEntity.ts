@@ -17,7 +17,7 @@ enum AppliedStatus {
     Approved = "approved",
     Applied = "applied",
     Rejected = "rejected",
-  }
+}
 
 export default interface IKyc{
     _id: string;

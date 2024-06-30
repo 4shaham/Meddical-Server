@@ -12,7 +12,7 @@ export default interface IDoctor {
   email: string;
   password: string;
   phoneNumber: string;
-  approved: boolean;
+  approved:boolean;
   fees: number;
   image: string;
   isBlocked:boolean;    

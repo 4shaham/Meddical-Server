@@ -57,134 +57,120 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
       const storedDb = await this.doctorAuthRepository.isRegesterd(data);
 
       const otp = this.OtpService.generateOtp();
-       
-      await this.doctorAuthRepository.saveOtp(data.email,otp)
+
+      await this.doctorAuthRepository.saveOtp(data.email, otp);
 
       await this.OtpService.sendOtpEmail(data.email, otp, data.name);
 
       return {
-        status:true,
-        message:"Otp send successesfully",
+        status: true,
+        message: "Otp send successesfully",
       };
-
-    } catch (error) {
-
+    }catch (error) {
       console.log(error);
       throw error;
-
     }
   }
 
-  async DoctorAuth(email: string, password: string): Promise<LoginResponse> {
+  async DoctorAuth(email:string,password:string): Promise<LoginResponse> {
     try {
+
       let doctor = await this.doctorAuthRepository.isDoctorExists(email);
       if (!doctor) {
+        return{
+          status: false,
+          Err:"This Email Doctor is not found",
+        };
+      }
+      console.log(password,doctor.password) 
+      const status=await this.hashingServices.compare(password,doctor.password)
+     
+
+      if(!status) {
         return {
           status: false,
-          message: "this Email is Doctor is not found",
+          Err: "password is not match",
         };
       }
 
-      if (doctor.password != password){
-          return {
-            status:false,
-            message:"password is not match",
-          };
+      if (!doctor.otpVerified) {
+        return {
+          status: false,   
+          message:"otp is not verified",
+        };
       }
-      return {
-        status: false,
-        message: "password is not match",
+
+      if (doctor.approved == false) {
+        return {
+          status: false,
+           message:"kyc status not completed",
+        };
+      }
+
+      const tokendata = {
+        id: doctor._id,
+        userName: doctor.name,
+        role: "doctor",
       };
 
-      //  if(doctor.appliedStatus == "rejected" ){
-      //     return {
-      //       status:false,
-      //       message:"your request rejected"
-      //     }
-      //  }
+      let token = await this.jwtServices.createToken(tokendata);
 
-      //  if(doctor.appliedStatus=="applied"){
-      //      return {
-      //       status:false,
-      //       message:"your request will check"
-      //      }
-      //  }
-
-      //  if(doctor?.approved==true && email==doctor.email && password==doctor.password){
-
-      //       let payload={
-      //         id:doctor._id,
-      //         userName:doctor.name,
-      //         role:"doctor"
-      //       }
-      //                        // it generate token
-      //       let token=await this.jwtServices.createToken(payload)
-      //      return {
-      //        status: true,
-      //        message: "Doctor login is successfully",
-      //        token:token
-      //      };
-      //  }else{
-      //     return {
-      //       status:false,
-      //       message:"credentioal error"
-      //     }
-      //  }
+      return {
+        status:true,
+        message:"login succussfully",
+        token: token,
+      };
     } catch (error) {
+      console.log(error)
       throw Error();
     }
   }
 
   async otpVerify(
-    otp:string,
+    otp: string,
     email: string
   ): Promise<{ status: boolean; message: string }> {
     try {
-
       let otpData = await this.doctorAuthRepository.findOtpData(email);
-      console.log(otpData,email)
+      console.log(otpData, email);
 
       if (!otpData) {
         return {
           status: false,
-          message:"the otp expired",
+          message: "the otp expired",
         };
       }
 
-      if (otpData?.otp == otp){
-
-        
-      let data= await this.doctorAuthRepository.updateOtpVerified(email)
+      if (otpData?.otp == otp) {
+        let data = await this.doctorAuthRepository.updateOtpVerified(email);
 
         return {
           status: true,
-          message:"succussfully verified",
+          message: "succussfully verified",
         };
       } else {
         return {
           status: false,
-          message:"password is not match",
+          message: "password is not match",
         };
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw error;
     }
   }
 
   async sendOtp(email: string): Promise<{ status: true }> {
     try {
-      
-      let otp:string=await this.OtpService.generateOtp()
+      let otp: string = await this.OtpService.generateOtp();
 
-      let otpData=await this.doctorAuthRepository.saveOtp(email,otp)
+      let otpData = await this.doctorAuthRepository.saveOtp(email, otp);
 
-      await this.OtpService.sendOtpEmail(email,otp,email)
-     
-      return {status:true}
+      await this.OtpService.sendOtpEmail(email, otp, email);
 
+      return { status: true };
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -242,7 +228,7 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
     try {
       console.log(data.acheivemnts, "hiiii");
       let response = await this.doctorAuthRepository.kycStorStep2(data);
-
+      console.log(response,"hiiii comon gipppp")
       if (response?.appliedStatus == "applied") {
         return {
           status: true,
@@ -259,14 +245,13 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
     }
   }
 
-   async getKycStatus(email:string): Promise<IKyc|null> {
-       try {
-         console.log('hii entered kyc status get')
-        let data=this.doctorAuthRepository.getKycDetails(email)
-        return data
-       } catch (error) {
-          throw error
-       }
+  async getKycStatus(email: string): Promise<IKyc | null> {
+    try {
+      console.log("hii entered kyc status get");
+      let data = this.doctorAuthRepository.getKycDetails(email);
+      return data;
+    } catch (error) {
+      throw error;
+    }
   }
-
 }

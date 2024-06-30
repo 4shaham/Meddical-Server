@@ -79,13 +79,13 @@ class UserAuthController implements IUserAuthController {
         res.cookie("otpEmail", "");
         res.cookie("updatePasswordEmail", email, { maxAge: 3600000 });
         res.status(200).json({
-          message: "OTP verification successful of forgotPassword",
+          message:"OTP verification successful of forgotPassword",
         });
-
         return;
+
       }
 
-      res.cookie("token", status?.token, { maxAge: 3600000 });
+      res.cookie("token", status?.token,{maxAge:3600000});
       res.status(200).json(status);
       res.cookie("otpEmail", "");
       res.status(200).json({

@@ -7,9 +7,14 @@ export default class HashingServices implements IhasingService {
     return await bcrypt.hash(password, 10);
   }
 
-  async compare(password: string, hashedPassword: string): Promise<boolean> {
-    let match = await bcrypt.compare(password, hashedPassword);
-    return match;
+  async compare(password:string,hashedPassword:string): Promise<boolean> {
+    try {
+      let match = await bcrypt.compare(password,hashedPassword);
+      console.log(match,"matchedddd")
+      return match; 
+    } catch (error) {
+       throw error 
+    }
   }
 
 }

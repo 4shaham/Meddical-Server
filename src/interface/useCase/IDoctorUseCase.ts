@@ -3,7 +3,7 @@ import IKyc from "../../entity/kycEntity";
 
 export interface LoginResponse{
     status:boolean,
-    message:string,
+    message?:string,
     Err?:string,
     token?:string
 }
