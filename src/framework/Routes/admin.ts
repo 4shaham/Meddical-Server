@@ -42,7 +42,9 @@ router.get("/getToken",adminController.getToken.bind(adminController))
 router.post("/addSpecalities",AutherisationMidlleware,adminController.addSpecialty.bind(adminController))
 router.get("/findAllSpecaities",AutherisationMidlleware,adminController.findAllSpecality.bind(adminController))
 router.get("/findAllNewRequestDoctor",adminController.getNewDoctorRequest.bind(adminController))
+router.get("/findeKycVerificatioData",adminController.getDoctorDataVerification.bind(adminController))
 router.patch("/deleteSpecality/:specalityId",adminController.deleteSpecality.bind(adminController))
+router.patch("/doctorKycVerification",adminController.updateDoctorKycStatus.bind(adminController))
 
 
 export default router

@@ -1,7 +1,9 @@
 // import ISpecality from "../../entity/specalityEntity";
 import { Model } from "mongoose";
 import ISpecality from "../../entity/specalityEntity";
-import IAdminRepository from "../../interface/repositories/IAdminRepositories";
+import IAdminRepository, {
+  GetNewRequestData,
+} from "../../interface/repositories/IAdminRepositories";
 import IDoctor from "../../entity/doctorEntity";
 import IKyc from "../../entity/kycEntity";
 import mongoose, { ObjectId } from "mongoose";
@@ -67,17 +69,7 @@ export default class AdminRepository implements IAdminRepository {
     }
   }
 
-  // async getRequestedDoctor():Promise<IDoctor[]> {
-  //      try {
-
-  //       const data=this.doctor.find({})
-  //       return data
-  //      } catch (error) {
-
-  //      }
-  // }
-
-  async getRequestedDoctor(): Promise<IDoctor[]> {
+  async getRequestedDoctor(): Promise<GetNewRequestData | null[]> {
     try {
       const values = await this.kyc.aggregate([
         {
@@ -88,17 +80,57 @@ export default class AdminRepository implements IAdminRepository {
             from: "doctors",
             localField: "email",
             foreignField: "email",
-            as: "doctor",
+            as: "doctorDetails",
           },
         },
       ]);
-
-      console.log(values, "hiii");
-      const data = await this.doctor.find();
-      return data;
+      return values;
     } catch (error) {
       console.log(error);
       throw error;
     }
   }
+
+  async getKycDoctorParticularData(
+    id: string
+  ): Promise<GetNewRequestData | null[]> {
+    try {
+      const Kycid = new ObjectId(id);
+      const values = await this.kyc.aggregate([
+        {
+          $match: { _id: Kycid },
+        },
+        {
+          $lookup: {
+            from: "doctors",
+            localField: "email",
+            foreignField: "email",
+            as: "doctorDetails",
+          },
+        },
+      ]);
+      return values;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateKycStatus(email: string, status: string): Promise<IKyc | null> {
+    try {
+      return await this.kyc.findOneAndUpdate({email:email},{$set:{appliedStatus:status}},{new:true})
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async updateDoctorKycStatus(email: string): Promise<IDoctor | null> {
+        try {
+           return await this.doctor.findOneAndUpdate({email:email},{$set:{approved:true}},{new:true})
+        } catch (error) {
+          throw error
+        }  
+  }
+  
+  
+
 }

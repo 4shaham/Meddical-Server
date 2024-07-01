@@ -123,7 +123,15 @@ export default class DoctorAuthController implements IDoctorAuthController {
   ): Promise<void> {
     try {
       console.log("hyy kyc informaiton controller ");
-      const email = req.params.email;
+      const email=req.params.email;
+      
+      if(email==""){
+         res.status(401).json({
+           message:"email is not here"
+         })
+         return
+      }
+
       let response = await this.doctorAuthUseCase.getKycStatus(email);
 
       if (response?._id) {
@@ -160,13 +168,13 @@ export default class DoctorAuthController implements IDoctorAuthController {
     try {
       console.log("bodydata", req.body);
 
-      const { yearsOfExperience, fullName, acheivemnts,image,email } = req.body;
+      const {yearsOfExperience,fullName,acheivemnts,idCardImage,email } = req.body;
       let response = await this.doctorAuthUseCase.handleKYCVerificationStep2({
         yearsOfExperience,
         fullName,
         acheivemnts,
-        identityCardImage: image,
-        email,
+        identityCardImage:idCardImage,
+        email
       });
       console.log(response);
 

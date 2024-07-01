@@ -1,6 +1,7 @@
 import { Jwt } from "jsonwebtoken";
 import IAdminRepository from "../interface/repositories/IAdminRepositories";
 import IAdminUseCase, {
+  GetNewRequestData,
   Response,
   SpecalityResponse,
   VerifyResponse,
@@ -119,19 +120,52 @@ export default class AdminUseCase implements IAdminUseCase {
     }
   }
 
-  async getDataNewRequestDoctor(): Promise<void> {
+  async getDataNewRequestDoctor(): Promise<GetNewRequestData|null[]> {
     try {
-      await this.adminRepository.getRequestedDoctor();
+      return await this.adminRepository.getRequestedDoctor()
+    } catch (error) {
+        throw error
+    }
+  }
+
+  async getKycDoctorData(id: string): Promise<GetNewRequestData|null[]> {
+     try {
+       return await this.adminRepository.getKycDoctorParticularData(id)
+     } catch (error) {
+       throw error
+     }
+  }
+
+
+ async verifyDoctorKycStatusUpdate(email: string, status: string): Promise<{ status: boolean; message: string; }> {
+         try {
+            console.log(email,status)
+
+          let data=await this.adminRepository.updateKycStatus(email,status)
+          
+          if(data?.appliedStatus=="approved"){
+             console.log("changed status")
+           let docotor=await this.adminRepository.updateDoctorKycStatus(email)
+           console.log(docotor,"changed status")
+          }
+
+            return {
+              status:true,
+              message:"successfully updated status"
+            }
+         } catch (error) {
+            throw error
+         }
+  }
+
+  async verifySpecialtyDeleted(id: string): Promise<void> {
+    try {
+      let data=await this.adminRepository.specalityDeleted(id);
     } catch (error) {
       throw error;
     }
   }
 
-  async verifySpecialtyDeleted(id:string):Promise<void> {
-    try {
-      let data = await this.adminRepository.specalityDeleted(id); 
-    } catch (error) {
-      throw error;
-    }
-  }
+
+
 }

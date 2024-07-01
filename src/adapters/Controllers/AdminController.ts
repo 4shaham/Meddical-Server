@@ -105,6 +105,7 @@ export default class AdminController implements IAdminController {
     
       const id=req.params.specalityId
       console.log(id,"hihiihihi")
+
       if(!id){
         res.json({status:false})
         return 
@@ -125,19 +126,24 @@ export default class AdminController implements IAdminController {
   ): Promise<void> {
     try {
       let response = await this.adminUseCase.getSpecality();
-      console.log(response);
       res.json(response);
     } catch (error) {
       res.json(error);
     }
   }
 
-  async updateDoctorApprove(
+  async updateDoctorKycStatus(
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
-      console.log(req.query.doctorId);
+
+      const{email,status}=req.body
+      console.log(email,"hi enterd updat kyc status routes");
+      let response= await this.adminUseCase.verifyDoctorKycStatusUpdate(email,status)
+      if(response.status){
+         res.status(200).json(response)
+      }
     } catch (error) {
       throw error
     }
@@ -148,8 +154,28 @@ export default class AdminController implements IAdminController {
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
-      console.log("hiiii");
+      console.log("hiiii enter getnew Doctors applied Route");
       let datas = await this.adminUseCase.getDataNewRequestDoctor();
-    } catch (error) {}
+      console.log(datas)  
+      res.status(200).json(datas)
+    } catch (error) {
+       console.log(error)
+       throw error
+    }
   }
+
+  async getDoctorDataVerification(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
+     try {
+        const id=req.query.id
+        console.log("hiiii i am happy",id)
+
+      let responsedValues=await this.adminUseCase.getKycDoctorData(id as string)
+      console.log(responsedValues,"values")
+      res.status(200).json({data:responsedValues})
+     } catch (error) {
+        throw error
+     }  
+  }
+
+
 }

@@ -208,7 +208,9 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
           errMessage: "This email account user is not here",
         };
       }
-
+      
+      const url=this.cloudinaryServices.uploadImage(data.image)
+      
       let KycData = await this.doctorAuthRepository.kycStorStep1(data);
       console.log(KycData, "kiiiiiiiiii");
 
@@ -227,6 +229,7 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
   ): Promise<ResponseKycFirstStep> {
     try {
       console.log(data.acheivemnts, "hiiii");
+      const url=this.cloudinaryServices.uploadImage(data.identityCardImage)
       let response = await this.doctorAuthRepository.kycStorStep2(data);
       console.log(response,"hiiii comon gipppp")
       if (response?.appliedStatus == "applied") {
@@ -235,7 +238,7 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
           message: "completed kyc Verification Step",
         };
       } else {
-        return {
+        return {  
           status: false,
           errMessage: "not completed",
         };

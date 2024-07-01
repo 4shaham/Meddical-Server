@@ -7,7 +7,8 @@ export default interface IAdminController {
   getToken(req: Request, res: Response): Promise<void>;
   addSpecialty(req: Request, res: Response): Promise<void>;
   findAllSpecality(req: Request, res: Response): Promise<void>;
-  updateDoctorApprove(req: Request, res: Response): Promise<void>;
+  updateDoctorKycStatus(req: Request, res: Response): Promise<void>;
   getNewDoctorRequest(req: Request, res: Response): Promise<void>;
+  getDoctorDataVerification(req:Request,res:Response):Promise<void>;
   deleteSpecality(req:Request,res:Response):Promise<void>
 }

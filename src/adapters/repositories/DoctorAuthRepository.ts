@@ -67,17 +67,22 @@ export default class DoctorAuthRepository implements IDoctorAuthRepositories {
 
   async kycStorStep2(data: DatasKYCVerificationStep2): Promise<IKyc | null> {
     try {
+      
+      console.log(data.yearsOfExperience,"hummmsmdf")
+
       return await this.kyc.findOneAndUpdate(
         { email: data.email },
         {
           $set:{
-            yearsOfExperience:data.yearsOfExperience,
-            fullName:data.fullName,
+            yearsOfexperience:Number(data.yearsOfExperience),
+            fullName:data.fullName, 
             identityCardImage:data.identityCardImage,
             achievements:data.acheivemnts,
             appliedStatus:"applied",
             step:2
           },
+        },{
+          new:true
         }
       );
     } catch (error) {

@@ -16,7 +16,8 @@ const KycSchema:Schema=new Schema({
         type:String
     },
     yearsOfexperience:{
-        type:Number
+        type:Number,
+        default:0
     },
     identityCardImage:{
         type:String
@@ -42,7 +43,7 @@ const KycSchema:Schema=new Schema({
     },
     appliedStatus:{
         type: String,
-        enum: ["approved", "applied", "rejected","inProgress"], 
+        enum: ["approved","applied","rejected","inProgress"], 
         default: "inProgress"
     },   
 })
