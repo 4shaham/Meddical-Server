@@ -3,6 +3,7 @@ import { Model } from "mongoose";
 import ISpecality from "../../entity/specalityEntity";
 import IAdminRepository, {
   GetNewRequestData,
+  IUData,
 } from "../../interface/repositories/IAdminRepositories";
 import IDoctor from "../../entity/doctorEntity";
 import IKyc from "../../entity/kycEntity";
@@ -147,4 +148,16 @@ export default class AdminRepository implements IAdminRepository {
       throw error
     }
   }
+
+ 
+
+    async updateSpecality(id: string, data:IUData):Promise<ISpecality | null> {
+               try {
+                    const specalityId=new ObjectId(id)
+                    return await this.specality.findByIdAndUpdate({_id:specalityId},{$set:data},{new:true})
+               } catch (error) {
+                 throw error
+               }  
+   }
+
 }

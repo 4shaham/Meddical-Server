@@ -12,4 +12,5 @@ export default interface IAdminController {
   getDoctorDataVerification(req:Request,res:Response):Promise<void>;
   deleteSpecality(req:Request,res:Response):Promise<void>;
   findEditSpecalityData(req:Request,res:Response):Promise<void>;
+  updateSpecality(req:Request,res:Response):Promise<void>;
 }

@@ -4,6 +4,7 @@ import IAdminUseCase, {
   GetNewRequestData,
   Response,
   SpecalityResponse,
+  UpdateSpecalityResponse,
   VerifyResponse,
 } from "../interface/useCase/IAdminUseCase";
 import IJwtService from "../interface/utils/IJwtService";
@@ -120,63 +121,144 @@ export default class AdminUseCase implements IAdminUseCase {
     }
   }
 
-  async getDataNewRequestDoctor(): Promise<GetNewRequestData|null[]> {
+  async getDataNewRequestDoctor(): Promise<GetNewRequestData | null[]> {
     try {
-      return await this.adminRepository.getRequestedDoctor()
-    } catch (error) {
-        throw error
-    }
-  }
-
-  async getKycDoctorData(id: string): Promise<GetNewRequestData|null[]> {
-     try {
-       return await this.adminRepository.getKycDoctorParticularData(id)
-     } catch (error) {
-       throw error
-     }
-  }
-
-
- async verifyDoctorKycStatusUpdate(email: string, status: string): Promise<{ status: boolean; message: string; }> {
-         try {
-            console.log(email,status)
-
-          let data=await this.adminRepository.updateKycStatus(email,status)
-          
-          if(data?.appliedStatus=="approved"){
-             console.log("changed status")
-           let docotor=await this.adminRepository.updateDoctorKycStatus(email)
-           console.log(docotor,"changed status")
-          }
-
-            return {
-              status:true,
-              message:"successfully updated status"
-            }
-         } catch (error) {
-            throw error
-         }
-  }
-
-  async verifySpecialtyDeleted(id: string): Promise<void> {
-    try {
-      let data=await this.adminRepository.specalityDeleted(id);
+      return await this.adminRepository.getRequestedDoctor();
     } catch (error) {
       throw error;
     }
   }
 
-
-  async editSpecalityData(specalityId: string): Promise<ISpecality | null> {
-      try {
-         
-        return await this.adminRepository.getDataEditSpecality(specalityId)
-
-      } catch (error) {
-         throw error
-      }  
+  async getKycDoctorData(id: string): Promise<GetNewRequestData | null[]> {
+    try {
+      return await this.adminRepository.getKycDoctorParticularData(id);
+    } catch (error) {
+      throw error;
+    }
   }
 
+  async verifyDoctorKycStatusUpdate(
+    email: string,
+    status: string
+  ): Promise<{ status: boolean; message: string }> {
+    try {
+      console.log(email, status);
 
+      let data = await this.adminRepository.updateKycStatus(email, status);
 
+      if (data?.appliedStatus == "approved") {
+        console.log("changed status");
+        let docotor = await this.adminRepository.updateDoctorKycStatus(email);
+        console.log(docotor, "changed status");
+      }
+
+      return {
+        status: true,
+        message: "successfully updated status",
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async verifySpecialtyDeleted(id: string): Promise<void> {
+    try {
+      let data = await this.adminRepository.specalityDeleted(id);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async editSpecalityData(specalityId: string): Promise<ISpecality | null> {
+    try {
+      return await this.adminRepository.getDataEditSpecality(specalityId);
+    } catch (error) {
+      throw error;
+    }
+  }
+  async verifyUpdateSpecality(
+    id: string,
+    name: string | null,
+    image: string | null
+  ): Promise<UpdateSpecalityResponse> {
+    try {
+      let data = undefined;
+
+      if (!id && !name && !image) {
+     
+        return {
+          status: false,
+          errMessage: "The id and name and image are required",
+        };
+      }
+
+      if(!id){
+        return {
+          status: false,
+          errMessage: "The id is required",
+        };
+      }
+
+      if (name) {
+        let data = await this.adminRepository.isExists(name.toLowerCase());
+        if(data) {
+          return {
+            status: false,
+            errMessage: "This name already used",
+          };
+        }
+      }
+
+      if (name && image) {
+        const url = await this.cloudinaryService.uploadImage(image);
+        data = {
+          name,
+          image: url,
+        };
+        let updatedValues = await this.adminRepository.updateSpecality(
+          id,
+          data  
+        );
+        console.log(updatedValues);
+        return {
+          status: true,
+          message: "successesfully updated",
+        };
+      }
+
+      if (name) {
+        data = {
+          name,
+        };
+        let updatedValues = await this.adminRepository.updateSpecality(
+          id,
+          data
+        );
+        console.log(updatedValues);
+        return {
+          status: true,
+          message: "successes updated",
+        };
+      }
+
+      if (image) {
+        const url = await this.cloudinaryService.uploadImage(image);
+        data = { image: url };
+        let updatedValues = await this.adminRepository.updateSpecality(
+          id,
+          data
+        );
+        return {
+          status: true,
+          message: "successes updated",
+        };
+      }
+
+      return {
+        status: false,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }

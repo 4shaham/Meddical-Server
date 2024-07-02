@@ -29,5 +29,5 @@ export default interface IKyc{
     achievements:Achievements[],
     experiences:Experiences[],
     step:number,
-    appliedStatus: AppliedStatus;
+    appliedStatus:AppliedStatus;
 }

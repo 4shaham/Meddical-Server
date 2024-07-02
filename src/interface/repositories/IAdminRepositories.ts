@@ -9,6 +9,12 @@ export interface GetNewRequestData extends IKyc{
     doctorDetails:IDoctor
  }
 
+export interface IUData{
+    name?:string,
+    image?:string
+ }
+
+
 export default interface IAdminRepository{
     addSpecality(image:string,specalityName:string):Promise<ISpecality|null>
     isExists(speclaityName:string):Promise<ISpecality|null>
@@ -19,4 +25,5 @@ export default interface IAdminRepository{
     updateKycStatus(email:string,status:string):Promise<IKyc|null>
     updateDoctorKycStatus(email:string):Promise<IDoctor|null>
     getDataEditSpecality(specalityId:string):Promise<ISpecality|null>
+    updateSpecality(id:string,data:IUData):Promise<ISpecality|null>
 }

@@ -113,7 +113,7 @@ export default class AdminController implements IAdminController {
       const data = await this.adminUseCase.verifySpecialtyDeleted(id as string);
       res.status(200).json({ status: true });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       // throw error;
     }
   }
@@ -127,7 +127,7 @@ export default class AdminController implements IAdminController {
       res.json(response);
     } catch (error) {
       res.json(error);
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -195,18 +195,39 @@ export default class AdminController implements IAdminController {
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
-       const id=req.query.specalityId
+      const id = req.query.specalityId;
+
+      if (id == null) {
+        res.status(401).json({ error: "the query params is null" });
+      }
+
+      const data = await this.adminUseCase.editSpecalityData(id as string);
+
+      res.status(200).json(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async updateSpecality(
+    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+    res: Response<any, Record<string, any>>
+  ): Promise<void> {
+    try {
+      const {image,name,id}=req.body
+      console.log(req.body)
       
-       if(id==null){
-         res.status(401).json({error:"the query params is null"})
-       }
+    const response=await this.adminUseCase.verifyUpdateSpecality(id,name,image)
+    console.log(response)
 
-       const data=await this.adminUseCase.editSpecalityData(id as string)
-
-       res.status(200).json(data)
+    if(response.status){
+      res.status(200).json(response)
+    }else{
+      res.status(401).json(response)
+    }
 
     } catch (error) {
-       console.log(error)
+      console.log(error)
     }
   }
 }

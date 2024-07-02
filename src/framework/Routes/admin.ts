@@ -45,6 +45,8 @@ router.get("/findAllNewRequestDoctor",adminController.getNewDoctorRequest.bind(a
 router.get("/findeKycVerificatioData",adminController.getDoctorDataVerification.bind(adminController))
 router.patch("/deleteSpecality/:specalityId",adminController.deleteSpecality.bind(adminController))
 router.patch("/doctorKycVerification",adminController.updateDoctorKycStatus.bind(adminController))
+router.get("/getEditSpecalityData",adminController.findEditSpecalityData.bind(adminController))
+router.put("/updateSpecality",adminController.updateSpecality.bind(adminController))
 
 
 export default router    
