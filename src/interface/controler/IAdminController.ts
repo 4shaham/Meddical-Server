@@ -10,5 +10,6 @@ export default interface IAdminController {
   updateDoctorKycStatus(req: Request, res: Response): Promise<void>;
   getNewDoctorRequest(req: Request, res: Response): Promise<void>;
   getDoctorDataVerification(req:Request,res:Response):Promise<void>;
-  deleteSpecality(req:Request,res:Response):Promise<void>
+  deleteSpecality(req:Request,res:Response):Promise<void>;
+  findEditSpecalityData(req:Request,res:Response):Promise<void>;
 }

@@ -172,7 +172,7 @@ export default class DoctorAuthController implements IDoctorAuthController {
       let response = await this.doctorAuthUseCase.handleKYCVerificationStep2({
         yearsOfExperience,
         fullName,
-        acheivemnts,
+        acheivemnts,   
         identityCardImage:idCardImage,
         email
       });

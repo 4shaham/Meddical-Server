@@ -37,4 +37,5 @@ export default interface IAdminUseCase{
     getKycDoctorData(id:string):Promise<GetNewRequestData|null[]>
     verifySpecialtyDeleted(id:string):Promise<void>
     verifyDoctorKycStatusUpdate(email:string,status:string):Promise<{status:boolean,message:string}>
+    editSpecalityData(specalityId:string):Promise<ISpecality|null>
 }

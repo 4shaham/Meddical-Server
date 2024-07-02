@@ -4,6 +4,7 @@ import { ParsedQs } from "qs";
 import IAdminController from "../../interface/controler/IAdminController";
 import IAdminUseCase from "../../interface/useCase/IAdminUseCase";
 import { Z_BEST_SPEED } from "zlib";
+import { error } from "console";
 
 export default class AdminController implements IAdminController {
   private adminUseCase: IAdminUseCase;
@@ -100,24 +101,21 @@ export default class AdminController implements IAdminController {
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
     res: Response<any, Record<string, any>>
   ): Promise<void> {
-   
     try {
-    
-      const id=req.params.specalityId
-      console.log(id,"hihiihihi")
+      const id = req.params.specalityId;
+      console.log(id, "hihiihihi");
 
-      if(!id){
-        res.json({status:false})
-        return 
+      if (!id) {
+        res.json({ status: false });
+        return;
       }
 
-      const data=await this.adminUseCase.verifySpecialtyDeleted(id as string)
-      res.status(200).json({status:true})
-
+      const data = await this.adminUseCase.verifySpecialtyDeleted(id as string);
+      res.status(200).json({ status: true });
     } catch (error) {
-       throw error
+      console.log(error)
+      // throw error;
     }
-
   }
 
   async findAllSpecality(
@@ -129,6 +127,7 @@ export default class AdminController implements IAdminController {
       res.json(response);
     } catch (error) {
       res.json(error);
+      console.log(error)
     }
   }
 
@@ -137,15 +136,17 @@ export default class AdminController implements IAdminController {
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
-
-      const{email,status}=req.body
-      console.log(email,"hi enterd updat kyc status routes");
-      let response= await this.adminUseCase.verifyDoctorKycStatusUpdate(email,status)
-      if(response.status){
-         res.status(200).json(response)
+      const { email, status } = req.body;
+      console.log(email, "hi enterd updat kyc status routes");
+      let response = await this.adminUseCase.verifyDoctorKycStatusUpdate(
+        email,
+        status
+      );
+      if (response.status) {
+        res.status(200).json(response);
       }
     } catch (error) {
-      throw error
+      // throw error;
     }
   }
 
@@ -156,26 +157,56 @@ export default class AdminController implements IAdminController {
     try {
       console.log("hiiii enter getnew Doctors applied Route");
       let datas = await this.adminUseCase.getDataNewRequestDoctor();
-      console.log(datas)  
-      res.status(200).json(datas)
+      console.log(datas);
+      res.status(200).json(datas);
     } catch (error) {
-       console.log(error)
-       throw error
+      console.log(error);
+      // throw error;
     }
   }
 
-  async getDoctorDataVerification(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
-     try {
-        const id=req.query.id
-        console.log("hiiii i am happy",id)
+  async getDoctorDataVerification(
+    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+    res: Response<any, Record<string, any>>
+  ): Promise<void> {
+    try {
+      const id = req.query.id;
+      console.log("hiiii i am happy", id);
 
-      let responsedValues=await this.adminUseCase.getKycDoctorData(id as string)
-      console.log(responsedValues,"values")
-      res.status(200).json({data:responsedValues})
-     } catch (error) {
-        throw error
-     }  
+      if (id == null) {
+        console.log("hii error");
+        res.status(401).json({ error: "id is required" });
+        return;
+      }
+
+      let responsedValues = await this.adminUseCase.getKycDoctorData(
+        id as string
+      );
+      console.log(responsedValues, "values");
+      res.status(200).json({ data: responsedValues });
+    } catch (error) {
+      console.log(error);
+      // throw error
+    }
   }
 
+  async findEditSpecalityData(
+    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+    res: Response<any, Record<string, any>>
+  ): Promise<void> {
+    try {
+       const id=req.query.specalityId
+      
+       if(id==null){
+         res.status(401).json({error:"the query params is null"})
+       }
 
+       const data=await this.adminUseCase.editSpecalityData(id as string)
+
+       res.status(200).json(data)
+
+    } catch (error) {
+       console.log(error)
+    }
+  }
 }

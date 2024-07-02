@@ -47,6 +47,6 @@ router.patch("/deleteSpecality/:specalityId",adminController.deleteSpecality.bin
 router.patch("/doctorKycVerification",adminController.updateDoctorKycStatus.bind(adminController))
 
 
-export default router
-
+export default router    
+  
 

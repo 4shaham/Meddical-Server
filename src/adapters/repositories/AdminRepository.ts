@@ -117,20 +117,34 @@ export default class AdminRepository implements IAdminRepository {
 
   async updateKycStatus(email: string, status: string): Promise<IKyc | null> {
     try {
-      return await this.kyc.findOneAndUpdate({email:email},{$set:{appliedStatus:status}},{new:true})
+      return await this.kyc.findOneAndUpdate(
+        { email: email },
+        { $set: { appliedStatus: status } },
+        { new: true }
+      );
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   async updateDoctorKycStatus(email: string): Promise<IDoctor | null> {
-        try {
-           return await this.doctor.findOneAndUpdate({email:email},{$set:{approved:true}},{new:true})
-        } catch (error) {
-          throw error
-        }  
+    try {
+      return await this.doctor.findOneAndUpdate(
+        { email: email },
+        { $set: { approved: true } },
+        { new: true }
+      );
+    } catch (error) {
+      throw error;
+    }
   }
-  
-  
 
+  async getDataEditSpecality(specalityId: string): Promise<ISpecality | null> {
+    try {
+      const id=new ObjectId(specalityId)
+      return await this.specality.findOne({_id:id})
+    } catch (error) {
+      throw error
+    }
+  }
 }

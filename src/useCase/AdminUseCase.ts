@@ -167,5 +167,16 @@ export default class AdminUseCase implements IAdminUseCase {
   }
 
 
+  async editSpecalityData(specalityId: string): Promise<ISpecality | null> {
+      try {
+         
+        return await this.adminRepository.getDataEditSpecality(specalityId)
+
+      } catch (error) {
+         throw error
+      }  
+  }
+
+
 
 }
