@@ -16,4 +16,5 @@ export default interface IDoctorAuthRepositories{
     getKycDetails(email:string):Promise<IKyc|null>
     kycStorStep2(data:DatasKYCVerificationStep2):Promise<IKyc|null>
     updateOtpVerified(email:string):Promise<IDoctor|null>
+    isTokenDoctorData(id:string):Promise<IDoctor|null>
 }

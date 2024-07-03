@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import mongoose, { Model, isObjectIdOrHexString } from "mongoose";;
 import IDoctor from "../../entity/doctorEntity";
 import IDoctorAuthRepositories from "../../interface/repositories/IDoctorAuthRepositories";
 import {
@@ -139,5 +139,12 @@ export default class DoctorAuthRepository implements IDoctorAuthRepositories {
     }
     
   }
-
+  
+  async isTokenDoctorData(id: string): Promise<IDoctor | null> {
+      try {
+         return await this.doctors.findOne({_id:id})
+      } catch (error) {
+           throw error        
+      }
+  }
 }

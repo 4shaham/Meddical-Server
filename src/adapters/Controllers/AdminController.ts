@@ -58,8 +58,7 @@ export default class AdminController implements IAdminController {
     try {
       const token = req.cookies.adminToken;
       let verificationResponse = await this.adminUseCase.verifytoken(
-        token,
-        process.env.JWT_SECRET_key as string
+        token
       );
 
       if (verificationResponse.status) {

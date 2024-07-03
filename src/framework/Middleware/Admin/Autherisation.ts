@@ -10,7 +10,7 @@ const jwtservice=new JwtService()
     try {
         const token=req.cookies.adminToken
         let verification= await jwtservice.verify(token)  // ineed imple token veryifht
-         next()
+        next()
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error', error: error });
     }

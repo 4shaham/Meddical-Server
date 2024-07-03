@@ -2,8 +2,9 @@ import express, { Request, Response } from "express";
 import morgan from "morgan";
 import dotenv from "dotenv"
 import cors from "cors"
+import fileUpload from 'express-fileupload';
 
-dotenv.config()
+dotenv.config()  
 
 import userRouter from "../Routes/userAuth"
 import doctorAuthRouter from "../Routes/doctorAuth"
@@ -30,11 +31,16 @@ app.use(cors({
     credentials:true
 }))
 
+app.use(fileUpload({
+    useTempFiles:true,    
+    limits: { fileSize: 2 * 1024 * 1024 },
+  }))
+
 
 //  same usage of bodyparser
 
-app.use(express.json())
-app.use(express.urlencoded({extended:true})) 
+app.use(express.json({ limit: '10mb' }))
+app.use(express.urlencoded({extended:true,limit: '10mb'})) 
 
 
 

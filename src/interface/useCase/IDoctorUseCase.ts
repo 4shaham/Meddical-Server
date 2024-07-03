@@ -1,8 +1,16 @@
 import IKyc from "../../entity/kycEntity";
 
 
+interface IDoctorData{
+    name:string,
+    image:string,
+    email:string
+}
+
+
 export interface LoginResponse{
     status:boolean,
+    doctor?:IDoctorData
     message?:string,
     Err?:string,
     token?:string
@@ -72,8 +80,17 @@ export interface RegesterResponse extends ResponseKycFirstStep {
 
 }
 
+interface doctorData{
+    image:string,
+    name:string,
+    email:string
+}
 
-
+export interface VerifyResponse{
+    status:boolean,
+    decoded?:object,
+    doctorData?:doctorData
+}
  
 
 export default interface IDoctorUseCase{
@@ -85,4 +102,5 @@ export default interface IDoctorUseCase{
     handleKYCVerificationStep2(data:DatasKYCVerificationStep2):Promise<ResponseKycFirstStep>
     otpVerify(otp:string,email:string):Promise<{status:boolean,message:string}>  
     sendOtp(email:string):Promise<{status:true}> 
+    verifyToken(token:string):Promise<VerifyResponse>
 }

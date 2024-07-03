@@ -36,7 +36,7 @@ export interface UpdateSpecalityResponse{
 export default interface IAdminUseCase{
 
     verificationLogin(email:string,password:string,AdminEmail:string,AdminPassword:string):Promise<Response>
-    verifytoken(token:string,secretKey:string):Promise<VerifyResponse>
+    verifytoken(token:string):Promise<VerifyResponse>
     specalityManagment(image:string,specalityName:string):Promise<SpecalityResponse>
     getSpecality():Promise<ISpecality[]>
     getDataNewRequestDoctor():Promise<GetNewRequestData|null[]>

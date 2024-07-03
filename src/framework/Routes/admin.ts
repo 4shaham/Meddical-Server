@@ -41,12 +41,12 @@ router.post("/logout",AutherisationMidlleware,adminController.adminLogOut.bind(a
 router.get("/getToken",adminController.getToken.bind(adminController))
 router.post("/addSpecalities",AutherisationMidlleware,adminController.addSpecialty.bind(adminController))
 router.get("/findAllSpecaities",AutherisationMidlleware,adminController.findAllSpecality.bind(adminController))
-router.get("/findAllNewRequestDoctor",adminController.getNewDoctorRequest.bind(adminController))
-router.get("/findeKycVerificatioData",adminController.getDoctorDataVerification.bind(adminController))
-router.patch("/deleteSpecality/:specalityId",adminController.deleteSpecality.bind(adminController))
-router.patch("/doctorKycVerification",adminController.updateDoctorKycStatus.bind(adminController))
-router.get("/getEditSpecalityData",adminController.findEditSpecalityData.bind(adminController))
-router.put("/updateSpecality",adminController.updateSpecality.bind(adminController))
+router.get("/findAllNewRequestDoctor",AutherisationMidlleware,adminController.getNewDoctorRequest.bind(adminController))
+router.get("/findeKycVerificatioData",AutherisationMidlleware,adminController.getDoctorDataVerification.bind(adminController))
+router.patch("/deleteSpecality/:specalityId",AutherisationMidlleware,adminController.deleteSpecality.bind(adminController))
+router.patch("/doctorKycVerification",AutherisationMidlleware,adminController.updateDoctorKycStatus.bind(adminController))
+router.get("/getEditSpecalityData",AutherisationMidlleware,adminController.findEditSpecalityData.bind(adminController))
+router.put("/updateSpecality",AutherisationMidlleware,adminController.updateSpecality.bind(adminController))
 
 
 export default router    

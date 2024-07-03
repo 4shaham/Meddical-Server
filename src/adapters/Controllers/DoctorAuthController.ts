@@ -105,7 +105,7 @@ export default class DoctorAuthController implements IDoctorAuthController {
       let response = await this.doctorAuthUseCase.DoctorAuth(email,password);
 
       if (response.status) {
-        res.cookie("adminToken", response.token,{maxAge:3600000});
+        res.cookie("doctorToken",response.token,{maxAge:3600000});
         res.status(200).json(response);
         return;
       }else{
@@ -188,4 +188,32 @@ export default class DoctorAuthController implements IDoctorAuthController {
       throw error;
     }
   }
+
+  async logOut(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
+       try {
+        res.cookie("doctorToken", "", { httpOnly: true, expires: new Date() });
+        res.status(200).json({ status: true });
+       }catch(error) {
+          console.log(error)
+       }
+  }
+
+  async getToken(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
+       try {
+
+        let token=req.cookies.doctorToken
+        console.log(token)
+        let response=await this.doctorAuthUseCase.verifyToken(token)
+        if(response.status){
+          res.status(200).json(response)
+          return 
+        }
+
+        res.status(401).json(response)
+        
+       } catch (error) {
+          console.log(error)
+       }
+  }
+
 }

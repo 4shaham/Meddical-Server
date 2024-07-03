@@ -13,6 +13,7 @@ export default class OtpService implements IOtpServices {
     userName: string
   ): Promise<void> {
     try {
+      console.log(otp)
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {

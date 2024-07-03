@@ -55,9 +55,10 @@ export default class AdminUseCase implements IAdminUseCase {
     }
   }
 
-  async verifytoken(token: string): Promise<VerifyResponse> {
+  async verifytoken(token:string): Promise<VerifyResponse> {
     try {
       let response = await this.jwtService.verify(token);
+      console.log(response)
       if (response?.role == "admin") {
         return {
           status: true,

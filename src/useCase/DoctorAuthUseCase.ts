@@ -6,6 +6,7 @@ import IDoctorUseCase, {
   DatasOfDoctorRegistration,
   RegesterResponse,
   ResponseKycFirstStep,
+  VerifyResponse,
 } from "../interface/useCase/IDoctorUseCase";
 import { LoginResponse } from "../interface/useCase/IDoctorUseCase";
 import IJwtService from "../interface/utils/IJwtService";
@@ -66,27 +67,28 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
         status: true,
         message: "Otp send successesfully",
       };
-    }catch (error) {
+    } catch (error) {
       console.log(error);
       throw error;
     }
   }
 
-  async DoctorAuth(email:string,password:string): Promise<LoginResponse> {
+  async DoctorAuth(email: string, password: string): Promise<LoginResponse> {
     try {
-
       let doctor = await this.doctorAuthRepository.isDoctorExists(email);
       if (!doctor) {
-        return{
+        return {
           status: false,
-          Err:"This Email Doctor is not found",
+          Err: "This Email Doctor is not found",
         };
       }
-      console.log(password,doctor.password) 
-      const status=await this.hashingServices.compare(password,doctor.password)
-     
+      console.log(password, doctor.password);
+      const status = await this.hashingServices.compare(
+        password,
+        doctor.password
+      );
 
-      if(!status) {
+      if (!status) {
         return {
           status: false,
           Err: "password is not match",
@@ -95,15 +97,15 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
 
       if (!doctor.otpVerified) {
         return {
-          status: false,   
-          message:"otp is not verified",
+          status: false,
+          message: "otp is not verified",
         };
       }
 
       if (doctor.approved == false) {
         return {
           status: false,
-           message:"kyc status not completed",
+          message: "kyc status not completed",
         };
       }
 
@@ -115,13 +117,20 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
 
       let token = await this.jwtServices.createToken(tokendata);
 
+      const doctorData = {
+        name: doctor.name,
+        image: doctor.image,
+        email: doctor.email,
+      };
+
       return {
-        status:true,
-        message:"login succussfully",
+        status: true,
+        doctor: doctorData,
+        message: "login succussfully",
         token: token,
       };
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw Error();
     }
   }
@@ -208,9 +217,9 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
           errMessage: "This email account user is not here",
         };
       }
-      
-      const url=this.cloudinaryServices.uploadImage(data.image)
-      
+
+      const url = this.cloudinaryServices.uploadImage(data.image);
+
       let KycData = await this.doctorAuthRepository.kycStorStep1(data);
       console.log(KycData, "kiiiiiiiiii");
 
@@ -229,16 +238,16 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
   ): Promise<ResponseKycFirstStep> {
     try {
       console.log(data.acheivemnts, "hiiii");
-      const url=this.cloudinaryServices.uploadImage(data.identityCardImage)
+      const url = this.cloudinaryServices.uploadImage(data.identityCardImage);
       let response = await this.doctorAuthRepository.kycStorStep2(data);
-      console.log(response,"hiiii comon gipppp")
+      console.log(response, "hiiii comon gipppp");
       if (response?.appliedStatus == "applied") {
         return {
           status: true,
           message: "completed kyc Verification Step",
         };
       } else {
-        return {  
+        return {
           status: false,
           errMessage: "not completed",
         };
@@ -254,6 +263,44 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
       let data = this.doctorAuthRepository.getKycDetails(email);
       return data;
     } catch (error) {
+      throw error;
+    }
+  }
+
+  async verifyToken(token: string): Promise<VerifyResponse> {
+    try {
+      console.log("tokenstatus", token);
+
+      if (!token) {
+        return {
+          status: false,
+        };
+      }
+
+      let response = await this.jwtServices.verify(token);
+      let doctor = await this.doctorAuthRepository.isTokenDoctorData(
+        response?.id as string
+      );
+
+      if (response?.role == "doctor" && doctor) {
+        let data = {
+          name: doctor.name,
+          email: doctor.email,
+          image: doctor.image,
+        };
+        console.log("verified");
+        return {
+          status: true,
+          decoded: response,
+          doctorData: data,
+        };
+      }
+      console.log("errorn");
+      return {
+        status: false,
+      };
+    } catch (error) {
+      console.log("erorn", error);
       throw error;
     }
   }

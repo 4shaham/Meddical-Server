@@ -10,7 +10,8 @@ export default interface IDoctorAuthController{
    storeKYCDataStep2(req:Request,res:Response):Promise<void>
    otpVerification(req:Request,res:Response):Promise<void>
    resendOtp(req:Request,res:Response):Promise<void>
-    
+   logOut(req:Request,res:Response):Promise<void>
+   getToken(req:Request,res:Response):Promise<void>
 }
 
 // export interface doctorRegisterBody{
