@@ -7,7 +7,7 @@ import ISpecality from '../../entity/specalityEntity';
 const SpecalitySchema: Schema = new Schema({
   image:{type:String,required:true},
   name:{type:String,required:true},
-  isDeleted:{type:String,default:false}
+  isDeleted:{type:Boolean,default:false}
 },
 {
     timestamps: true 

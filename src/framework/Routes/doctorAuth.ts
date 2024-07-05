@@ -1,9 +1,8 @@
 import express, { Request, Response, Router } from "express";
 
-import DoctorAuthController from "../../adapters/Controllers/DoctorAuthController";
+import DoctorAuthController from "../../adapters/controllers/DoctorAuthController";
 import DoctorAuthUseCase from "../../useCase/DoctorAuthUseCase";
-import DoctorAuthRepository from "../../adapters/repositories/DoctorAuthRepos;
-itory";
+import DoctorAuthRepository from "../../adapters/repositories/DoctorAuthRepository";
 
 
 // collection
@@ -21,8 +20,8 @@ import OtpService from "../utils/otpService";
 
 
 // middleware 
+import authorization from "../Middleware/doctor/authorization";
 
-import DoctorAutherisation from "../Middleware/Doctor/Autherisation";
 
 const jwtService=new JwtService()
 const clodinaryService=new CloudinaryService()
@@ -46,7 +45,7 @@ router.post("/resendOtp",doctorAuthController.resendOtp.bind(doctorAuthControlle
 router.post("/storeKycData1",doctorAuthController.storeKYCDataStep1.bind(doctorAuthController))
 router.put("/storeKycData2",doctorAuthController.storeKYCDataStep2.bind(doctorAuthController))
 router.get("/getKycStatus/:email",doctorAuthController.getKycinformation.bind(doctorAuthController))
-router.post("/logout",doctorAuthController.logOut.bind(doctorAuthController))
+router.post("/logout",authorization,doctorAuthController.logOut.bind(doctorAuthController))
 router.get("/getToken",doctorAuthController.getToken.bind(doctorAuthController))
   
 export default router;

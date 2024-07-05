@@ -33,6 +33,12 @@ export interface UpdateSpecalityResponse{
     errMessage?:string;
 }
 
+
+export interface IRestoreSpecalityResponse{
+    status:boolean,
+    message:string
+}
+
 export default interface IAdminUseCase{
 
     verificationLogin(email:string,password:string,AdminEmail:string,AdminPassword:string):Promise<Response>
@@ -45,4 +51,6 @@ export default interface IAdminUseCase{
     verifyDoctorKycStatusUpdate(email:string,status:string):Promise<{status:boolean,message:string}>
     editSpecalityData(specalityId:string):Promise<ISpecality|null>
     verifyUpdateSpecality(id:string,name:string|null,image:string|null):Promise<UpdateSpecalityResponse>
+    getDataDeletedSpecality():Promise<ISpecality[]>
+    updateRestoreSpecality(id:string):Promise<IRestoreSpecalityResponse>
 }

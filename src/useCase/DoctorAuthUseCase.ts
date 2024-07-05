@@ -208,9 +208,9 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
           errMessage: "credientioal err",
         };
       }
-
+      console.log(data.email)
       let isDoctor = await this.doctorAuthRepository.isDoctorExists(data.email);
-      console.log(isDoctor);
+      console.log(isDoctor,"hiiiii");
       if (!isDoctor) {
         return {
           status: false,

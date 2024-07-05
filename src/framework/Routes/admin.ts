@@ -4,7 +4,7 @@ import express,{ Router } from "express";
 const router:Router=express.Router()
 
 
-import AdminController from "../../adapters/Controllers/AdminController";
+import AdminController from "../../adapters/controllers/AdminController";
 import AdminRepository from "../../adapters/repositories/AdminRepository";
 import AdminUseCase from "../../useCase/AdminUseCase";
 
@@ -28,7 +28,8 @@ const cloudinaryServices=new CloudinaryService()
 
 // middleware 
 
-import AutherisationMidlleware from "../Middleware/Admin/Autherisation";
+import authorizationMiddleware from "../Middleware/admin/authorization";
+
 
 
 const adminRepository=new AdminRepository(Specality,Doctor,Kyc)
@@ -37,16 +38,18 @@ const adminController=new AdminController(adminUseCase)
     
 
 router.post("/login",adminController.adminLogin.bind(adminController))
-router.post("/logout",AutherisationMidlleware,adminController.adminLogOut.bind(adminController))
+router.post("/logout",authorizationMiddleware,adminController.adminLogOut.bind(adminController))
 router.get("/getToken",adminController.getToken.bind(adminController))
-router.post("/addSpecalities",AutherisationMidlleware,adminController.addSpecialty.bind(adminController))
-router.get("/findAllSpecaities",AutherisationMidlleware,adminController.findAllSpecality.bind(adminController))
-router.get("/findAllNewRequestDoctor",AutherisationMidlleware,adminController.getNewDoctorRequest.bind(adminController))
-router.get("/findeKycVerificatioData",AutherisationMidlleware,adminController.getDoctorDataVerification.bind(adminController))
-router.patch("/deleteSpecality/:specalityId",AutherisationMidlleware,adminController.deleteSpecality.bind(adminController))
-router.patch("/doctorKycVerification",AutherisationMidlleware,adminController.updateDoctorKycStatus.bind(adminController))
-router.get("/getEditSpecalityData",AutherisationMidlleware,adminController.findEditSpecalityData.bind(adminController))
-router.put("/updateSpecality",AutherisationMidlleware,adminController.updateSpecality.bind(adminController))
+router.post("/addSpecalities",authorizationMiddleware,adminController.addSpecialty.bind(adminController))
+router.get("/findAllSpecaities",authorizationMiddleware,adminController.findAllSpecality.bind(adminController))
+router.get("/findAllNewRequestDoctor",authorizationMiddleware,adminController.getNewDoctorRequest.bind(adminController))
+router.get("/findeKycVerificatioData",authorizationMiddleware,adminController.getDoctorDataVerification.bind(adminController))
+router.patch("/deleteSpecality/:specalityId",authorizationMiddleware,adminController.deleteSpecality.bind(adminController))
+router.patch("/doctorKycVerification",authorizationMiddleware,adminController.updateDoctorKycStatus.bind(adminController))
+router.get("/getEditSpecalityData",authorizationMiddleware,adminController.findEditSpecalityData.bind(adminController))
+router.put("/updateSpecality",authorizationMiddleware,adminController.updateSpecality.bind(adminController))
+router.get("/deletedSpecalityData",authorizationMiddleware,adminController.findDeletedSpecality.bind(adminController))
+router.patch("/restoreSpecality",authorizationMiddleware,adminController.restoreSpecality.bind(adminController))
 
 
 export default router    

@@ -1,17 +1,5 @@
 import { Request, Response } from "express";
 
-export default interface IUserAuthController {
-  register(req: Request, res: Response): Promise<void>;
-  otpVerification(req: Request, res: Response): Promise<void>;
-  login(req: Request, res: Response): Promise<void>;
-  forgotPassword(req: Request, res: Response): Promise<void>;
-  updatePassword(req: Request, res: Response): Promise<void>;
-  resendOtp(req:Request,res:Response):Promise<void>;
-  logOut(req:Request,res:Response):Promise<void>;
-  getToken(req:Request,res:Response):Promise<void>;
-  googleAuth(req:Request,res:Response):Promise<void>
-}
-
 export interface googleAuthBody{
   email:string,
   userName:string,
@@ -48,3 +36,17 @@ export interface otpVerifyData {
   email: string;
   typeOfOtp:string
 }
+
+export default interface IUserAuthController {
+  register(req: Request, res: Response): Promise<void>;
+  otpVerification(req: Request, res: Response): Promise<void>;
+  login(req: Request, res: Response): Promise<void>;
+  forgotPassword(req: Request, res: Response): Promise<void>;
+  updatePassword(req: Request, res: Response): Promise<void>;
+  resendOtp(req:Request,res:Response):Promise<void>;
+  logOut(req:Request,res:Response):Promise<void>;
+  getToken(req:Request,res:Response):Promise<void>;
+  googleAuth(req:Request,res:Response):Promise<void>
+}
+
+

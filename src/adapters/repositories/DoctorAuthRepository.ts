@@ -23,7 +23,7 @@ export default class DoctorAuthRepository implements IDoctorAuthRepositories {
 
   async isDoctorExists(email?: string): Promise<IDoctor | null> {
     try {
-      let details = await this.doctors.findOne({ email: email });
+      let details = await this.doctors.findOne({email:email });
       return details;
     } catch (error) {
       throw Error();

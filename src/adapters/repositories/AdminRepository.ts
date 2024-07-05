@@ -57,6 +57,14 @@ export default class AdminRepository implements IAdminRepository {
     }
   }
 
+  async deletedSpecalitys(): Promise<ISpecality[]> {
+      try {
+        return await this.specality.find({isDeleted:true})
+      } catch (error) {
+         throw error
+      }
+  }
+
   async specalityDeleted(id: string): Promise<ISpecality | null> {
     try {
       const specialityId = new ObjectId(id);
@@ -68,6 +76,16 @@ export default class AdminRepository implements IAdminRepository {
       console.log(error, "shahams");
       throw error;
     }
+  }
+
+  async updateRestoreSpecalitys(id:string): Promise<ISpecality | null> {
+         try {
+          const specalityId=new ObjectId(id)
+          return await this.specality.findByIdAndUpdate({_id:specalityId},{$set:{isDeleted:false}},{new:true})
+
+         } catch (error) {
+           throw error
+         }  
   }
 
   async getRequestedDoctor(): Promise<GetNewRequestData | null[]> {

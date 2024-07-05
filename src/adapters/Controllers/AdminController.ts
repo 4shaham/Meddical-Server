@@ -7,33 +7,39 @@ import { Z_BEST_SPEED } from "zlib";
 import { error } from "console";
 
 export default class AdminController implements IAdminController {
+
   private adminUseCase: IAdminUseCase;
   constructor(adminUseCase: IAdminUseCase) {
     this.adminUseCase = adminUseCase;
   }
+
 
   async adminLogin(
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
+     
       const { email, password } = req.body;
 
-      let adminEmail: string = process.env.ADMIN_EMAIL as string;
-      let AdminPassword: string = process.env.ADMIN_PASSWORD as string;
+      const  adminEmail: string = process.env.ADMIN_EMAIL as string;
+      const AdminPassword: string = process.env.ADMIN_PASSWORD as string;
 
-      let response = await this.adminUseCase.verificationLogin(
+      const response = await this.adminUseCase.verificationLogin(
         email,
         password,
         adminEmail,
         AdminPassword
-      );
+      ); 
+
       if (response.status) {
         res.cookie("adminToken", response.token, { maxAge: 3600000 });
         res.status(200).json(response);
       } else {
+        console.log("jiiiiiiiii")
         res.status(401).json(response);
       }
+
     } catch (error) {
       console.log(error);
     }
@@ -42,7 +48,7 @@ export default class AdminController implements IAdminController {
   async adminLogOut(
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
     res: Response<any, Record<string, any>>
-  ): Promise<void> {
+  ):Promise<void>{
     try {
       res.cookie("adminToken", "", { httpOnly: true, expires: new Date() });
       res.status(200).json({ status: true });
@@ -54,12 +60,11 @@ export default class AdminController implements IAdminController {
   async getToken(
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
     res: Response<any, Record<string, any>>
-  ): Promise<void> {
+  ):Promise<void> {
     try {
       const token = req.cookies.adminToken;
-      let verificationResponse = await this.adminUseCase.verifytoken(
-        token
-      );
+      console.log(token,"jiiii")
+      let verificationResponse = await this.adminUseCase.verifytoken(token);
 
       if (verificationResponse.status) {
         res.status(200).json(verificationResponse);
@@ -213,20 +218,58 @@ export default class AdminController implements IAdminController {
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
-      const {image,name,id}=req.body
-      console.log(req.body)
-      
-    const response=await this.adminUseCase.verifyUpdateSpecality(id,name,image)
-    console.log(response)
+      const { image, name, id } = req.body;
+      console.log(req.body);
 
-    if(response.status){
-      res.status(200).json(response)
-    }else{
-      res.status(401).json(response)
+      const response = await this.adminUseCase.verifyUpdateSpecality(
+        id,
+        name,
+        image
+      );
+      console.log(response);
+
+      if (response.status) {
+        res.status(200).json(response);
+      } else {
+        res.status(401).json(response);
+      }
+    } catch (error) {
+      console.log(error);
     }
+  }
+
+  async findDeletedSpecality(
+    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+    res: Response<any, Record<string, any>>
+  ): Promise<void> {
+    try {
+       
+      let data=await this.adminUseCase.getDataDeletedSpecality()
+      res.status(200).json(data)
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error)
+    }
+  }
+
+  async restoreSpecality(
+    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+    res: Response<any, Record<string, any>>
+  ): Promise<void> {
+    try {
+       const {id}=req.body 
+       const response=await this.adminUseCase.updateRestoreSpecality(id as string)
+        
+       if(response.status){
+        res.status(200).json(response)
+        return 
+       }
+
+       res.status(401).json(response)
 
     } catch (error) {
-      console.log(error)
+      console.log(error);
+      res.status(500).json("internal error")
     }
   }
 }

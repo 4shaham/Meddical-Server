@@ -2,6 +2,7 @@ import { Jwt } from "jsonwebtoken";
 import IAdminRepository from "../interface/repositories/IAdminRepositories";
 import IAdminUseCase, {
   GetNewRequestData,
+  IRestoreSpecalityResponse,
   Response,
   SpecalityResponse,
   UpdateSpecalityResponse,
@@ -38,12 +39,13 @@ export default class AdminUseCase implements IAdminUseCase {
     try {
       if (email == AdminEmail && AdminPassword == password) {
         let token = this.jwtService.createToken({ id: email, role: "admin" });
-
+  
         return {
           status: true,
           message: "sucessfull Login",
           token,
         };
+
       }
 
       return {
@@ -55,10 +57,10 @@ export default class AdminUseCase implements IAdminUseCase {
     }
   }
 
-  async verifytoken(token:string): Promise<VerifyResponse> {
+  async verifytoken(token: string): Promise<VerifyResponse> {
     try {
       let response = await this.jwtService.verify(token);
-      console.log(response)
+      console.log(response);
       if (response?.role == "admin") {
         return {
           status: true,
@@ -186,14 +188,13 @@ export default class AdminUseCase implements IAdminUseCase {
       let data = undefined;
 
       if (!id && !name && !image) {
-     
         return {
           status: false,
           errMessage: "The id and name and image are required",
         };
       }
 
-      if(!id){
+      if (!id) {
         return {
           status: false,
           errMessage: "The id is required",
@@ -202,7 +203,7 @@ export default class AdminUseCase implements IAdminUseCase {
 
       if (name) {
         let data = await this.adminRepository.isExists(name.toLowerCase());
-        if(data) {
+        if (data) {
           return {
             status: false,
             errMessage: "This name already used",
@@ -218,7 +219,7 @@ export default class AdminUseCase implements IAdminUseCase {
         };
         let updatedValues = await this.adminRepository.updateSpecality(
           id,
-          data  
+          data
         );
         console.log(updatedValues);
         return {
@@ -257,6 +258,34 @@ export default class AdminUseCase implements IAdminUseCase {
 
       return {
         status: false,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getDataDeletedSpecality(): Promise<ISpecality[]> {
+    try {
+      return await this.adminRepository.deletedSpecalitys();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateRestoreSpecality(id: string): Promise<IRestoreSpecalityResponse> {
+    try {
+      let response = await this.adminRepository.updateRestoreSpecalitys(id);
+      console.log(response?.isDeleted == false, "fhdfd", response?.isDeleted);
+      if (response?.isDeleted == false) {
+        console.log("hiiii");
+        return {
+          status: true,
+          message: "restored successfully",
+        };
+      }
+      return {
+        status: false,
+        message: "it is not updated",
       };
     } catch (error) {
       throw error;

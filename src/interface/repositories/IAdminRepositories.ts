@@ -26,4 +26,6 @@ export default interface IAdminRepository{
     updateDoctorKycStatus(email:string):Promise<IDoctor|null>
     getDataEditSpecality(specalityId:string):Promise<ISpecality|null>
     updateSpecality(id:string,data:IUData):Promise<ISpecality|null>
+    deletedSpecalitys():Promise<ISpecality[]>
+    updateRestoreSpecalitys(id:string):Promise<ISpecality|null>
 }

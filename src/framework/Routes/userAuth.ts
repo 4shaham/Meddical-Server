@@ -6,7 +6,7 @@ const router: Router = express.Router();
 
 import UserAuthRepository from "./../../adapters/repositories/UserAuthRepository";
 import UserAuthUseCase from "./../../useCase/UserAuthUseCase";
-import UserAuthController from "./../../adapters/Controllers/UserAuthController";
+import UserAuthController from "../../adapters/controllers/UserAuthController";
 
 // user collection and OtpCollection  
 

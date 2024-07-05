@@ -13,4 +13,6 @@ export default interface IAdminController {
   deleteSpecality(req:Request,res:Response):Promise<void>;
   findEditSpecalityData(req:Request,res:Response):Promise<void>;
   updateSpecality(req:Request,res:Response):Promise<void>;
+  findDeletedSpecality(req:Request,res:Response):Promise<void>
+  restoreSpecality(req:Request,res:Response):Promise<void>
 }

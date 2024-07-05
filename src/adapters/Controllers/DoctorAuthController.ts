@@ -147,6 +147,7 @@ export default class DoctorAuthController implements IDoctorAuthController {
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
+      console.log(req.body)
       let response = await this.doctorAuthUseCase.handleKYCVerificationStep1(
         req.body
       );
@@ -202,13 +203,13 @@ export default class DoctorAuthController implements IDoctorAuthController {
        try {
 
         let token=req.cookies.doctorToken
-        console.log(token)
+        console.log(token,"huhuhuhuh")
         let response=await this.doctorAuthUseCase.verifyToken(token)
         if(response.status){
           res.status(200).json(response)
           return 
         }
-
+        console.log('hello bro how ')
         res.status(401).json(response)
         
        } catch (error) {
