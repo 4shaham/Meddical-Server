@@ -1,0 +1,10 @@
+
+
+class FetchGuestUserData{
+   
+    constructor(){
+        
+    }
+
+
+}
