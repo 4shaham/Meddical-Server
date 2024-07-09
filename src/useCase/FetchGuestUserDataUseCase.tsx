@@ -1,8 +1,10 @@
 
-class FetchGuestUserDataUseCase{
 
-    constructor(){
+class FetchGuestUserDataUseCase {
 
-    }
+  constructor(){
     
+  }
+
+
 }

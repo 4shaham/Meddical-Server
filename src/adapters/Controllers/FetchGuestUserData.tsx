@@ -1,10 +1,13 @@
+import IFetchGuestUserDataController from "../../interface/controler/IDoctorScheduleManagementController";
 
 
-class FetchGuestUserData{
+
+
+class FetchGuestUserData implements IFetchGuestUserDataController {
    
     constructor(){
         
     }
-
+   
 
 }
