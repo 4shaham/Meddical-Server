@@ -9,7 +9,9 @@ dotenv.config()
 import userRouter from "../Routes/userAuth"
 import doctorAuthRouter from "../Routes/doctorAuth"
 import adminRouter from "../Routes/admin"
+import userGuestRouter from "../Routes/userGuestFetchData"
 import cookieParser from "cookie-parser";
+
 
 
 
@@ -52,6 +54,7 @@ app.use(morgan('dev'))
 
 // user Router 
 app.use("/api",userRouter)  
+app.use("/api",userGuestRouter)  
 app.use("/api/doctor",doctorAuthRouter)
 app.use("/api/Admin/",adminRouter)
 
