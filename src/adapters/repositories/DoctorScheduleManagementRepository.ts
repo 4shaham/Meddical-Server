@@ -1,3 +1,5 @@
+import { Model } from "mongoose";
+import IDoctorSchedule from "../../entity/doctorScheduleEntity";
 import IDoctorScheduleManagementRepositories from "../../interface/repositories/IDoctorScheduleManagementRepositories";
 
 
@@ -5,8 +7,9 @@ import IDoctorScheduleManagementRepositories from "../../interface/repositories/
 
 export default class DoctorScheduleManagementRepository implements IDoctorScheduleManagementRepositories {
 
-        constructor(){
-          
+        private doctorSchedule:Model<IDoctorSchedule>
+        constructor(doctorSchedule:Model<IDoctorSchedule>){
+            this.doctorSchedule=doctorSchedule
         }
 
 }
