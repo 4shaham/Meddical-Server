@@ -1,4 +1,4 @@
-import IDoctorScheduleManagementRepositories from "../interface/repositories/IDoctorScheduleManagementRepositories";
+import IDoctorScheduleManagementRepositories from "../interface/repositories/IDoctorScheduleManagmentRepositories";
 import IDoctorScheduleManagmentUseCase from "../interface/useCase/IDoctorScheduleManagementUseCase";
 
 

@@ -20,7 +20,9 @@ const doctorShceduleManagementUseCase=new DoctorScheduleManagmentUseCase(doctorS
 const doctorScheduleManagementController=new DoctorScheduleManagementController(doctorShceduleManagementUseCase)
 
 
-router.post("/addSchedule")
+
+
+router.post("/addSchedule",doctorScheduleManagementController.addSchedules.bind(doctorScheduleManagementController))
 
 
 

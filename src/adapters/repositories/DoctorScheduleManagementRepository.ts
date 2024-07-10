@@ -1,6 +1,6 @@
 import { Model } from "mongoose";
 import IDoctorSchedule from "../../entity/doctorScheduleEntity";
-import IDoctorScheduleManagementRepositories from "../../interface/repositories/IDoctorScheduleManagementRepositories";
+import IDoctorScheduleManagementRepositories from "../../interface/repositories/IDoctorScheduleManagmentRepositories";
 
 
 
