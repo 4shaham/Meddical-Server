@@ -20,35 +20,19 @@ export default class DoctorScheduleManagementController
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
-        console.log('hiiii',req.body)
+       
+    
+        
+      const{doctorId,startDate,startTime,endTime,intervals}=req.body
+      
+      const response= await this.doctorScheduleManagementUseCase.addDoctorSchedule(doctorId,startDate,startTime,endTime,intervals)
          
-        // const startTime=req.body.startTime
-        // const endTime=req.body.endTime
-
-
-        //   const timeToMinutes = (time:any) => {
-        //     const [hours, minutes] = time.split(':').map(Number);
-        //     return hours * 60 + minutes;
-        //   };
-          
-        //   // Convert startTime and endTime to total minutes
-        //   const startMinutes = timeToMinutes(startTime);
-        //   const endMinutes = timeToMinutes(endTime);
-          
-        //   // Calculate total available minutes
-        //   const totalAvailableMinutes = endMinutes - startMinutes;
-          
-        //   // Convert totalAvailableMinutes back to HH:mm format for display or further use
-        //   const availableHours = Math.floor(totalAvailableMinutes / 60);
-        //   const availableMinutes = totalAvailableMinutes % 60;
-        //   const availableTime = `${availableHours}:${availableMinutes}`;
-          
-        //   console.log('Available time:', availableTime);
+       
 
 
 
     } catch (error) {
-        
+        console.log(error)
     }
   }
 }

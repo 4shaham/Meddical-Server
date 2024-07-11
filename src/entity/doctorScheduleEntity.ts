@@ -13,5 +13,5 @@ export default interface IDoctorSchedule{
     _id:string,
     doctorId:string,
     date:Date,
-    slots:slotsData[]
-}
+    slots:Map<number,slotsData>
+}   
