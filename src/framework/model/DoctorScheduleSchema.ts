@@ -42,4 +42,3 @@ const DoctorScheduleSchema: Schema = new Schema({
 const DoctorSchedule=mongoose.model<IDoctorSchedule>("DoctorSchedule",DoctorScheduleSchema)
 
 export default DoctorSchedule
-
