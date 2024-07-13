@@ -34,4 +34,18 @@ export default class DoctorScheduleManagementController
     }
   }
 
+  async findPerticularDateSchedule(req: Request, res: Response, next: NextFunction): Promise<void> {
+         try {
+            
+             
+             const date=req.query.date
+             console.log('hiiiiiii',date)
+
+
+
+         } catch (error) {
+            console.log(error)
+         }
+  }
+
 }

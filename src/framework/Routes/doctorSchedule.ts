@@ -22,7 +22,8 @@ const doctorScheduleManagementController=new DoctorScheduleManagementController(
 
 
 
-router.post("/addSchedule",doctorScheduleManagementController.addSchedules.bind(doctorScheduleManagementController))
+ router.post("/addSchedule",doctorScheduleManagementController.addSchedules.bind(doctorScheduleManagementController))
+ router.get("/findSchedulePerticularDate",doctorScheduleManagementController.findPerticularDateSchedule.bind(doctorScheduleManagementController))
 
 
 
