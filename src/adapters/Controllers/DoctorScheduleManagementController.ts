@@ -29,7 +29,7 @@ export default class DoctorScheduleManagementController
       const{doctorId,date,startTime,endTime,intervals}=req.body
       const response= await this.doctorScheduleManagementUseCase.addDoctorSchedule(doctorId,date,startTime,endTime,intervals)   
       res.status(StatusCode.success).json({message:"successfully added"})
-    } catch (error) {
+    }catch (error) {
         next(error)   
     }
   }
