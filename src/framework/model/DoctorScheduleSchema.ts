@@ -6,7 +6,7 @@ import IDoctorSchedule from "../../entity/doctorScheduleEntity";
 
 const DoctorScheduleSchema: Schema = new Schema({
   doctorId: {
-    type: Schema.Types.ObjectId,
+    type:Schema.Types.ObjectId,
   },
   date:{
     type:Date,
