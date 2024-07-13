@@ -1,3 +1,4 @@
+import IDoctorSchedule from "../entity/doctorScheduleEntity";
 import { StatusCode } from "../enums/statusCode";
 import ErrorsSchedule from "../erros/errors";
 import IDoctorScheduleManagementRepositories from "../interface/repositories/IDoctorScheduleManagmentRepositories";
@@ -5,11 +6,9 @@ import IDoctorScheduleManagmentUseCase, {
   intevalsValues,
 } from "../interface/useCase/IDoctorScheduleManagementUseCase";
 
-
 export default class DoctorScheduleManagmentUseCase
   implements IDoctorScheduleManagmentUseCase
 {
-
   private doctorScheduleManagementRepository: IDoctorScheduleManagementRepositories;
 
   constructor(
@@ -19,10 +18,6 @@ export default class DoctorScheduleManagmentUseCase
       doctorScheduleManagementRepository;
   }
 
-
-
-
-
   async addDoctorSchedule(
     doctorId: string,
     date: Date,
@@ -31,33 +26,32 @@ export default class DoctorScheduleManagmentUseCase
     interval?: intevalsValues[]
   ): Promise<void> {
     try {
+      const isDateAlreadyAdded =
+        await this.doctorScheduleManagementRepository.isDateExide(
+          date,
+          doctorId
+        );
 
-
-      const isDateAlreadyAdded = await this.doctorScheduleManagementRepository.isDateExide(
-        date
-      );
-
-     
-      if (isDateAlreadyAdded)  throw new ErrorsSchedule("this date already added",StatusCode.UnAuthorized);
+      if (isDateAlreadyAdded)
+        throw new ErrorsSchedule(
+          "this date already added",
+          StatusCode.UnAuthorized
+        );
 
       const timeToMinutes = (time: any) => {
         const [hours, minutes] = time.split(":").map(Number);
         return hours * 60 + minutes;
       };
 
-
       let intervalTime = 0;
 
       if (interval) {
-
         for (let i = 0; i < interval?.length; i++) {
           const startTime = timeToMinutes(interval[i].startTime);
           const EndTime = timeToMinutes(interval[i].endTime);
 
           intervalTime += EndTime - startTime;
-
         }
-
       }
 
       const startMinutes = timeToMinutes(startTime);
@@ -66,7 +60,7 @@ export default class DoctorScheduleManagmentUseCase
       let totalAvailableMinutes = endMinutes - startMinutes;
       totalAvailableMinutes -= intervalTime;
 
-      const availableHours = Math.floor(totalAvailableMinutes/60);
+      const availableHours = Math.floor(totalAvailableMinutes / 60);
       const availableMinutes = totalAvailableMinutes % 60;
       const availableTime = `${availableHours}:${availableMinutes}`;
 
@@ -82,7 +76,6 @@ export default class DoctorScheduleManagmentUseCase
       let seconds = Number(consultationStartedTime[1]);
 
       for (let i = 1; i <= mapSize; i++) {
-
         let prevTimeToStart = timeToStart;
         let prevSeconds = seconds;
 
@@ -105,12 +98,21 @@ export default class DoctorScheduleManagmentUseCase
         myMap
       );
     } catch (error) {
-        throw error
+      throw error;
     }
   }
 
-
-
-  
-
+  async findDoctorScedulePerticularDate(
+    date: Date,
+    doctorId: string
+  ): Promise<IDoctorSchedule | null> {
+    try {
+      return await this.doctorScheduleManagementRepository.isDateExide(
+        date,
+        doctorId
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
 }

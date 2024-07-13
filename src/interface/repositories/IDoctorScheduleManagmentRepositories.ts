@@ -8,5 +8,5 @@ export interface ISlot {
 
 export default interface IDoctorScheduleManagmentRepositories{
     storeDoctorSchedule(doctorId:string,date:Date,slots:Map<string,ISlot>):Promise<void>
-    isDateExide(date:Date):Promise<IDoctorSchedule|null>
+    isDateExide(date:Date,id:string):Promise<IDoctorSchedule|null>
 }

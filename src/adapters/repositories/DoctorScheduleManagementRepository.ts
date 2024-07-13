@@ -20,22 +20,26 @@ export default class DoctorScheduleManagementRepository
     slots: Map<string, ISlot>
   ): Promise<void> {
     try {
+      console.log(doctorId);
+      
       const dId = new ObjectId(doctorId);
 
       const doctorSchedule = new this.doctorSchedule({
-        doctorId: dId,
+        doctorId:dId,
         date: date,
         slots: slots,
       });
       await doctorSchedule.save();
     } catch (error) {
+      console.log("rufiduifudfu",error)
       throw error;
     }
   }
 
-  async isDateExide(date: Date): Promise<IDoctorSchedule | null> {
+  async isDateExide(date:Date,id:string): Promise<IDoctorSchedule | null> {
     try {
-      return await this.doctorSchedule.findOne({ date: date });
+      const doctorId=new ObjectId(id)
+      return await this.doctorSchedule.findOne({date:date,doctorId:doctorId});
     } catch (error) {
       throw error;
     }

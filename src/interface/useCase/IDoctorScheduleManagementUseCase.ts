@@ -1,3 +1,4 @@
+import IDoctorSchedule from "../../entity/doctorScheduleEntity"
 
 
 export interface intevalsValues{
@@ -6,4 +7,5 @@ export interface intevalsValues{
 
 export default interface IDoctorScheduleManagementUseCase {
       addDoctorSchedule(doctorId:string,date:Date,startTime:string,endTime:string,interval?:intevalsValues[]):Promise<void>
+      findDoctorScedulePerticularDate(date:Date,doctorId:string):Promise<IDoctorSchedule|null>
 }

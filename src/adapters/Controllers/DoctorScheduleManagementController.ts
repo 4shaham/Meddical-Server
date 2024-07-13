@@ -38,12 +38,17 @@ export default class DoctorScheduleManagementController
          try {
             
              
-             const date=req.query.date
-             console.log('hiiiiiii',date)
+             
+              const date=req.query.date 
+             const id=req.query.doctorId
+             
+             const newDate = new Date(date as string);
 
+             const schedule=await this.doctorScheduleManagementUseCase.findDoctorScedulePerticularDate(newDate,id as string)
+             
+             console.log(schedule)
 
-
-         } catch (error) {
+         } catch (error) {  
             console.log(error)
          }
   }
