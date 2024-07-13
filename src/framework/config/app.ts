@@ -10,7 +10,10 @@ import userRouter from "../Routes/userAuth"
 import doctorAuthRouter from "../Routes/doctorAuth"
 import adminRouter from "../Routes/admin"
 import userGuestRouter from "../Routes/userGuestFetchData"
+import doctorScheduleRouter from '../Routes/doctorSchedule'
+
 import cookieParser from "cookie-parser";
+import errorHandlerMiddleware from "../Middleware/globalErrorHandlingMiddleware";
 
 
 
@@ -56,6 +59,10 @@ app.use(morgan('dev'))
 app.use("/api",userRouter)  
 app.use("/api",userGuestRouter)  
 app.use("/api/doctor",doctorAuthRouter)
+app.use("/api/doctor",doctorScheduleRouter)
 app.use("/api/Admin/",adminRouter)
+
+
+app.use(errorHandlerMiddleware)
 
 export default app
