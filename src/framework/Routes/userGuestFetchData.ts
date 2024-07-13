@@ -8,6 +8,7 @@ const router: Router = express.Router();
 
 
 import Doctor from "../model/DoctorSchema";
+import Specality from "../model/SpecalitySchema";
 
 
 
@@ -16,14 +17,15 @@ import FetchGuestUserDataRepository from "../../adapters/repositories/FetchGuest
 import FetchGuestUserDataUseCase from "../../useCase/FetchGuestUserDataUseCase";
 
 
-const fetchGuestUserDataRepository=new FetchGuestUserDataRepository(Doctor)
+const fetchGuestUserDataRepository=new FetchGuestUserDataRepository(Doctor,Specality)
 const fetchGuestUserDataUseCase=new FetchGuestUserDataUseCase(fetchGuestUserDataRepository)
 const fetchGusetUserData=new FetchGuestUserData(fetchGuestUserDataUseCase)
 
 
 
 router.get("/getDoctors",fetchGusetUserData.getDoctors.bind(fetchGusetUserData))
-
+router.get("/getDoctorProfile",fetchGusetUserData.getDoctorProfile.bind(fetchGusetUserData))
+router.get("/getSpecality",fetchGusetUserData.findAllSpecality.bind(fetchGusetUserData))
 
 
 

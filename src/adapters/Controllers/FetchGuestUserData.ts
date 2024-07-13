@@ -1,9 +1,10 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 
 import IFetchGuestUserDataController from "../../interface/controler/IFetchGuestUserDataController";
 import IFetchGuestUserDataUseCase from "../../interface/useCase/IFetchGuestUserDataUseCase";
+import { StatusCode } from "../../enums/statusCode";
 
 export default class FetchGuestUserData
   implements IFetchGuestUserDataController
@@ -15,17 +16,44 @@ export default class FetchGuestUserData
   }
 
   async getDoctors(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response,
+    next: NextFunction
   ): Promise<void> {
     try {
-      console.log("hiii shaham");
-
-      let data = await this.fetchGuestUserDataUseCase.getDataDoctors();
-      console.log(data);
-      res.json(data)
+      const data = await this.fetchGuestUserDataUseCase.getDataDoctors();
+      res.json(data);
     } catch (error) {
-        console.log(error,"this is error")
+      console.log(error, "this is error");
+      next(error);
     }
   }
+
+  async getDoctorProfile(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const id = req.query.doctorId;
+      const doctorData =
+        await this.fetchGuestUserDataUseCase.getDoctorProfileData(id as string);
+      res.status(StatusCode.success).json({ data: doctorData });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+
+  async findAllSpecality(req: Request, res: Response, next: NextFunction): Promise<void>{
+       try {
+          const response=await this.fetchGuestUserDataUseCase.getSpecalityData()
+          res.status(StatusCode.success).json({data:response})
+       } catch (error) {
+          next (error)
+       }
+  }
+
+
+
 }

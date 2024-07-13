@@ -1,4 +1,5 @@
 import IDoctor from "../entity/doctorEntity";
+import ISpecality from "../entity/specalityEntity";
 import IFetchGuestUserDataRepository from "../interface/repositories/IFetchGuestUserDataRepository";
 import IFetchGuestUserDataUseCase from "../interface/useCase/IFetchGuestUserDataUseCase";
 
@@ -23,6 +24,24 @@ export default  class FetchGuestUserDataUseCase implements IFetchGuestUserDataUs
       }
 
 
+  }
+
+
+  async getDoctorProfileData(id: string): Promise<IDoctor | null> {
+    try {
+      const response=await this.fetchGuestUserDataRepository.findDoctorProfileData(id)
+      return  response
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async getSpecalityData(): Promise<ISpecality | null[]> {
+     try {
+      return await this.fetchGuestUserDataRepository.findAllSpecalityData()
+     } catch (error) {
+       throw error
+     }
   }
 
 

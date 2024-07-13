@@ -1,14 +1,19 @@
 import { Model } from "mongoose";
 import IDoctor from "../../entity/doctorEntity";
-import { Mode } from "fs";
+import mongoose, { ObjectId } from "mongoose";
+const { ObjectId } = mongoose.Types;
 
 import IFetchGuestUserDataRepository from "../../interface/repositories/IFetchGuestUserDataRepository";
+import ISpecality from "../../entity/specalityEntity";
+import { Mode } from "fs";
 
 export default class FetchGuestUserDataRepository implements IFetchGuestUserDataRepository{
 
    private doctors:Model<IDoctor>
-   constructor(doctors:Model<IDoctor>){
+   private specality:Model<ISpecality>
+   constructor(doctors:Model<IDoctor>,specality:Model<ISpecality>){
       this.doctors=doctors
+      this.specality=specality
    }
 
 
@@ -20,6 +25,26 @@ export default class FetchGuestUserDataRepository implements IFetchGuestUserData
       } catch (error) {
          throw error
       }  
+  }
+
+  async findDoctorProfileData(id:string): Promise<IDoctor | null> {
+       try {
+           
+         const doctorId= new ObjectId(id)
+         return await this.doctors.findOne({_id:doctorId,isBlocked:false,approved:true})
+           
+       } catch (error) {
+          throw  error
+       }   
+  }
+
+
+  async findAllSpecalityData(): Promise<ISpecality|null[]> {
+       try {
+         return await this.specality.find({isDeleted:false})
+       } catch (error) {
+         throw error
+       }
   }
 
 
