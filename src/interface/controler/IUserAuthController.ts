@@ -26,7 +26,7 @@ export interface loginBody {
 }
 
 export interface tokenData {
-  id: string;
+  id:string;
   userName?:string;
   role:string
 }

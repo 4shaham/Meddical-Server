@@ -12,31 +12,27 @@ const DoctorScheduleSchema: Schema = new Schema({
     type:Date,
     required: true,
   },
-  slots:{
-    type: Map,
-  }
-  // slots: [
-  //   {
-  //     startTime: {
-  //       type: Date,
-  //       required: true,
-  //     },
-  //     endTime: {
-  //       type: Date,
-  //       required: true,
-  //     },
-  //     isBooked: {
-  //       type: Boolean,
-  //     },
-  //     patientId: {
-  //       type: Schema.Types.ObjectId,
-  //       default: null,
-  //     },
-  //     slotNumber:{
-  //       type:Number
-  //     }
-  //   },
-  // ],
+  consultationType:{
+    type:String
+  },
+  slots: [
+    {
+      startTime: {
+        type:String,
+        required: true,
+      },
+      endTime: {
+        type:String,
+        required: true,
+      },
+      isBooked: {
+        type: Boolean,
+      },
+      slotNumber:{
+        type:Number
+      },
+    },
+  ]
 });
 
 const DoctorSchedule=mongoose.model<IDoctorSchedule>("DoctorSchedule",DoctorScheduleSchema)

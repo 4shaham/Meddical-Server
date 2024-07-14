@@ -25,6 +25,6 @@ export interface DecodedJwt {
      }
 
 export default interface IJwtService {
-  createToken(data:tokenData): string;
+  createToken(data:tokenData):string;
   verify(token:string):DecodedJwt|null;
 }

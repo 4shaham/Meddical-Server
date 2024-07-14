@@ -14,24 +14,25 @@ export default class DoctorScheduleManagementRepository
     this.doctorSchedule = doctorSchedule;
   }
 
+
+
   async storeDoctorSchedule(
-    doctorId: string,
-    date: Date,
-    slots: Map<string, ISlot>
+    doctorId:string, date: Date, consultationMethod: string, slots: ISlot[]
   ): Promise<void> {
     try {
-      console.log(doctorId);
+      console.log(doctorId,date,slots);
       
       const dId = new ObjectId(doctorId);
 
       const doctorSchedule = new this.doctorSchedule({
         doctorId:dId,
-        date: date,
-        slots: slots,
+        date:date,
+        consultationType:consultationMethod,
+        slots:slots,
       });
       await doctorSchedule.save();
     } catch (error) {
-      console.log("rufiduifudfu",error)
+      console.log('erehuheurhuerhuehrueh',error)
       throw error;
     }
   }
@@ -44,4 +45,9 @@ export default class DoctorScheduleManagementRepository
       throw error;
     }
   }
-}
+
+  
+
+
+
+} 
