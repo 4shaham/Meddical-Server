@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import IBookingDb from "../../entity/bookingEntity";
+import IBooking from "../../entity/bookingEntity";
 
 
 const bookingSchema=new Schema({
@@ -27,7 +27,7 @@ const bookingSchema=new Schema({
 })
 
 
-const BookingDb=mongoose.model<IBookingDb>("BookingDb",bookingSchema)
+const BookingDb=mongoose.model<IBooking>("BookingDb",bookingSchema)
 
 
 export default BookingDb

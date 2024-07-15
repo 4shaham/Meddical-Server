@@ -1,6 +1,6 @@
 
 
-export default interface IBookingDb{
+export default interface IBooking{
     doctorId:string,
     date:Date,
     tokenId:string,
