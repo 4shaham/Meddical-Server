@@ -14,8 +14,8 @@ export default class DoctorAuthController implements IDoctorAuthController {
   }
 
   async register(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       const {
@@ -54,8 +54,8 @@ export default class DoctorAuthController implements IDoctorAuthController {
   }
 
   async otpVerification(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       const { otp } = req.body;
@@ -147,7 +147,7 @@ export default class DoctorAuthController implements IDoctorAuthController {
     res: Response<any, Record<string, any>>
   ): Promise<void> {
     try {
-      console.log(req.body)
+     
       let response = await this.doctorAuthUseCase.handleKYCVerificationStep1(
         req.body
       );
@@ -163,8 +163,8 @@ export default class DoctorAuthController implements IDoctorAuthController {
   }
 
   async storeKYCDataStep2(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       console.log("bodydata", req.body);
@@ -211,7 +211,6 @@ export default class DoctorAuthController implements IDoctorAuthController {
         }
         console.log('hello bro how ')
         res.status(401).json(response)
-        
        } catch (error) {
           console.log(error)
        }

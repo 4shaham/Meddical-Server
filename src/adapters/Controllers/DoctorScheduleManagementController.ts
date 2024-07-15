@@ -8,6 +8,7 @@ import { StatusCode } from "../../enums/statusCode";
 export default class DoctorScheduleManagementController
   implements IDoctorScheduleManagementController
 {
+
   private doctorScheduleManagementUseCase: IDoctorScheduleManagementUseCase;
   constructor(
     doctorScheduleManagmementUseCase: IDoctorScheduleManagementUseCase
@@ -25,9 +26,10 @@ export default class DoctorScheduleManagementController
       console.log(req.body)
 
       const { doctorId, date, startTime, endTime, intervals,consultationMethod} = req.body;
+      const token=req.cookies.doctorToken
       const response =
         await this.doctorScheduleManagementUseCase.addDoctorSchedule(
-          doctorId,  
+          token,
           date,
           consultationMethod,
           startTime,

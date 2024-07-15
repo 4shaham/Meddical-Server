@@ -110,7 +110,7 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
       }
 
       const tokendata = {
-        id: doctor._id,
+        id:doctor._id,
         userName: doctor.name,
         role: "doctor",
       };
@@ -118,9 +118,9 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
       let token = await this.jwtServices.createToken(tokendata);
 
       const doctorData = {
-        name: doctor.name,
-        image: doctor.image,
-        email: doctor.email,
+        name:doctor.name,
+        image:doctor.image,
+        email:doctor.email,
       };
 
       return {
@@ -232,6 +232,7 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
       throw error;
     }
   }
+  
 
   async handleKYCVerificationStep2(
     data: DatasKYCVerificationStep2

@@ -14,9 +14,13 @@ import DoctorScheduleManagmentUseCase from "../../useCase/DoctorScheduleManageme
 import DoctorScheduleManagementController from "../../adapters/controllers/DoctorScheduleManagementController";
 
 
+import JwtService from "../utils/jwtService";
+
+const jwtService=new JwtService()
+
 
 const doctorScheduleManagementRepository=new DoctorScheduleManagementRepository(DoctorSchedule)
-const doctorShceduleManagementUseCase=new DoctorScheduleManagmentUseCase(doctorScheduleManagementRepository)
+const doctorShceduleManagementUseCase=new DoctorScheduleManagmentUseCase(doctorScheduleManagementRepository,jwtService)
 const doctorScheduleManagementController=new DoctorScheduleManagementController(doctorShceduleManagementUseCase)
 
 
