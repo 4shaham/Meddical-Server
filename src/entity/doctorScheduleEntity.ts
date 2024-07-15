@@ -3,6 +3,7 @@ interface SlotsData {
   endTime: string;
   isBooked: boolean;
   slotNumber: number;
+  tokenId?:string
 }
 
 export default interface IDoctorSchedule {

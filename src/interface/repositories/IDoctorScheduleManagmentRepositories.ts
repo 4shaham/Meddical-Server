@@ -5,6 +5,7 @@ export interface ISlot {
     endTime: string;
     isBooked: boolean;  
     slotNumber:number,
+    tokenId?:string
 }
 
 export default interface IDoctorScheduleManagmentRepositories{

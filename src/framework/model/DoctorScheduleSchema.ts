@@ -31,6 +31,9 @@ const DoctorScheduleSchema: Schema = new Schema({
       slotNumber:{
         type:Number
       },
+      tokenId:{
+        type:mongoose.Types.ObjectId,
+      }
     },
   ]
 });

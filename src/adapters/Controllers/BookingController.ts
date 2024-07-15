@@ -14,10 +14,10 @@ export default class BookingController implements IBookingController {
 
    async createTokenBooking(req:IAuthRequest, res: Response): Promise<void> {
        try {
-          console.log(req.userId)
-          const {}=req.body
+          console.log(req.userId,"kooooooooooooooooooo",req.body)
+          const {doctorId,BookedDate,Fees,TypeOfConsaltation,schedulesId}=req.body
        } catch (error) {
-        
+          console.log(req.userId)
        }
    }
 
