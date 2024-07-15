@@ -14,6 +14,10 @@ export default class BookingUseCase implements IBookingUseCase {
        try {
          
         console.log(userId,doctorId,bookingDate,bookingDate,fees,typeOfConsaltation,schedulesId,slotNumber)
+         
+        const isAvailable=await this.bookingRepositories.verifyAvaliableSlot(doctorId,bookingDate,schedulesId)
+        console.log(isAvailable,"shahahmshshdghshal")
+
         const response=await this.bookingRepositories.sotreToken(userId,doctorId,bookingDate,typeOfConsaltation,schedulesId)    
        } catch (error) {
           throw error

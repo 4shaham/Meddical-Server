@@ -17,9 +17,8 @@ export default class BookingController implements IBookingController {
           console.log(req.userId,"kooooooooooooooooooo",req.body)
           const {doctorId,bookingDate,fees,typeOfConsaltation,schedulesId,slotNumber}=req.body
           const userId:string=req.userId as string
-         const response=await this.bookingUseCase.verifyCreateToken(userId,doctorId,bookingDate,fees,typeOfConsaltation,schedulesId,slotNumber)
+          const response=await this.bookingUseCase.verifyCreateToken(userId,doctorId,bookingDate,fees,typeOfConsaltation,schedulesId,slotNumber)
          res.json({message:"hiiii"})
- 
        } catch (error) {
           console.log(req.userId)
        }

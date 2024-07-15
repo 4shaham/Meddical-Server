@@ -8,14 +8,14 @@ import authorizationMiddleware from "../Middleware/user/authorization"
 
 
 import BookingDb from "../model/BookingSchema"
-
+import DoctorSchedule from "../model/DoctorScheduleSchema"
 
 import BookingController from "../../adapters/controllers/BookingController"
 import BookingUseCase from "../../useCase/BookingUseCase"
 import BookingRepository from "../../adapters/repositories/BookingRepository"
 
 
-const bookingRepository=new BookingRepository(BookingDb)
+const bookingRepository=new BookingRepository(BookingDb,DoctorSchedule)
 const bookingUseCase=new BookingUseCase(bookingRepository)
 const bookingController=new BookingController(bookingUseCase)
 

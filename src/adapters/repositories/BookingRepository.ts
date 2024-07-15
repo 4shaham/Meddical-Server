@@ -3,12 +3,16 @@ import IBooking from "../../entity/bookingEntity";
 import IBookingRepositories from "../../interface/repositories/IBookingRepositories";
 import { Mode } from "fs";
 import mongoose, { ObjectId } from "mongoose";
+import IDoctorSchedule from "../../entity/doctorScheduleEntity";
 const { ObjectId } = mongoose.Types;
 
 export default class BookingRepository implements IBookingRepositories {
   private bookingDb: Model<IBooking>;
-  constructor(bookingDb: Model<IBooking>) {
-    this.bookingDb = bookingDb;
+  private doctorSchedule:Model<IDoctorSchedule>
+
+  constructor(bookingDb: Model<IBooking>,doctorSchedule:Model<IDoctorSchedule>){
+      this.bookingDb = bookingDb;
+      this.doctorSchedule=doctorSchedule
   }
 
 
@@ -21,7 +25,7 @@ export default class BookingRepository implements IBookingRepositories {
 
      const data=new this.bookingDb({
         doctorId:dId,
-        date:Date,
+        date:bookingDate,
         tokenId:sId,
         userId:uId,
         conusultationType:typeOfConsaltation
@@ -32,6 +36,20 @@ export default class BookingRepository implements IBookingRepositories {
     }
   }
 
+  async verifyAvaliableSlot(doctorID: string, bookingDate:Date, schedulesId: string): Promise<IDoctorSchedule|null> {
+      try {
+        console.log(typeof(bookingDate))
+
+        const dId=new ObjectId(doctorID)
+        return await this.doctorSchedule.findOne({doctorId:dId,date:bookingDate, slots: {
+            $elemMatch: {
+              _id: new ObjectId(schedulesId) 
+            }
+        }})
+      } catch (error) {
+         throw error
+      }
+  }
 
 
 }
