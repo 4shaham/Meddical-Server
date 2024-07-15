@@ -1,9 +1,13 @@
+import IBookingRepositories from "../interface/repositories/IBookingRepositories";
+import IBookingUseCase from "../interface/useCase/IBookingUseCase";
 
 
-export default class BookingUseCase {
+export default class BookingUseCase implements IBookingUseCase {
 
-   constructor(){
-
+   private bookingRepositories:IBookingRepositories
+   constructor(bookingRepositories:IBookingRepositories){
+      this.bookingRepositories=bookingRepositories
    }
+    
 
 }

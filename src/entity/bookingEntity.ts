@@ -3,7 +3,7 @@
 export default interface IBookingDb{
     doctorId:string,
     date:Date,
-    tokenNumber:number,
+    tokenId:string,
     userId:string,
     conusultationType:"online"|"offline"
 }

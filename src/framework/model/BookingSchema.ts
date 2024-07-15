@@ -3,7 +3,6 @@ import IBookingDb from "../../entity/bookingEntity";
 
 
 const bookingSchema=new Schema({
-
     doctorId:{
         type:mongoose.Types.ObjectId,
         required:true
@@ -12,8 +11,8 @@ const bookingSchema=new Schema({
         type:Date,
         required:true
     },
-    tokenNumber:{
-        type:Number,
+    tokenId:{
+        type:mongoose.Types.ObjectId,
         required:true
     },
     userId:{
