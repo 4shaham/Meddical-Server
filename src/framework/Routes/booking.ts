@@ -23,7 +23,7 @@ const bookingController=new BookingController(bookingUseCase)
 
 
 router.post("/createTokenBooking",authorizationMiddleware, bookingController.createTokenBooking.bind(bookingController))
-
-
+router.delete("/cancelTokenBooking",authorizationMiddleware,bookingController.cancelTokenBooking.bind(bookingController))
+router.get("/findBookingDataWithStatus",authorizationMiddleware,bookingController.findUserBooking.bind(bookingController))
 
 export default router

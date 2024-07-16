@@ -8,48 +8,140 @@ const { ObjectId } = mongoose.Types;
 
 export default class BookingRepository implements IBookingRepositories {
   private bookingDb: Model<IBooking>;
-  private doctorSchedule:Model<IDoctorSchedule>
+  private doctorSchedule: Model<IDoctorSchedule>;
 
-  constructor(bookingDb: Model<IBooking>,doctorSchedule:Model<IDoctorSchedule>){
-      this.bookingDb = bookingDb;
-      this.doctorSchedule=doctorSchedule
+  constructor(
+    bookingDb: Model<IBooking>,
+    doctorSchedule: Model<IDoctorSchedule>
+  ) {
+    this.bookingDb = bookingDb;
+    this.doctorSchedule = doctorSchedule;
   }
 
-
-  async sotreToken(userId:string,doctorId:string,bookingDate:Date,typeOfConsaltation:string,schedulesId:string): Promise<IBooking | null> {
+  async storeToken(
+    userId: string,
+    doctorId: string,
+    bookingDate: Date,
+    typeOfConsaltation: string,
+    schedulesId: string,
+    slotNumber:number
+  ): Promise<IBooking | null> {
     try {
-     
-     const dId=new ObjectId(doctorId)
-     const uId=new ObjectId(userId)
-     const sId=new ObjectId(schedulesId)
-
-     const data=new this.bookingDb({
-        doctorId:dId,
-        date:bookingDate,
-        tokenId:sId,
-        userId:uId,
-        conusultationType:typeOfConsaltation
-     })   
-     return await data.save() 
-    }catch (error) {
+      const data = new this.bookingDb({
+        doctorId:new ObjectId(doctorId),
+        date: bookingDate,
+        userId:new ObjectId(userId),
+        conusultationType: typeOfConsaltation,
+        scheduleId:new ObjectId(schedulesId),
+        slotNumber:slotNumber, 
+      });
+      return await data.save();
+    } catch (error) {
       throw error;
     }
   }
 
-  async verifyAvaliableSlot(doctorID: string, bookingDate:Date, schedulesId: string): Promise<IDoctorSchedule|null> {
-      try {
-        console.log(typeof(bookingDate))
+  async verifyAvaliableSlot(
+    scheduleId: string,
+    slotNumber:number
+  ): Promise<IDoctorSchedule | null> {
+    try {
+    
+      return await this.doctorSchedule.findOne({
+        _id:scheduleId,
+        slots: {
+          $elemMatch: {
+            slotNumber:slotNumber,
+            isBooked:false,
+          },
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 
-        const dId=new ObjectId(doctorID)
-        return await this.doctorSchedule.findOne({doctorId:dId,date:bookingDate, slots: {
-            $elemMatch: {
-              _id: new ObjectId(schedulesId) 
-            }
-        }})
+  async updatedScheduledStatus(
+    scheduleId: string,
+    slotNumber:number,
+    status:boolean
+  ): Promise<IDoctorSchedule|null>{
+    try {
+      return await this.doctorSchedule.findOneAndUpdate({_id:scheduleId,"slots.slotNumber":slotNumber},{$set:{"slots.$.isBooked":status}},{new:true})
+    } catch (error){
+      throw error;
+    }
+  }
+
+
+  async fetchBookingData(id: string): Promise<IBooking|null> {
+     try {
+        return await this.bookingDb.findOne({_id:id,isCanceled:false})
+     } catch (error) {
+        throw error
+     }
+  }
+
+  async canceledBookingStatus(bookingId: string): Promise<IBooking | null> {
+      try {
+        return await this.bookingDb.findOneAndUpdate({_id:bookingId})
       } catch (error) {
          throw error
       }
   }
 
+  async fetchBookingdatasWithStatus(id: string,statusType:string): Promise<IBooking | null[]> {
+     try {
+
+      const agg = [
+        {
+          '$match': {
+            'userId':new ObjectId(id), 
+            'tokenStatus':statusType
+          }
+        }, {
+          '$lookup': {
+            'from': 'doctorschedules', 
+            'localField': 'scheduleId', 
+            'foreignField': '_id', 
+            'as': 'scheduleDatas'
+          }
+        }, {
+          '$unwind': {
+            'path': '$scheduleDatas'
+          }
+        }, {
+          '$unwind': {
+            'path': '$scheduleDatas.slots'
+          }
+        }
+      ];
+       let o = {}
+      const a:any=await this.bookingDb.aggregate(agg)
+      console.log(a)
+      // if(a && a.scheduleDatas.slots.slotNumber){
+      //    o=a.schedulesData.slots.find((val:any)=>{
+      //     return val.slotNumber===a.slotNumber
+      // })
+      // }
+     
+      console.log(o,'Priyanjith kandupidtham')
+      return await this.bookingDb.find({userId:id,tokenStatus:statusType,isCanceled:false})
+      
+    
+
+     } catch (error) {
+       throw error
+     }
+  }
+
+  
+  async updatedBookingDbCanceledStatus(id: string): Promise<IBooking | null> {
+      try {
+         return await this.bookingDb.findOneAndUpdate({_id:id},{$set:{isCanceled:true}})
+      } catch (error) {
+         throw error
+      }
+  }
 
 }

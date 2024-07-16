@@ -4,6 +4,8 @@ import { ParsedQs } from "qs";
 import IDoctorScheduleManagementController from "../../interface/controler/IDoctorScheduleManagementController";
 import IDoctorScheduleManagementUseCase from "../../interface/useCase/IDoctorScheduleManagementUseCase";
 import { StatusCode } from "../../enums/statusCode";
+import IRequest from "../../interface/controler/Request";
+
 
 export default class DoctorScheduleManagementController
   implements IDoctorScheduleManagementController
@@ -17,16 +19,15 @@ export default class DoctorScheduleManagementController
   }
 
   async addSchedules(
-    req: Request,
+    req:IRequest,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
 
-      console.log(req.body)
-
       const { doctorId, date, startTime, endTime, intervals,consultationMethod} = req.body;
       const token=req.cookies.doctorToken
+
       const response =
         await this.doctorScheduleManagementUseCase.addDoctorSchedule(
           token,
@@ -40,10 +41,11 @@ export default class DoctorScheduleManagementController
     } catch (error) {
       next(error);
     }
+
   }
 
   async findPerticularDateSchedule(
-    req: Request,
+    req:Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
@@ -51,22 +53,28 @@ export default class DoctorScheduleManagementController
 
       const date = req.query.date;
       const id = req.query.doctorId;
-
       const newDate = new Date(date as string);
-      console.log('hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii')
+
       const schedule =
-        await this.doctorScheduleManagementUseCase.findDoctorScedulePerticularDate(
+        await this.doctorScheduleManagementUseCase.findDoctorSchedulePerticularDate(
           newDate,
           id as string
         );
-      console.log(schedule);
       res.status(StatusCode.success).json(schedule);
+
     } catch (error) {
-      console.log(error);
+       next(error)
     }
   }
 
-
+ async findAllScehdules(req: IRequest, res: Response, next: NextFunction): Promise<void> {
+      try {
+        const responseData=await this.doctorScheduleManagementUseCase.findDoctorAllSchedule(req.doctorID as string)
+        res.json({data:responseData})
+      } catch (error) {
+         next (error)
+      }
+ }
 
 
 }

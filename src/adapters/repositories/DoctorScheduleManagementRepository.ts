@@ -46,6 +46,16 @@ export default class DoctorScheduleManagementRepository
     }
   }
 
+
+  async fetchDoctorsAllSchedule(id: string): Promise<IDoctorSchedule | null[]> {
+      try {
+       return await this.doctorSchedule.find({doctorId:new ObjectId(id)})
+      } catch (error) {
+        throw error
+      }
+  }
+
+
   
 
 

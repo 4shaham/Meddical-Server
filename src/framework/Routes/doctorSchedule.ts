@@ -15,6 +15,7 @@ import DoctorScheduleManagementController from "../../adapters/controllers/Docto
 
 
 import JwtService from "../utils/jwtService";
+import authorization from "../Middleware/doctor/authorization";
 
 const jwtService=new JwtService()
 
@@ -26,9 +27,9 @@ const doctorScheduleManagementController=new DoctorScheduleManagementController(
 
 
 
- router.post("/addSchedule",doctorScheduleManagementController.addSchedules.bind(doctorScheduleManagementController))
+ router.post("/addSchedule",authorization,doctorScheduleManagementController.addSchedules.bind(doctorScheduleManagementController))
  router.get("/findSchedulePerticularDate",doctorScheduleManagementController.findPerticularDateSchedule.bind(doctorScheduleManagementController))
-
+ router.get("/findDoctorSchedule",authorization,doctorScheduleManagementController.findAllScehdules.bind(doctorScheduleManagementController))
  
 
 export default router

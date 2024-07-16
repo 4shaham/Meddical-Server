@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import IBooking from "../../entity/bookingEntity";
 
 
+
 const bookingSchema=new Schema({
     doctorId:{
         type:mongoose.Types.ObjectId,
@@ -9,10 +10,6 @@ const bookingSchema=new Schema({
     },
     date:{
         type:Date,
-        required:true
-    },
-    tokenId:{
-        type:mongoose.Types.ObjectId,
         required:true
     },
     userId:{
@@ -23,10 +20,25 @@ const bookingSchema=new Schema({
         type:String,
         enum:["online","offline"],
         required:true
+    },
+    scheduleId:{
+        type:mongoose.Types.ObjectId,
+         required:true
+    },
+    slotNumber:{
+        type:Number,
+        required:true 
+    },
+    tokenStatus:{
+        type:String,
+        default:"pending",
+        enum: ["pending","visted"], 
+    },
+    isCanceled:{
+        type:Boolean,
+        default:false
     }
 })
-
-
 const BookingDb=mongoose.model<IBooking>("BookingDb",bookingSchema)
 
 

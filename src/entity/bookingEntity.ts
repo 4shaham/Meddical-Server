@@ -1,9 +1,25 @@
 
 
+enum TokenStatus{
+    applied="applied",
+    visted="visted"
+}
+
+
 export default interface IBooking{
+    _id:string,
     doctorId:string,
     date:Date,
-    tokenId:string,
     userId:string,
-    conusultationType:"online"|"offline"
+    conusultationType:"online"|"offline",
+    scheduleId:string,
+    slotNumber:number,
+    tokenStatus:TokenStatus,
+    isCanceled:boolean
 }
+
+
+
+
+
+

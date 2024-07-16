@@ -89,12 +89,11 @@ export default class DoctorScheduleManagmentUseCase
             startTime: `${Math.floor(currentTime / 60)}:${currentTime % 60}`,
             endTime: `${Math.floor(slotEndTime / 60)}:${slotEndTime % 60}`,
             isBooked: false,
-            slotNumber: slotNumber++
+            slotNumber: slotNumber++,
           });
         }
   
         currentTime += 30;
-  
         if (isWithinInterval) {
           let interval = intervalsInMinutes.find(interval => 
             currentTime >= interval.start && currentTime < interval.end
@@ -209,7 +208,7 @@ export default class DoctorScheduleManagmentUseCase
       
   // }
 
-  async findDoctorScedulePerticularDate(
+  async findDoctorSchedulePerticularDate(
     date:Date,
     doctorId:string
   ):Promise<IDoctorSchedule | null> {
@@ -223,7 +222,13 @@ export default class DoctorScheduleManagmentUseCase
     }
   }
   
-  
+  async findDoctorAllSchedule(id: string): Promise<IDoctorSchedule|null[]> {
+     try{
+       return await this.doctorScheduleManagementRepository.fetchDoctorsAllSchedule(id)
+     } catch (error){
+       throw error
+     }
+  }
 
 
  

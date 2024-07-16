@@ -15,13 +15,13 @@ const DoctorScheduleSchema: Schema = new Schema({
   consultationType:{
     type:String
   },
-  slots: [
+  slots:[
     {
-      startTime: {
+      startTime:{
         type:String,
         required: true,
       },
-      endTime: {
+      endTime:{
         type:String,
         required: true,
       },
@@ -30,9 +30,6 @@ const DoctorScheduleSchema: Schema = new Schema({
       },
       slotNumber:{
         type:Number
-      },
-      tokenId:{
-        type:mongoose.Types.ObjectId,
       }
     },
   ]

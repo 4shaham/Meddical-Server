@@ -7,5 +7,6 @@ export interface intevalsValues{
 
 export default interface IDoctorScheduleManagementUseCase {
       addDoctorSchedule(token:string,date:Date,consultationMethod:string,startTime:string,endTime:string,interval?:intevalsValues[]):Promise<void>
-      findDoctorScedulePerticularDate(date:Date,doctorId:string):Promise<IDoctorSchedule|null>
+      findDoctorSchedulePerticularDate(date:Date,doctorId:string):Promise<IDoctorSchedule|null>
+      findDoctorAllSchedule(id:string):Promise<IDoctorSchedule|null[]>
 }
