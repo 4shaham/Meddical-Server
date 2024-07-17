@@ -1,4 +1,5 @@
 
+import IUser from "../../entity/userEntity"
 import { googleAuthBody, loginBody, otpVerifyData, registerBody } from "../controler/IUserAuthController"
 
 
@@ -28,4 +29,5 @@ export default interface IuserUseCase{
     resendOtp(email:string):Promise<string|null>
     verifyToken(token:string):Promise<VerifyTokenResponse>
     googleAuthenticateUser(data:googleAuthBody):Promise<resObj|null>
+    verifyProfileData(id:string):Promise<IUser|null>
 }   

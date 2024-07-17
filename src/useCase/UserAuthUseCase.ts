@@ -6,6 +6,7 @@ import IhasingService from "../interface/utils/IHasingService";
 import IuserRepositories from "../interface/repositories/IUserRepositories";
 import IOtpServices from "../interface/utils/IOtpServices";
 import IJwtService from "../interface/utils/IJwtService";
+import IUser from "../entity/userEntity";
 
 
 class UserAuthUseCase implements IuserUseCase {
@@ -289,6 +290,16 @@ class UserAuthUseCase implements IuserUseCase {
      }
    }
 
+
+   async verifyProfileData(id: string): Promise<IUser | null> {
+        try {
+           
+          return  await this.userAuthRepository.fetchPrfileData(id)
+
+        } catch (error) {
+           throw error
+        }
+   }
 
 }
 

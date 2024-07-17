@@ -1,4 +1,6 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
+import IRequest from "./Request";
+import IAuthRequest from "../User/authRequest";
 
 export interface googleAuthBody{
   email:string,
@@ -47,6 +49,7 @@ export default interface IUserAuthController {
   logOut(req:Request,res:Response):Promise<void>;
   getToken(req:Request,res:Response):Promise<void>;
   googleAuth(req:Request,res:Response):Promise<void>
+  getUserProfile(req:IAuthRequest,res:Response,next:NextFunction):Promise<void>
 }
 
 

@@ -15,8 +15,8 @@ export default class AdminController implements IAdminController {
 
 
   async adminLogin(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
      
@@ -46,8 +46,8 @@ export default class AdminController implements IAdminController {
   }
 
   async adminLogOut(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ):Promise<void>{
     try {
       res.cookie("adminToken", "", { httpOnly: true, expires: new Date() });
@@ -78,8 +78,8 @@ export default class AdminController implements IAdminController {
   }
 
   async addSpecialty(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       const { specalityName, image } = req.body;
@@ -102,8 +102,8 @@ export default class AdminController implements IAdminController {
   }
 
   async deleteSpecality(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       const id = req.params.specalityId;
@@ -123,8 +123,8 @@ export default class AdminController implements IAdminController {
   }
 
   async findAllSpecality(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       let response = await this.adminUseCase.getSpecality();
@@ -136,8 +136,8 @@ export default class AdminController implements IAdminController {
   }
 
   async updateDoctorKycStatus(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       const { email, status } = req.body;
@@ -155,8 +155,8 @@ export default class AdminController implements IAdminController {
   }
 
   async getNewDoctorRequest(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       console.log("hiiii enter getnew Doctors applied Route");
@@ -170,8 +170,8 @@ export default class AdminController implements IAdminController {
   }
 
   async getDoctorDataVerification(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       const id = req.query.id;
@@ -195,8 +195,8 @@ export default class AdminController implements IAdminController {
   }
 
   async findEditSpecalityData(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       const id = req.query.specalityId;
@@ -214,8 +214,8 @@ export default class AdminController implements IAdminController {
   }
 
   async updateSpecality(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       const { image, name, id } = req.body;
@@ -239,8 +239,8 @@ export default class AdminController implements IAdminController {
   }
 
   async findDeletedSpecality(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
        
@@ -253,8 +253,8 @@ export default class AdminController implements IAdminController {
   }
 
   async restoreSpecality(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
        const {id}=req.body 
@@ -272,4 +272,7 @@ export default class AdminController implements IAdminController {
       res.status(500).json("internal error")
     }
   }
+
+
+  
 }

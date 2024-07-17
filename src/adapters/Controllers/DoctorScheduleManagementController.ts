@@ -24,9 +24,12 @@ export default class DoctorScheduleManagementController
     next: NextFunction
   ): Promise<void> {
     try {
-
-      const { doctorId, date, startTime, endTime, intervals,consultationMethod} = req.body;
+       
+      console.log(req.body)
+      const { doctorId, date, startTime, endTime,interval,consultationMethod}=req.body;
       const token=req.cookies.doctorToken
+
+      console.log('hshahshhshdhfd',interval)
 
       const response =
         await this.doctorScheduleManagementUseCase.addDoctorSchedule(
@@ -35,7 +38,7 @@ export default class DoctorScheduleManagementController
           consultationMethod,
           startTime,
           endTime,
-          intervals
+          interval
         );
       res.status(StatusCode.success).json({ message: "successfully added" });
     } catch (error) {

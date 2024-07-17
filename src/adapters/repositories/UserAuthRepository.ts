@@ -126,7 +126,22 @@ class UserAuthRepository implements IuserRepositories {
      }
   }
 
-   
+
+  async fetchPrfileData(id: string): Promise<IUser | null> {
+       try {
+         return await this.users.findOne({_id:id,otpVerified:true})
+       } catch (error) {
+         throw error
+       }
+  }
+
+
+  
+
+  
+
+
+
 }
 
 export default UserAuthRepository;

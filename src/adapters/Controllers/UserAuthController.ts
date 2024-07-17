@@ -1,8 +1,10 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import IUserAuthController from "../../interface/controler/IUserAuthController";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import IuserUseCase from "../../interface/useCase/IUseruseCase";
+import IAuthRequest from "../../interface/User/authRequest";
+import { StatusCode } from "../../enums/statusCode";
 
 class UserAuthController implements IUserAuthController {
   private userAuthUseCase: IuserUseCase;
@@ -14,8 +16,8 @@ class UserAuthController implements IUserAuthController {
   /// user Register
 
   async register(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       const { email, userName, age, gender, password, phoneNumber } = req.body;
@@ -51,8 +53,8 @@ class UserAuthController implements IUserAuthController {
   // otp verification
 
   async otpVerification(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       const { otp,typeOfOtp} = req.body;
@@ -100,8 +102,8 @@ class UserAuthController implements IUserAuthController {
   // login
 
   async login(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
 
@@ -135,8 +137,8 @@ class UserAuthController implements IUserAuthController {
   // resend Otp
 
   async resendOtp(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       const email = req.cookies.otpEmail;
@@ -154,8 +156,8 @@ class UserAuthController implements IUserAuthController {
   // forget Password
 
   async forgotPassword(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       const { email } = req.body;
@@ -177,8 +179,8 @@ class UserAuthController implements IUserAuthController {
 
   
   async updatePassword(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       
@@ -198,8 +200,8 @@ class UserAuthController implements IUserAuthController {
   // logoout
 
   async logOut(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       res.cookie("token", "", { httpOnly: true, expires: new Date() });
@@ -210,8 +212,8 @@ class UserAuthController implements IUserAuthController {
   }
 
   async getToken(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       const token = req.cookies.token;
@@ -228,12 +230,13 @@ class UserAuthController implements IUserAuthController {
   // gogleAuth
 
   async googleAuth(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
-      const { email, userName, image } = req.body;
 
+
+      const { email, userName, image } = req.body;
       let data = {
         email,
         userName,
@@ -257,6 +260,27 @@ class UserAuthController implements IUserAuthController {
       console.log(error);
     }
   }
+
+
+  async getUserProfile(req: IAuthRequest, res: Response,next:NextFunction): Promise<void> {
+      try {
+        
+         const userId:string=req.userId as string
+         const data=await this.userAuthUseCase.verifyProfileData(userId)
+
+         res.status(StatusCode.success).json({userData:data})
+
+      } catch (error) {
+         throw error
+      }
+  }
+
+
+
+
+
+
+
 }
 
 export default UserAuthController;

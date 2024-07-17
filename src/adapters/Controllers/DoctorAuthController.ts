@@ -79,8 +79,8 @@ export default class DoctorAuthController implements IDoctorAuthController {
   }
 
   async resendOtp(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       const email = req.cookies.doctorOtpEmail;
@@ -96,8 +96,8 @@ export default class DoctorAuthController implements IDoctorAuthController {
   }
 
   async login(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
 
@@ -118,8 +118,8 @@ export default class DoctorAuthController implements IDoctorAuthController {
   }
 
   async getKycinformation(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
       console.log("hyy kyc informaiton controller ");
@@ -143,8 +143,8 @@ export default class DoctorAuthController implements IDoctorAuthController {
   }
 
   async storeKYCDataStep1(
-    req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
-    res: Response<any, Record<string, any>>
+    req: Request,
+    res: Response
   ): Promise<void> {
     try {
      
@@ -190,7 +190,7 @@ export default class DoctorAuthController implements IDoctorAuthController {
     }
   }
 
-  async logOut(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
+  async logOut(req: Request,res:Response): Promise<void> {
        try {
         res.cookie("doctorToken", "", { httpOnly: true, expires: new Date() });
         res.status(200).json({ status: true });
@@ -199,7 +199,7 @@ export default class DoctorAuthController implements IDoctorAuthController {
        }
   }
 
-  async getToken(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
+  async getToken(req:Request,res:Response): Promise<void> {
        try {
 
         let token=req.cookies.doctorToken
