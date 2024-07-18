@@ -9,4 +9,8 @@ export default class ChatingUseCase implements IChatingUseCase {
         this.chatingRepositories=chatingRepositories
     }
 
+
+
+    
+
 }
