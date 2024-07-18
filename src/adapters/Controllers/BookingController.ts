@@ -6,6 +6,7 @@ import { StatusCode } from "../../enums/statusCode";
 
 
 export default class BookingController implements IBookingController {
+   
 
    private bookingUseCase:IBookingUseCase
    constructor(bookingUseCase:IBookingUseCase){

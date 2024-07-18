@@ -28,7 +28,7 @@ export default class JwtService implements IJwtService {
 
       return decoded
 
-     } catch (error) {
+     } catch (error) {  
       
       if (error instanceof Jwt.TokenExpiredError) {
         return null; // Token has expired
