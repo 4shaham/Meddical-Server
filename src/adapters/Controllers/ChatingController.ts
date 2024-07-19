@@ -15,10 +15,9 @@ export default class ChatingControllers implements IChatingContrller {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { senderId, receiverId } = req.body;
 
-      await this.chatingUseCase.verifyCreateConverasation(senderId, receiverId);
-
+      const { doctorId, userId } = req.body;
+      await this.chatingUseCase.verifyCreateConverasation(doctorId,userId);
       res
         .status(StatusCode.success)
         .json({ message: "successfully created conversation" });
@@ -33,9 +32,9 @@ export default class ChatingControllers implements IChatingContrller {
     next: NextFunction
   ): Promise<void> {
     try {
-      const id: string = req.query.id as string;
+      const id:string=req.query.id as string;
       const data = await this.chatingUseCase.getConversationData(id);
-      res.status(StatusCode.success).json({ converasation: data });
+      res.status(StatusCode.success).json({converasation:data});
     } catch (error) {
       next(error);
     }

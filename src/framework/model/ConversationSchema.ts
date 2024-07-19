@@ -3,15 +3,15 @@ import ConversationEntity from "../../entity/conversationEntity";
 
 const conversationSchema: Schema = new Schema(
   {
-    members: [
-      // {
-      //   doctorId: {
-      //     type: Schema.Types.ObjectId,
-      //     required: true,
-      //     ref: "Doctor",
-      //   },
-      //   userId: { type: Schema.Types.ObjectId, required: true, ref: "User" },
-      // },
+    members:[
+      {
+        doctorId: {
+          type: Schema.Types.ObjectId,
+          required: true,
+          ref: "Doctor",
+        },
+        userId: { type: Schema.Types.ObjectId, required: true, ref: "User" },
+      },
     ],
   },
   {
@@ -20,7 +20,7 @@ const conversationSchema: Schema = new Schema(
 );
 
 const Conversation = mongoose.model<ConversationEntity>(
-  "Coversation",
+  "Conversation",
   conversationSchema
 );
 

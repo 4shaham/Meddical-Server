@@ -2,7 +2,10 @@
 
 export default interface ConversationEntity{
     _id:string,
-    members:string[],
+    members:[{
+       doctorId:string,
+       userId:string
+    }],
     createdAt:string,
     updatedAt:string
 }

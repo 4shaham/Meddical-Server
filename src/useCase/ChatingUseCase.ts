@@ -14,12 +14,12 @@ export default class ChatingUseCase implements IChatingUseCase {
         this.chatingRepositories=chatingRepositories
     }
 
-  async verifyCreateConverasation(senderId: string, receiverID: string): Promise<void> {
+  async verifyCreateConverasation(doctorId: string,userId:string): Promise<void> {
        try {
-           if(!senderId||!receiverID){
+           if(!doctorId||!userId){
               throw new Errors("senderId and recieverId is required",StatusCode.badRequest)
            }
-           await this.chatingRepositories.storeConversation(senderId,receiverID)
+           await this.chatingRepositories.storeConversation(doctorId,userId)
                     
        } catch (error) {
             throw error

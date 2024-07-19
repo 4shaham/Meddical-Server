@@ -17,12 +17,15 @@ export default class ChatingRepository implements IChatingRepositories {
   }
 
   async storeConversation(
-    senderId: string,
-    receiverID: string
+    doctorId: string,
+    userId: string
   ): Promise<ConversationEntity> {
     try {
       const converasation = new this.converasation({
-        members: [senderId, receiverID],
+        members:[{
+          doctorId:doctorId,
+          userId:userId
+        }],
       });
       return await converasation.save();
     } catch (error) {
@@ -32,7 +35,8 @@ export default class ChatingRepository implements IChatingRepositories {
 
   async getConversation(id:string): Promise<ConversationEntity|null[]> {
     try {
-      return await this.converasation.find({members:{$in:[id]}})
+      // return await this.converasation.find({members:{$in:[id]}})
+      return await this.converasation.find({$or:[{"members.userId":id},{"members.doctorId":id}]})
     } catch (error) {
       throw error;
     }
