@@ -22,8 +22,8 @@ const chatingController=new ChatingControllers(chatingUseCase)
 
 router.post("/createConversation",chatingController.createConversation.bind(chatingController))
 router.get("/getConverasation",chatingController.getConversation.bind(chatingController))
-
-
+router.post("/storeMessage",chatingController.createMessage.bind(chatingController))
+router.get("/getMessage",chatingController.getMessage.bind(chatingController))
 
 export default router
 

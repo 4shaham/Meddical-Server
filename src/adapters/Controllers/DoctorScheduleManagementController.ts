@@ -39,7 +39,7 @@ export default class DoctorScheduleManagementController
           startTime,
           endTime,
           interval
-        );
+      );
       res.status(StatusCode.success).json({ message: "successfully added" });
     } catch (error) {
       next(error);

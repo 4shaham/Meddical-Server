@@ -4,6 +4,7 @@ import IChatingUseCase from "../interface/useCase/IChatingUseCase";
 import Errors from "../erros/errors";
 import { StatusCode } from "../enums/statusCode";
 import ConversationEntity from "../entity/conversationEntity";
+import MessageEntity from "../entity/messageEntity";
 
 
 export default class ChatingUseCase implements IChatingUseCase {
@@ -37,12 +38,20 @@ export default class ChatingUseCase implements IChatingUseCase {
 
   async handleStoreMessage(converasationId:string,sender:string,message:string): Promise<void> {
        try {
-        
+          await this.chatingRepositories.storeMessage(converasationId,sender,message)
        } catch (error) {
             throw error      
        }
   }
 
+
+  async handleGetMessage(convrasationId: string): Promise<MessageEntity | null[]> {
+       try {
+          return await this.chatingRepositories.getMessage(convrasationId)
+       } catch (error) {
+         throw error
+       }
+  }
 
 
 

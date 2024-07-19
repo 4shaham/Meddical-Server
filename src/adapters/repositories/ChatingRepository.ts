@@ -53,6 +53,17 @@ export default class ChatingRepository implements IChatingRepositories {
        }
   }
 
+
+  async getMessage(conversationId: string): Promise<MessageEntity | null[]> {
+       try {
+         return await this.message.find({conversationId:conversationId})
+       } catch (error) {
+          throw error
+       }
+  }
+
+
+  
     
   
 

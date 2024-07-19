@@ -9,7 +9,6 @@ export default class ChatingControllers implements IChatingContrller {
     this.chatingUseCase = chatingUseCase;
   }
 
-
   async createConversation(
     req: Request,
     res: Response,
@@ -28,14 +27,13 @@ export default class ChatingControllers implements IChatingContrller {
     }
   }
 
-
   async getConversation(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const id:string = req.query.id as string;
+      const id: string = req.query.id as string;
       const data = await this.chatingUseCase.getConversationData(id);
       res.status(StatusCode.success).json({ converasation: data });
     } catch (error) {
@@ -43,17 +41,41 @@ export default class ChatingControllers implements IChatingContrller {
     }
   }
 
-
-
-  async messageing(
+  async createMessage(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
+
       const { conversationId, senderId, text } = req.body;
+      await this.chatingUseCase.handleStoreMessage(
+        conversationId,
+        senderId,
+        text
+      );
+      res.status(StatusCode.success).json({message:"sucessfully stored the message"})
+
     } catch (error) {
       next(error);
     }
   }
+
+  async getMessage(req: Request, res: Response, next: NextFunction): Promise<void> {
+         try {
+
+          const converasationId:string=req.query.converasationId as string
+          const data=await this.chatingUseCase.handleGetMessage(converasationId)
+          res.status(StatusCode.success).json({messages:data})
+            
+         } catch (error) {
+             next(error)
+         }
+  }
+
+
+  
+ 
+
+
 }
