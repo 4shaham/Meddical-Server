@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
+import ConversationEntity from "../../entity/conversationEntity";
 
-const conversationSchema = new Schema(
+const conversationSchema: Schema = new Schema(
   {
     members: [
       {
@@ -18,5 +19,9 @@ const conversationSchema = new Schema(
   }
 );
 
-const Conversation=mongoose.model("Coversation",conversationSchema)
-export default Conversation
+const Conversation = mongoose.model<ConversationEntity>(
+  "Coversation",
+  conversationSchema
+);
+
+export default Conversation;

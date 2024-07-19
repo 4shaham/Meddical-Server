@@ -5,6 +5,8 @@ export default interface ConversationEntity{
     members:[{
         doctorId:string,
         userId:string,
-    }]
+    }],
+    createdAt:string,
+    updatedAt:string
 }
 
