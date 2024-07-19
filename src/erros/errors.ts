@@ -6,7 +6,7 @@ interface IErrors{
     message:string
 }
 
-class ErrorsSchedule extends Error {
+class Errors extends Error {
     
     private statusCode
 
@@ -17,4 +17,4 @@ class ErrorsSchedule extends Error {
 
 }
 
-export default ErrorsSchedule
+export default Errors

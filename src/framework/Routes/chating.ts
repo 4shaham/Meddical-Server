@@ -9,9 +9,23 @@ import ChatingUseCase from "../../useCase/ChatingUseCase"
 
 
 
-const chatingRepository=new ChatingRepository()
+// collection 
+import Conversation from "../model/ConversationSchema"
+import Message from "../model/MessageSchema"
+
+
+const chatingRepository=new ChatingRepository(Conversation,Message)
 const chatingUseCase=new ChatingUseCase(chatingRepository)
 const chatingController=new ChatingControllers(chatingUseCase)
+
+
+
+router.post("/createConversation",chatingController.createConversation.bind(chatingController))
+router.get("/getConverasation",chatingController.getConversation.bind(chatingController))
+
+
+
+export default router
 
 
 
