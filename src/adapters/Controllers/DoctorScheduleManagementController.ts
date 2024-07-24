@@ -5,12 +5,11 @@ import IDoctorScheduleManagementController from "../../interface/controler/IDoct
 import IDoctorScheduleManagementUseCase from "../../interface/useCase/IDoctorScheduleManagementUseCase";
 import { StatusCode } from "../../enums/statusCode";
 import IRequest from "../../interface/controler/Request";
-
+import { Date } from "mongoose";
 
 export default class DoctorScheduleManagementController
   implements IDoctorScheduleManagementController
 {
-
   private doctorScheduleManagementUseCase: IDoctorScheduleManagementUseCase;
   constructor(
     doctorScheduleManagmementUseCase: IDoctorScheduleManagementUseCase
@@ -19,17 +18,23 @@ export default class DoctorScheduleManagementController
   }
 
   async addSchedules(
-    req:IRequest,
+    req: IRequest,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-       
-      console.log(req.body)
-      const { doctorId, date, startTime, endTime,interval,consultationMethod}=req.body;
-      const token=req.cookies.doctorToken
+      console.log(req.body);
+      const {
+        doctorId,
+        date,
+        startTime,
+        endTime,
+        interval,
+        consultationMethod,
+      } = req.body;
+      const token = req.cookies.doctorToken;
 
-      console.log('hshahshhshdhfd',interval)
+      console.log("hshahshhshdhfd", interval);
 
       const response =
         await this.doctorScheduleManagementUseCase.addDoctorSchedule(
@@ -39,21 +44,19 @@ export default class DoctorScheduleManagementController
           startTime,
           endTime,
           interval
-      );
+        );
       res.status(StatusCode.success).json({ message: "successfully added" });
     } catch (error) {
       next(error);
     }
-
   }
 
   async findPerticularDateSchedule(
-    req:Request,
+    req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-
       const date = req.query.date;
       const id = req.query.doctorId;
       const newDate = new Date(date as string);
@@ -64,20 +67,48 @@ export default class DoctorScheduleManagementController
           id as string
         );
       res.status(StatusCode.success).json(schedule);
-
     } catch (error) {
-       next(error)
+      next(error);
     }
   }
 
- async findAllScehdules(req: IRequest, res: Response, next: NextFunction): Promise<void> {
-      try {
-        const responseData=await this.doctorScheduleManagementUseCase.findDoctorAllSchedule(req.doctorID as string)
-        res.json({data:responseData})
-      } catch (error) {
-         next (error)
-      }
- }
+  async findAllScehdules(
+    req: IRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const responseData =
+        await this.doctorScheduleManagementUseCase.findDoctorAllSchedule(
+          req.doctorID as string
+        );
+      res.json({ data: responseData });
+    } catch (error) {
+      next(error);
+    }
+  }
 
+  async findBookingSlotWithDate(
+    req: IRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      
+      // const date=new Date(Date.now())
 
+      const today = new Date();
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+      const id = req.doctorID;
+      const responseData =
+        await this.doctorScheduleManagementUseCase.findDoctorBookingData(
+          id as string,
+          tomorrow
+        );
+      res.status(StatusCode.success).json({ doctorSchedule: responseData });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

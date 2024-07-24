@@ -30,9 +30,11 @@ class UserAuthUseCase implements IuserUseCase {
 
   async registerUser(data: registerBody): Promise<void> {
     try {
+
       let emailExists = await this.userAuthRepository.checkEmailExists(
         data.email
       );
+      
       let phoneNumberExists =
         await this.userAuthRepository.checkPhoneNumberExists(data.phoneNumber);
 

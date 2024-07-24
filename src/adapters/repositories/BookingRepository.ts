@@ -93,43 +93,41 @@ export default class BookingRepository implements IBookingRepositories {
   async fetchBookingdatasWithStatus(id: string,statusType:string): Promise<IBooking | null[]> {
      try {
 
-      const agg = [
-        {
-          '$match': {
-            'userId':new ObjectId(id), 
-            'tokenStatus':statusType
-          }
-        }, {
-          '$lookup': {
-            'from': 'doctorschedules', 
-            'localField': 'scheduleId', 
-            'foreignField': '_id', 
-            'as': 'scheduleDatas'
-          }
-        }, {
-          '$unwind': {
-            'path': '$scheduleDatas'
-          }
-        }, {
-          '$unwind': {
-            'path': '$scheduleDatas.slots'
-          }
-        }
-      ];
-       let o = {}
-      const a:any=await this.bookingDb.aggregate(agg)
-      console.log(a)
+      // const agg = [
+      //   {
+      //     '$match': {
+      //       'userId':new ObjectId(id), 
+      //       'tokenStatus':statusType
+      //     }
+      //   }, {
+      //     '$lookup': {
+      //       'from': 'doctorschedules', 
+      //       'localField': 'scheduleId', 
+      //       'foreignField': '_id', 
+      //       'as': 'scheduleDatas'
+      //     }
+      //   }, {
+      //     '$unwind': {
+      //       'path': '$scheduleDatas'
+      //     }
+      //   }, {
+      //     '$unwind': {
+      //       'path': '$scheduleDatas.slots'
+      //     }
+      //   }
+      // ];
+      //  let o = {}
+      // const a:any=await this.bookingDb.aggregate(agg)
+      // console.log(a)
       // if(a && a.scheduleDatas.slots.slotNumber){
       //    o=a.schedulesData.slots.find((val:any)=>{
       //     return val.slotNumber===a.slotNumber
       // })
       // }
      
-      console.log(o,'Priyanjith kandupidtham')
+      // console.log(o,'Priyanjith kandupidtham')
       return await this.bookingDb.find({userId:id,tokenStatus:statusType,isCanceled:false})
       
-    
-
      } catch (error) {
        throw error
      }
@@ -143,5 +141,6 @@ export default class BookingRepository implements IBookingRepositories {
          throw error
       }
   }
+
 
 }

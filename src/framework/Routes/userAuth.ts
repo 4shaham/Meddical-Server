@@ -30,6 +30,7 @@ const jwtServices=new JwtService()
 
 
 // create a object and connect all controllers and  usecase and useRepositorys
+
 const userAuthRepository = new UserAuthRepository(Users,Otp);
 const userAuthUseCase = new UserAuthUseCase(userAuthRepository,hashingServices,otpServices,jwtServices);
 const userAuthController = new UserAuthController(userAuthUseCase);

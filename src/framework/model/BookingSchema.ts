@@ -39,6 +39,7 @@ const bookingSchema=new Schema({
         default:false
     }
 })
+
 const BookingDb=mongoose.model<IBooking>("BookingDb",bookingSchema)
 
 

@@ -3,6 +3,7 @@ import morgan from "morgan";
 import dotenv from "dotenv"
 import cors from "cors"
 import fileUpload from 'express-fileupload';
+import session from "express-session"
 
 dotenv.config()  
 
@@ -22,6 +23,7 @@ import errorHandlerMiddleware from "../Middleware/globalErrorHandlingMiddleware"
 
 
 
+
 const app=express()
 
 //env 
@@ -31,6 +33,10 @@ const app=express()
 
 //  set up cookieParser
 app.use(cookieParser());
+
+
+
+
 
 
 app.use(cors({
@@ -43,6 +49,12 @@ app.use(fileUpload({
     limits: { fileSize: 2 * 1024 * 1024 },
   }))
 
+
+app.use(session({
+    secret:'your_secret_key',
+    resave:false,
+    saveUninitialized:true,
+}));  
 
 //  same usage of bodyparser
 
@@ -71,6 +83,8 @@ app.use("/api",chatingRouter)
 app.use("/api/doctor",doctorAuthRouter)
 app.use("/api/doctor",doctorScheduleRouter)
 app.use("/api/Admin/",adminRouter)
+
+app.use("",bookingRouter)
 
 
 

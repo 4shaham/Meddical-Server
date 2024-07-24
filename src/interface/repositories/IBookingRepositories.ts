@@ -11,4 +11,5 @@ export default interface IBookingRepositories{
         canceledBookingStatus(bookingId:string):Promise<IBooking|null>
         fetchBookingdatasWithStatus(id:string,statusType:string):Promise<IBooking|null[]>
         updatedBookingDbCanceledStatus(id:string):Promise<IBooking|null>
+      
 }

@@ -3,13 +3,17 @@ import IBookingRepositories from "../interface/repositories/IBookingRepositories
 import IBookingUseCase, { VerfiyResponse } from "../interface/useCase/IBookingUseCase";
 import authorizationMiddleware from "../framework/Middleware/user/authorization";
 import IBooking from "../entity/bookingEntity";
+import { IStripe } from "../interface/utils/IStripeService";
 
 
 export default class BookingUseCase implements IBookingUseCase {
 
    private bookingRepositories:IBookingRepositories
-   constructor(bookingRepositories:IBookingRepositories){
+   private stripePayments:IStripe
+
+   constructor(bookingRepositories:IBookingRepositories,stripePayments:IStripe){
       this.bookingRepositories=bookingRepositories
+      this.stripePayments=stripePayments
    }
 
 
@@ -63,5 +67,27 @@ export default class BookingUseCase implements IBookingUseCase {
         }
    }
 
+   async verifyPaymentCheckOut(fees:number): Promise<any>{
+      try {
+        const data=await this.stripePayments.makePayment(fees)
+        return data
+       }catch (error) {
+          console.log(error)
+       }
+   }
 
-}
+
+   async verifyWebHook(req: any): Promise<boolean> {
+         try {
+         return await this.stripePayments.verifySucessOfWebhook(req)
+         } catch (error) {
+            console.log(error)
+            throw error
+         }
+   }
+
+
+
+
+
+}   

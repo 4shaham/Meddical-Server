@@ -1,3 +1,4 @@
+import IBooking from "../entity/bookingEntity";
 import IDoctorSchedule from "../entity/doctorScheduleEntity";
 import { StatusCode } from "../enums/statusCode";
 import ErrorsSchedule from "../erros/errors";
@@ -10,7 +11,7 @@ import IJwtService from "../interface/utils/IJwtService";
 export default class DoctorScheduleManagmentUseCase
   implements IDoctorScheduleManagmentUseCase
 {
-  private doctorScheduleManagementRepository: IDoctorScheduleManagementRepositories;
+  private doctorScheduleManagementRepository:IDoctorScheduleManagementRepositories;
   private jwtService:IJwtService
 
 
@@ -229,6 +230,17 @@ export default class DoctorScheduleManagmentUseCase
        throw error
      }
   }
+
+
+  async findDoctorBookingData(doctorId: string, date: Date): Promise<IBooking[]> {
+       try {
+          return await this.doctorScheduleManagementRepository.findDoctorSlotedBookedData(doctorId,date)
+       } catch (error) {
+         throw error
+       }
+  }
+
+  
 
 
  

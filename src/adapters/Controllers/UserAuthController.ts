@@ -20,8 +20,9 @@ class UserAuthController implements IUserAuthController {
     res: Response
   ): Promise<void> {
     try {
+
       const { email, userName, age, gender, password, phoneNumber } = req.body;
-      console.log(req.body);
+
       if (!email || !userName || !age || !gender || !password || !phoneNumber) {
         res.status(400).json({
           status: false,

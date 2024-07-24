@@ -4,14 +4,19 @@ import IDoctorScheduleManagementRepositories, {
   ISlot,
 } from "../../interface/repositories/IDoctorScheduleManagmentRepositories";
 import mongoose, { ObjectId } from "mongoose";
+import IBooking from "../../entity/bookingEntity";
+
 const { ObjectId } = mongoose.Types;
 
 export default class DoctorScheduleManagementRepository
   implements IDoctorScheduleManagementRepositories
 {
   private doctorSchedule: Model<IDoctorSchedule>;
-  constructor(doctorSchedule: Model<IDoctorSchedule>) {
+  private bookingDb:Model<IBooking>;
+
+  constructor(doctorSchedule: Model<IDoctorSchedule>,bookingDb:Model<IBooking>) {
     this.doctorSchedule = doctorSchedule;
+    this.bookingDb=bookingDb
   }
 
 
@@ -57,7 +62,14 @@ export default class DoctorScheduleManagementRepository
 
 
   
-
+   async findDoctorSlotedBookedData(doctorId: string, date: Date): Promise<IBooking[]> {
+       try {
+        const bookings = await this.bookingDb.find({ doctorId: doctorId, date: date }).sort({ slotNumber: 1 });
+        return bookings;
+       } catch (error) {
+         throw error
+       }
+   }
 
 
 } 
