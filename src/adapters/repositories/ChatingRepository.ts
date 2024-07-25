@@ -35,7 +35,6 @@ export default class ChatingRepository implements IChatingRepositories {
 
   async getConversation(id:string): Promise<ConversationEntity|null[]> {
     try {
-      // return await this.converasation.find({members:{$in:[id]}})
       return await this.converasation.find({$or:[{"members.userId":id},{"members.doctorId":id}]})
     } catch (error) {
       throw error;
@@ -51,7 +50,6 @@ export default class ChatingRepository implements IChatingRepositories {
             text:message
           })
           return await data.save()
-
        } catch (error) {
          throw error
        }
@@ -60,8 +58,10 @@ export default class ChatingRepository implements IChatingRepositories {
 
   async getMessage(conversationId: string): Promise<MessageEntity | null[]> {
        try {
-         return await this.message.find({conversationId:conversationId})
+         console.log(conversationId,"jiiiiiiiiiiii")
+         return await this.message.find({conversationId:new ObjectId(conversationId)})
        } catch (error) {
+        console.log("Bachelor of Commerce with Computer Applications",error)
           throw error
        }
   }

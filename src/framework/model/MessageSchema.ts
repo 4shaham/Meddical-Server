@@ -3,8 +3,8 @@ import MessageEntity from "../../entity/messageEntity";
 
 const messageSchema: Schema = new Schema(
   {
-    conversationId: {
-      type: Schema.Types.ObjectId,
+    conversationId:{
+      type:Schema.Types.ObjectId,
       required: true,
     },
     sender: {

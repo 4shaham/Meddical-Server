@@ -13,7 +13,6 @@ const authorizationMiddleware = async (
   try {
     const token = req.cookies.token;
     let verification = jwtService.verify(token);
-    console.log(verification,"hiiiiiiiiiiiiiiiiiiiiiiiiiii");
     req.userId = verification?.id as string;
     next();
   } catch (error) {

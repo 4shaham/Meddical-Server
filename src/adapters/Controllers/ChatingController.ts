@@ -68,6 +68,7 @@ export default class ChatingControllers implements IChatingContrller {
           res.status(StatusCode.success).json({messages:data})
             
          } catch (error) {
+             console.log('errorrr here is any error')
              next(error)
          }
   }
