@@ -101,6 +101,7 @@ export default class DoctorScheduleManagementController
       const tomorrow = new Date(today);
       tomorrow.setDate(today.getDate() + 1);
       const id = req.doctorID;
+      console.log(id,"jkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
       const responseData =
         await this.doctorScheduleManagementUseCase.findDoctorBookingData(
           id as string,
