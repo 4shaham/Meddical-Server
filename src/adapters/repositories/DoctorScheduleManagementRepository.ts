@@ -72,15 +72,20 @@ export default class DoctorScheduleManagementRepository
   ): Promise<IBooking[]> {
     try {
      
-
       const today = new Date();
       const dateString = today.toISOString().split("T")[0];
 
 
+      console.log(new Date(dateString), "Current Date");
+      
+
+
       const bookings = await this.bookingDb
-        .find({ doctorId: doctorId, date:new Date(dateString)})
+        .find({doctorId:doctorId,date:new Date(dateString)})
         .sort({ slotNumber: 1 });
+        console.log(bookings,"shii")
       return bookings;
+    
 
     }catch (error) {
       throw error;

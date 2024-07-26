@@ -34,6 +34,12 @@ const bookingSchema=new Schema({
         default:"pending",
         enum: ["pending","visted"], 
     },
+    startTime:{
+        type:String,
+    },
+    endTime:{
+        type:String
+    },
     isCanceled:{
         type:Boolean,
         default:false

@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import IChatingContrller from "../../interface/controler/IChatingContrller";
 import IChatingUseCase from "../../interface/useCase/IChatingUseCase";
 import { StatusCode } from "../../enums/statusCode";
+import IRequest from "../../interface/controler/Request";
+import IAuthRequest from "../../interface/User/authRequest";
 
 export default class ChatingControllers implements IChatingContrller {
   private chatingUseCase: IChatingUseCase;
@@ -15,7 +17,6 @@ export default class ChatingControllers implements IChatingContrller {
     next: NextFunction
   ): Promise<void> {
     try {
-
       const { doctorId, userId } = req.body;
       await this.chatingUseCase.verifyCreateConverasation(doctorId,userId);
       res
@@ -27,17 +28,31 @@ export default class ChatingControllers implements IChatingContrller {
   }
 
   async getConversation(
-    req: Request,
+    req: IAuthRequest,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const id:string=req.query.id as string;
+      console.log("shahahma getConverassaion")
+      const id:string=req.userId as string;
       const data = await this.chatingUseCase.getConversationData(id);
       res.status(StatusCode.success).json({converasation:data});
-    } catch (error) {
+    } catch (error) {  
+      console.log(error)
       next(error);
     }
+  }
+
+
+  async doctorGetConversation(req: IRequest, res: Response, next: NextFunction): Promise<void> {
+        try{
+          const id:string=req.doctorID as string
+          const data = await this.chatingUseCase.getConversationData(id);
+          console.log(data)
+          res.status(StatusCode.success).json({converasation:data});
+        } catch (error) {
+          next(error);
+        }
   }
 
   async createMessage(

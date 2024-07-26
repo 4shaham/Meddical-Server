@@ -24,16 +24,23 @@ export default class BookingRepository implements IBookingRepositories {
     bookingDate: Date,
     typeOfConsaltation: string,
     schedulesId: string,
-    slotNumber:number
+    slotNumber:number,
+    startTime:string,
+    endTime:string
   ): Promise<IBooking | null> {
     try {
+
+      console.log(startTime,endTime)
+
       const data = new this.bookingDb({
         doctorId:new ObjectId(doctorId),
-        date: bookingDate,
+        date:bookingDate,
         userId:new ObjectId(userId),
         conusultationType: typeOfConsaltation,
         scheduleId:new ObjectId(schedulesId),
         slotNumber:slotNumber, 
+        startTime:startTime,
+        endTime:endTime
       });
       return await data.save();
     } catch (error) {

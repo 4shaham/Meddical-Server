@@ -78,7 +78,7 @@ export default class BookingController implements IBookingController {
         try {
 
           req.app.locals.datas=req.body                                                           
-          const {fees,typeOfConsaltation,schedulesId,slotNumber}=req.body  
+          const {fees,typeOfConsaltation,schedulesId,slotNumber,startTime,endTime}=req.body  
           const data=await this.bookingUseCase.verifyPaymentCheckOut(fees)
           res.status(StatusCode.success).json({sessionId:data})
         } catch (error) {
@@ -94,14 +94,12 @@ export default class BookingController implements IBookingController {
      
           const data=req.app.locals.datas;
           const event = req.body; 
-          const {userId,fees,typeOfConsaltation,schedulesId,slotNumber}=data
-
-          console.log('hiiiiiiiiiiiii enterd your webHook Page',data)
+          const {userId,fees,typeOfConsaltation,schedulesId,slotNumber,startTime,endTime}=data
+          console.log(startTime,endTime,'hihhhhhhhhhhhhhhhhhhhh')
           const result=await this.bookingUseCase.verifyWebHook(req)
-          console.log(result,"isiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
           if(result){
              console.log("hiiiii it is sucesss for the payment completed the store intd")
-             await this.bookingUseCase.verifyCreateToken(userId,fees,typeOfConsaltation,schedulesId,slotNumber)
+             await this.bookingUseCase.verifyCreateToken(userId,fees,typeOfConsaltation,schedulesId,slotNumber,startTime,endTime)
              res.status(200).json({messag:true})
           }
           

@@ -17,7 +17,7 @@ export default class BookingUseCase implements IBookingUseCase {
    }
 
 
-   async verifyCreateToken(userId:string,fees:number,typeOfConsaltation:string,schedulesId:string,slotNumber:number): Promise<VerfiyResponse> {
+   async verifyCreateToken(userId:string,fees:number,typeOfConsaltation:string,schedulesId:string,slotNumber:number,startTime:string,endTime:string): Promise<VerfiyResponse> {
        try {
       
    
@@ -27,7 +27,7 @@ export default class BookingUseCase implements IBookingUseCase {
            throw error("this slot is not available it is already booked")
         }
         console.log(schedulesId)
-        const storeBookingSlot=await this.bookingRepositories.storeToken(userId,isAvailable.doctorId,isAvailable.date,typeOfConsaltation,schedulesId,slotNumber)
+        const storeBookingSlot=await this.bookingRepositories.storeToken(userId,isAvailable.doctorId,isAvailable.date,typeOfConsaltation,schedulesId,slotNumber,startTime,endTime)
         const response=await this.bookingRepositories.updatedScheduledStatus(schedulesId,slotNumber,true)
         return {status:true,message:"created successfully"}
        } catch (error) {

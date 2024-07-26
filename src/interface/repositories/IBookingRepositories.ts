@@ -4,7 +4,7 @@ import IDoctorSchedule from "../../entity/doctorScheduleEntity";
 
 export default interface IBookingRepositories{
 
-        storeToken(userId:string,doctorId:string,bookingDate:Date,typeOfConsaltation:string,schedulesId:string,slotNumber:number):Promise<IBooking|null>
+        storeToken(userId:string,doctorId:string,bookingDate:Date,typeOfConsaltation:string,schedulesId:string,slotNumber:number,startTime:string,endTime:string):Promise<IBooking|null>
         verifyAvaliableSlot(scehduleId:string,slotNumber:number):Promise<IDoctorSchedule|null>
         updatedScheduledStatus(scheduleId:string,slotNumber:number,status:boolean):Promise<IDoctorSchedule|null>
         fetchBookingData(id:string):Promise<IBooking|null>

@@ -6,6 +6,7 @@ import IuserUseCase from "../../interface/useCase/IUseruseCase";
 import IAuthRequest from "../../interface/User/authRequest";
 import { StatusCode } from "../../enums/statusCode";
 
+
 class UserAuthController implements IUserAuthController {
   private userAuthUseCase: IuserUseCase;
 
@@ -266,7 +267,9 @@ class UserAuthController implements IUserAuthController {
   async getUserProfile(req: IAuthRequest, res: Response,next:NextFunction): Promise<void> {
       try {
         
-         const userId:string=req.userId as string
+         
+
+         let userId:string=req.userId as string  
          const data=await this.userAuthUseCase.verifyProfileData(userId)
 
          res.status(StatusCode.success).json({userData:data})

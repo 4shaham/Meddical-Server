@@ -15,6 +15,8 @@ export default interface IBooking{
     scheduleId:string,
     slotNumber:number,
     tokenStatus:TokenStatus,
+    startTime:string
+    endTime:string,
     isCanceled:boolean
 }
 
