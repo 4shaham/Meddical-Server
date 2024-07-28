@@ -46,12 +46,10 @@ export default class BookingController implements IBookingController {
 
    async cancelTokenBooking(req: IAuthRequest, res: Response, next: NextFunction): Promise<void> {
        try{
-         console.log('hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii bro')
          const bookingID=req.query.tokenId  
          const response=await this.bookingUseCase.verifyCancelToken(bookingID as string)
          res.status(StatusCode.success).json({message:"cancelled succueesffuly"})
        } catch (error) {
-          console.log(error,"jiiiiiiiiiiiiii")
           next(error)
        }
    }

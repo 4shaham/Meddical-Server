@@ -1,9 +1,10 @@
 import mongoose, { Model, Schema } from "mongoose";
+import IPrescription from "../../entity/prescriptionEntity";
 
 const prescription: Schema = new Schema({
-  date: {
+  date:{
     type: Date,
-    default: Date.now(),
+    default:Date.now(),
   },
   doctorId: {
     type: mongoose.Types.ObjectId,
@@ -17,13 +18,13 @@ const prescription: Schema = new Schema({
     type: mongoose.Types.ObjectId,
     required: true,
   },
-  pateintName: {
+  pateintName:{
     type: String,
     required: true,
   },
   medicines: [
     {
-      name: {
+      name:{
         type: String,
         required: true,
       },
@@ -32,7 +33,7 @@ const prescription: Schema = new Schema({
         required: true,
       },
       instructions: {
-        type: String,
+        type:String,
         default: "",
       },
     },
@@ -42,8 +43,12 @@ const prescription: Schema = new Schema({
       type: String,
     },
   ],
+  slotId:{
+    type:String,
+    required:true
+  }
 });
 
-const Prescription = mongoose.model("Prescription",prescription);
+const Prescription = mongoose.model<IPrescription>("Prescription",prescription);
 
 export default Prescription;

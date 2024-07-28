@@ -2,7 +2,7 @@ import IBooking from "../entity/bookingEntity";
 import IDoctorSchedule from "../entity/doctorScheduleEntity";
 import { StatusCode } from "../enums/statusCode";
 import ErrorsSchedule from "../erros/errors";
-import IDoctorScheduleManagementRepositories, { ISlot } from "../interface/repositories/IDoctorScheduleManagmentRepositories";
+import IDoctorScheduleManagementRepositories, { BookingDataWithUserData, ISlot } from "../interface/repositories/IDoctorScheduleManagmentRepositories";
 import IDoctorScheduleManagmentUseCase, {
   intevalsValues,
 } from "../interface/useCase/IDoctorScheduleManagementUseCase";
@@ -222,6 +222,7 @@ export default class DoctorScheduleManagmentUseCase
       throw error;
     }
   }
+
   
   async findDoctorAllSchedule(id: string): Promise<IDoctorSchedule|null[]> {
      try{
@@ -232,15 +233,38 @@ export default class DoctorScheduleManagmentUseCase
   }
 
 
-  async findDoctorBookingData(doctorId: string, date: Date): Promise<IBooking[]> {
+  async findDoctorBookingData(doctorId: string, date: Date): Promise<BookingDataWithUserData[]> {
        try {
           return await this.doctorScheduleManagementRepository.findDoctorSlotedBookedData(doctorId,date)
        } catch (error) {
-         throw error
+         throw error  
        }
   }
 
+
   
+  async addPrescription(description: string, medicines: Object[], recoverySteps: string, patientId: string, patientName: string, doctorID: string,slotId:string): Promise<void> {
+      try {
+
+        if(!description||!medicines||!recoverySteps||!patientId||!patientName){
+            throw new ErrorsSchedule("all datas are required",StatusCode.badRequest)
+        }
+         
+
+        const doctor =await this.doctorScheduleManagementRepository.getDoctorData(doctorID)
+         
+        if(!doctor){
+            throw new ErrorsSchedule("the Doctor Id is not valid",StatusCode.badRequest)
+        }
+        const recoveryStep=recoverySteps.split(",")
+        const response=await this.doctorScheduleManagementRepository.storePrescription(description,medicines,recoveryStep,patientId,patientName,doctorID,doctor?.name,slotId)
+         await this.doctorScheduleManagementRepository.PateintStatusChanged(response.slotId)
+        
+      } catch (error) {
+         throw error
+      }
+  }
+
 
 
  

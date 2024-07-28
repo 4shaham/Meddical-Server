@@ -11,4 +11,6 @@ export default interface IDoctorScheduleManagementUseCase {
       findDoctorSchedulePerticularDate(date:Date,doctorId:string):Promise<IDoctorSchedule|null>
       findDoctorAllSchedule(id:string):Promise<IDoctorSchedule|null[]>
       findDoctorBookingData(doctorId:string,date:Date):Promise<IBooking[]>
+      addPrescription(description:string,medicines:Object[],recoverySteps:string,patientId:string,patientName:string,doctorID:string,slotId:string):Promise<void>
+      
 }

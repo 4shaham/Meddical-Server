@@ -10,7 +10,7 @@ import { Date } from "mongoose";
 export default class DoctorScheduleManagementController
   implements IDoctorScheduleManagementController
 {
-  private doctorScheduleManagementUseCase: IDoctorScheduleManagementUseCase;
+  private doctorScheduleManagementUseCase:IDoctorScheduleManagementUseCase;
   constructor(
     doctorScheduleManagmementUseCase: IDoctorScheduleManagementUseCase
   ) {
@@ -101,7 +101,6 @@ export default class DoctorScheduleManagementController
       const tomorrow = new Date(today);
       tomorrow.setDate(today.getDate() + 1);
       const id = req.doctorID;
-      console.log(id,"jkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
       const responseData =
         await this.doctorScheduleManagementUseCase.findDoctorBookingData(
           id as string,
@@ -112,4 +111,26 @@ export default class DoctorScheduleManagementController
       next(error);
     }
   }
+
+
+  // createPrescription 
+
+  async createPrescription(req: IRequest, res: Response, next: NextFunction): Promise<void> {
+       try {
+        console.log("entered the routees of add Prescriition",req.body)
+        const {description,medicines,recoverySteps,patientId,patientName,slotId}=req.body
+        const doctorId=req.doctorID
+        await this.doctorScheduleManagementUseCase.addPrescription(description,medicines,recoverySteps,patientId,patientName,doctorId as string,slotId)
+        res.status(StatusCode.success).json({message:"successfull added Prescription"})
+  
+       } catch (error) {
+          console.log(error)
+          next(error)
+       }
+  }
+
+  
+
+
+
 }

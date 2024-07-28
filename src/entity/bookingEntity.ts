@@ -2,7 +2,7 @@
 
 enum TokenStatus{
     applied="applied",
-    visted="visted"
+    visted="visited"
 }
 
 

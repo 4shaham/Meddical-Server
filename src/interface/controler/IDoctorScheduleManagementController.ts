@@ -8,4 +8,5 @@ export default interface IDoctorScheduleManagementController{
     findPerticularDateSchedule(req:IRequest,res:Response,next:NextFunction):Promise<void>
     findBookingSlotWithDate(req:IRequest,res:Response,next:NextFunction):Promise<void>
     findAllScehdules(req:IRequest,res:Response,next:NextFunction):Promise<void>
+    createPrescription(req:IRequest,res:Response,next:NextFunction):Promise<void>
 }

@@ -32,7 +32,7 @@ const bookingSchema=new Schema({
     tokenStatus:{
         type:String,
         default:"pending",
-        enum: ["pending","visted"], 
+        enum: ["pending","visited"], 
     },
     startTime:{
         type:String,
