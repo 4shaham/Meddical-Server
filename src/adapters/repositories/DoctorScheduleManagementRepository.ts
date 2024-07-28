@@ -158,6 +158,7 @@ export default class DoctorScheduleManagementRepository
       } catch (error) {
          throw error
       }
+      
   }
 
 

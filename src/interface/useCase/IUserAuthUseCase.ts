@@ -19,7 +19,7 @@ export interface VerifyTokenResponse{
 
 
 
-export default interface IuserUseCase{
+export default interface IuserAuthUseCase{
 
     registerUser(data:registerBody):Promise<void>
     authenticateUser(data:loginBody):Promise<resObj|null>

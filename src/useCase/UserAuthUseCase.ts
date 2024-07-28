@@ -1,22 +1,22 @@
 
 
 import { googleAuthBody, loginBody, otpVerifyData, registerBody } from "../interface/controler/IUserAuthController";
-import IuserUseCase, { VerifyTokenResponse, resObj } from "../interface/useCase/IUseruseCase";
+import IuserAuthUseCase, { VerifyTokenResponse, resObj } from "../interface/useCase/IUserAuthUseCase";
 import IhasingService from "../interface/utils/IHasingService";
-import IuserRepositories from "../interface/repositories/IUserRepositories";
+import IuserAuthRepositories from "../interface/repositories/IUserAuthRepositories";
 import IOtpServices from "../interface/utils/IOtpServices";
 import IJwtService from "../interface/utils/IJwtService";
 import IUser from "../entity/userEntity";
 
 
-class UserAuthUseCase implements IuserUseCase {
-  private userAuthRepository:IuserRepositories;
+class UserAuthUseCase implements IuserAuthUseCase {
+  private userAuthRepository:IuserAuthRepositories;
   private hashingServices:IhasingService;
   private otpServices:IOtpServices;
   private jwtServices:IJwtService
 
   constructor(
-    userAuthRepository:IuserRepositories,
+    userAuthRepository:IuserAuthRepositories,
     hashingServices:IhasingService,
     otpServices:IOtpServices,
     jwtServices:IJwtService

@@ -1,12 +1,12 @@
 // import IUser from "../../interface/collection/Iuser";
 import IUser from "../../entity/userEntity";
 import { Model } from "mongoose";
-import IuserRepositories from "../../interface/repositories/IUserRepositories";
+import IuserAuthRepositories from "../../interface/repositories/IUserAuthRepositories";
 import { registerBody } from "../../interface/controler/IUserAuthController";
 import IUserOtp from "../../interface/collection/IotpUser";
 
 
-class UserAuthRepository implements IuserRepositories {
+class UserAuthRepository implements IuserAuthRepositories {
   private users: Model<IUser>;
   private otp:Model<IUserOtp>;
 

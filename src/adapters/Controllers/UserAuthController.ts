@@ -2,15 +2,15 @@ import { NextFunction, Request, Response } from "express";
 import IUserAuthController from "../../interface/controler/IUserAuthController";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
-import IuserUseCase from "../../interface/useCase/IUseruseCase";
+import IuserAuthUseCase from "../../interface/useCase/IUserAuthUseCase";
 import IAuthRequest from "../../interface/User/authRequest";
 import { StatusCode } from "../../enums/statusCode";
 
 
 class UserAuthController implements IUserAuthController {
-  private userAuthUseCase: IuserUseCase;
+  private userAuthUseCase: IuserAuthUseCase;
 
-  constructor(userAuthUseCase: IuserUseCase) {
+  constructor(userAuthUseCase: IuserAuthUseCase) {
     this.userAuthUseCase = userAuthUseCase;
   }
 
@@ -278,6 +278,8 @@ class UserAuthController implements IUserAuthController {
          throw error
       }
   }
+
+  
 
 
 

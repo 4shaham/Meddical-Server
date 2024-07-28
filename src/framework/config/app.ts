@@ -7,13 +7,14 @@ import session from "express-session"
 
 dotenv.config()  
 
-import userRouter from "../Routes/userAuth"
+import userAuthRouter from "../Routes/userAuth"
 import doctorAuthRouter from "../Routes/doctorAuth"
 import adminRouter from "../Routes/admin"
 import userGuestRouter from "../Routes/userGuestFetchData"
 import doctorScheduleRouter from '../Routes/doctorSchedule'
 import bookingRouter from "../Routes/booking"
 import chatingRouter from "../Routes/chating"
+import userRouter from "../Routes/user"
 
 import cookieParser from "cookie-parser";
 import errorHandlerMiddleware from "../Middleware/globalErrorHandlingMiddleware";
@@ -70,7 +71,8 @@ app.use(morgan('dev'))
 
 
 // user Router 
-app.use("/api",userRouter)  
+app.use("/api",userRouter)
+app.use("/api",userAuthRouter)    
 app.use("/api",userGuestRouter)  
 
 
