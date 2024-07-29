@@ -9,7 +9,8 @@ export default interface IPrescription {
   date: Date;
   doctorId:string;
   doctorName: string;
-  patientId:string;
+  diagnosis:string
+  pateintId:string;
   patientName: string;
   medicines: Medicine[];
   recoverySteps: string[];

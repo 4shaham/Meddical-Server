@@ -41,17 +41,33 @@ export default class StripePayment implements IStripe {
 
         let event = req.body;
        
-
+        console.log(event)
         if (endpointSecret) {
          
           const sig: any = req.headers["stripe-signature"];
           try {
             const payloadString = JSON.stringify(req.body, null, 2);
-            const header = stripe.webhooks.generateTestHeaderString({
+            const paymentIntentId = req.body?.data?.object?.payment_intent
+            console.log(paymentIntentId,"paymentn inteten")
+             const header = stripe.webhooks.generateTestHeaderString({
                 payload:payloadString,
                 secret:endpointSecret,
               });
              event=stripe.webhooks.constructEvent(payloadString,header,endpointSecret)
+
+             if (paymentIntentId) {
+                console.log('pymnt intnt');
+                const paymentIntentResponse = await stripe.paymentIntents.retrieve(paymentIntentId);
+                const paymentIntent = paymentIntentResponse
+                if (paymentIntentResponse.latest_charge) {
+
+                  const chargeId = paymentIntentResponse.latest_charge;
+                  console.log(chargeId,"koooooooooo")
+                  req.app.locals.chargeId = chargeId;
+                } else {
+                  return null;
+                }   
+              }
           } catch (err) {
              console.log('errrrr',err)
              throw err

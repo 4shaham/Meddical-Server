@@ -44,7 +44,9 @@ const bookingSchema=new Schema({
         type:Boolean,
         default:false
     }
-})
+}, {
+    timestamps: true,
+  })
 
 const BookingDb=mongoose.model<IBooking>("BookingDb",bookingSchema)
 

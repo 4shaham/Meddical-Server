@@ -17,7 +17,7 @@ const authorizationMiddleware = async (
     req.userId = verification?.id as string;
     next();
   } catch (error) {
-    res.status(403).json({ message: "unAuthorized" });
+    res.status(403).json({ message:"userTokenExpired"});
   }
 };
 

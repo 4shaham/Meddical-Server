@@ -93,39 +93,19 @@ export default class BookingController implements IBookingController {
           const data=req.app.locals.datas;
           const event = req.body; 
           const {userId,fees,typeOfConsaltation,schedulesId,slotNumber,startTime,endTime}=data
-          console.log(startTime,endTime,'hihhhhhhhhhhhhhhhhhhhh')
           const result=await this.bookingUseCase.verifyWebHook(req)
+
           if(result){
-             console.log("hiiiii it is sucesss for the payment completed the store intd")
-             await this.bookingUseCase.verifyCreateToken(userId,fees,typeOfConsaltation,schedulesId,slotNumber,startTime,endTime)
+           const response=await this.bookingUseCase.verifyCreateToken(userId,fees,typeOfConsaltation,schedulesId,slotNumber,startTime,endTime)
+           const transactionId=req.app.locals.chargeId
+           console.log(transactionId,"transactionId it is your id of payment")
+             await this.bookingUseCase.savePaymentData(response.slotId,schedulesId,transactionId,userId,fees,"cardPayment",slotNumber)
              res.status(200).json({messag:true})
           }
           
           
 
 
-         //  switch (event.type) {
-
-         //   case 'payment_intent.succeeded':
-         //      console.log('hiiiiiiiiiiiiiiiiiiiiiiiiii shahm salmamsluduud')
-         //      const paymentIntent=event.data.object;
-         //      console.log(`PaymentIntent for ${paymentIntent.amount} was successful!`);
-         //      // Then define and call a method to handle the successful payment intent.
-         //      //  handlePaymentIntentSucceeded(paymentIntent);
-         //     await this.bookingUseCase.verifyCreateToken(userId,fees,typeOfConsaltation,schedulesId,slotNumber)
-         //     break; 
-
-         //   case 'payment_method.attached':
-         //     const paymentMethod = event.data.object;
-         //     // Then define and call a method to handle the successful attachment of a PaymentMethod.
-         //     // handlePaymentMethodAttached(paymentMethod);
-         //     break;
-
-         //   default:
-         //     // Unexpected event type
-         //     console.log(`Unhandled event type ${event.type}.`);
-
-         // }
       } catch (error) {
          console.log(error)
          next (error)

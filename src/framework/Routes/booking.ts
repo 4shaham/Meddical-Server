@@ -7,8 +7,10 @@ const router=express.Router()
 import authorizationMiddleware from "../Middleware/user/authorization"
 
 
+// models
 import BookingDb from "../model/BookingSchema"
 import DoctorSchedule from "../model/DoctorScheduleSchema"
+import Payment from "../model/PaymentSchema"
 
 import BookingController from "../../adapters/controllers/BookingController"
 import BookingUseCase from "../../useCase/BookingUseCase"
@@ -19,7 +21,7 @@ import StripePayment from "../utils/stripPayment"
 
 const stripePayment =new StripePayment()
 
-const bookingRepository=new BookingRepository(BookingDb,DoctorSchedule)
+const bookingRepository=new BookingRepository(BookingDb,DoctorSchedule,Payment)
 const bookingUseCase=new BookingUseCase(bookingRepository,stripePayment)
 const bookingController=new BookingController(bookingUseCase)
 

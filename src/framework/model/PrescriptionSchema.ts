@@ -14,6 +14,9 @@ const prescription: Schema = new Schema({
     type: String,
     required: true,
   },
+  diagnosis:{
+    type:String,
+  },
   pateintId: {
     type: mongoose.Types.ObjectId,
     required: true,

@@ -7,9 +7,9 @@ interface SlotsData {
   slotNumber: number;
 }
 export default interface IDoctorSchedule {
-  _id: string;
-  doctorId: string;
-  date: Date;
+  _id:string;
+  doctorId:string;
+  date:Date;
   consultationType: string;
   slots: SlotsData[];
 }

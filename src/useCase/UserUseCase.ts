@@ -1,8 +1,9 @@
-import IuserRepositories from "../interface/repositories/IUserRepositories"
+import IuserRepositories, { PrescriptionData } from "../interface/repositories/IUserRepositories"
 import IUserUseCase from "../interface/useCase/IUseUseCase"
 import { StatusCode } from "../enums/statusCode"
 import Errors from "../erros/errors";
 import IPrescription from "../entity/prescriptionEntity";
+import PaymentEntity from "../entity/paymentEntity";
 
 export default class userUseCase implements IUserUseCase{
    
@@ -12,7 +13,7 @@ export default class userUseCase implements IUserUseCase{
     }
 
 
-     async isGetDataPrescription(id: string): Promise<IPrescription|null> {
+     async isGetDataPrescription(id: string): Promise<PrescriptionData[]> {
           try {
             
             if(id==""){
@@ -24,7 +25,19 @@ export default class userUseCase implements IUserUseCase{
              throw error
           }    
     }
+    
 
+   async isGetDataPayment(id: string): Promise<PaymentEntity[]> {
+         try {
+
+          if(id==""||!id){
+            throw new Errors("userId is required",StatusCode.badRequest)
+          }
+           return await this.userRepository.findPaymentHistory(id)
+         } catch (error) {
+            throw error
+         }      
+    }
 
 
 }

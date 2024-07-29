@@ -136,6 +136,7 @@ export default class DoctorScheduleManagementRepository
           doctorName:doctorName,
           pateintId:patientId,
           pateintName:patientName,
+          diagnosis:description,
           medicines:medicines,
           recoverySteps:recoverySteps,
           slotId:slotId

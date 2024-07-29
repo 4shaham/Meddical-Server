@@ -1,5 +1,6 @@
 import IBooking from "../../entity/bookingEntity";
 import IDoctorSchedule from "../../entity/doctorScheduleEntity";
+import PaymentEntity from "../../entity/paymentEntity";
 
 
 export default interface IBookingRepositories{
@@ -11,5 +12,6 @@ export default interface IBookingRepositories{
         canceledBookingStatus(bookingId:string):Promise<IBooking|null>
         fetchBookingdatasWithStatus(id:string,statusType:string):Promise<IBooking|null[]>
         updatedBookingDbCanceledStatus(id:string):Promise<IBooking|null>
-      
+        storePaymentData(tokenId:string,doctorId:string,transactionId:string,userId:string,amount:number,       paymentMethod:string):Promise<PaymentEntity>
+        fetchSchedule(id:string):Promise<IDoctorSchedule|null>
 }

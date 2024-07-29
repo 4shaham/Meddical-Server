@@ -4,18 +4,22 @@ import IBookingRepositories from "../../interface/repositories/IBookingRepositor
 import { Mode } from "fs";
 import mongoose, { ObjectId } from "mongoose";
 import IDoctorSchedule from "../../entity/doctorScheduleEntity";
+import PaymentEntity from "../../entity/paymentEntity";
 const { ObjectId } = mongoose.Types;
 
 export default class BookingRepository implements IBookingRepositories {
   private bookingDb: Model<IBooking>;
   private doctorSchedule: Model<IDoctorSchedule>;
+  private payment: Model<PaymentEntity>;
 
   constructor(
     bookingDb: Model<IBooking>,
-    doctorSchedule: Model<IDoctorSchedule>
+    doctorSchedule: Model<IDoctorSchedule>,
+    payment: Model<PaymentEntity>
   ) {
     this.bookingDb = bookingDb;
     this.doctorSchedule = doctorSchedule;
+    this.payment = payment;
   }
 
   async storeToken(
@@ -24,23 +28,22 @@ export default class BookingRepository implements IBookingRepositories {
     bookingDate: Date,
     typeOfConsaltation: string,
     schedulesId: string,
-    slotNumber:number,
-    startTime:string,
-    endTime:string
+    slotNumber: number,
+    startTime: string,
+    endTime: string
   ): Promise<IBooking | null> {
     try {
-
-      console.log(startTime,endTime)
+      console.log(startTime, endTime);
 
       const data = new this.bookingDb({
-        doctorId:new ObjectId(doctorId),
-        date:bookingDate,
-        userId:new ObjectId(userId),
+        doctorId: new ObjectId(doctorId),
+        date: bookingDate,
+        userId: new ObjectId(userId),
         conusultationType: typeOfConsaltation,
-        scheduleId:new ObjectId(schedulesId),
-        slotNumber:slotNumber, 
-        startTime:startTime,
-        endTime:endTime
+        scheduleId: new ObjectId(schedulesId),
+        slotNumber: slotNumber,
+        startTime: startTime,
+        endTime: endTime,
       });
       return await data.save();
     } catch (error) {
@@ -50,16 +53,15 @@ export default class BookingRepository implements IBookingRepositories {
 
   async verifyAvaliableSlot(
     scheduleId: string,
-    slotNumber:number
+    slotNumber: number
   ): Promise<IDoctorSchedule | null> {
     try {
-    
       return await this.doctorSchedule.findOne({
-        _id:scheduleId,
+        _id: scheduleId,
         slots: {
           $elemMatch: {
-            slotNumber:slotNumber,
-            isBooked:false,
+            slotNumber: slotNumber,
+            isBooked: false,
           },
         },
       });
@@ -70,84 +72,102 @@ export default class BookingRepository implements IBookingRepositories {
 
   async updatedScheduledStatus(
     scheduleId: string,
-    slotNumber:number,
-    status:boolean
-  ): Promise<IDoctorSchedule|null>{
+    slotNumber: number,
+    status: boolean
+  ): Promise<IDoctorSchedule | null> {
     try {
-      return await this.doctorSchedule.findOneAndUpdate({_id:scheduleId,"slots.slotNumber":slotNumber},{$set:{"slots.$.isBooked":status}},{new:true})
-    } catch (error){
+      return await this.doctorSchedule.findOneAndUpdate(
+        { _id: scheduleId, "slots.slotNumber": slotNumber },
+        { $set: { "slots.$.isBooked": status } },
+        { new: true }
+      );
+    } catch (error) {
       throw error;
     }
   }
 
-
-  async fetchBookingData(id: string): Promise<IBooking|null> {
-     try {
-        return await this.bookingDb.findOne({_id:id,isCanceled:false})
-     } catch (error) {
-        throw error
-     }
+  async fetchBookingData(id: string): Promise<IBooking | null> {
+    try {
+      return await this.bookingDb.findOne({ _id: id, isCanceled: false });
+    } catch (error) {
+      throw error;
+    }
   }
 
   async canceledBookingStatus(bookingId: string): Promise<IBooking | null> {
-      try {
-        return await this.bookingDb.findOneAndUpdate({_id:bookingId})
-      } catch (error) {
-         throw error
-      }
+    try {
+      return await this.bookingDb.findOneAndUpdate({ _id: bookingId });
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async fetchBookingdatasWithStatus(id: string,statusType:string): Promise<IBooking | null[]> {
-     try {
+  async fetchBookingdatasWithStatus(
+    id: string,
+    statusType: string
+  ): Promise<IBooking | null[]> {
+    try {
+      return await this.bookingDb.find({
+        userId: id,
+        tokenStatus: statusType,
+        isCanceled: false,
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 
-      // const agg = [
-      //   {
-      //     '$match': {
-      //       'userId':new ObjectId(id), 
-      //       'tokenStatus':statusType
-      //     }
-      //   }, {
-      //     '$lookup': {
-      //       'from': 'doctorschedules', 
-      //       'localField': 'scheduleId', 
-      //       'foreignField': '_id', 
-      //       'as': 'scheduleDatas'
-      //     }
-      //   }, {
-      //     '$unwind': {
-      //       'path': '$scheduleDatas'
-      //     }
-      //   }, {
-      //     '$unwind': {
-      //       'path': '$scheduleDatas.slots'
-      //     }
-      //   }
-      // ];
-      //  let o = {}
-      // const a:any=await this.bookingDb.aggregate(agg)
-      // console.log(a)
-      // if(a && a.scheduleDatas.slots.slotNumber){
-      //    o=a.schedulesData.slots.find((val:any)=>{
-      //     return val.slotNumber===a.slotNumber
-      // })
-      // }
-     
-      // console.log(o,'Priyanjith kandupidtham')
-      return await this.bookingDb.find({userId:id,tokenStatus:statusType,isCanceled:false})
-      
-     } catch (error) {
-       throw error
-     }
+  async updatedBookingDbCanceledStatus(id: string): Promise<IBooking | null> {
+    try {
+      return await this.bookingDb.findOneAndUpdate(
+        { _id: id },
+        { $set: { isCanceled: true } }
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async storePaymentData(
+    tokenId:string,
+    doctorId:string,
+    transactionId: string,
+    userId: string,
+    amount: number,
+    paymentMethod:string
+  ): Promise<PaymentEntity> {
+    try {
+
+    console.log(doctorId,"dkfdjfdjfkdjfkd",transactionId,paymentMethod)
+
+      const data = new this.payment({
+        tokenId:new ObjectId(tokenId),
+        doctorId:doctorId,
+        transactionId:transactionId,
+        userId:new ObjectId(userId),
+        amount:amount,
+        paymentMethod
+      });
+      return await data.save();
+
+
+    } catch (error) {
+      console.log(error)
+      throw error;
+    }
   }
 
   
-  async updatedBookingDbCanceledStatus(id: string): Promise<IBooking | null> {
+  async fetchSchedule(id: string): Promise<IDoctorSchedule | null> {
       try {
-         return await this.bookingDb.findOneAndUpdate({_id:id},{$set:{isCanceled:true}})
+        
+      return  await this.doctorSchedule.findOne({_id:id})
+
       } catch (error) {
          throw error
       }
   }
+  
 
 
 }
