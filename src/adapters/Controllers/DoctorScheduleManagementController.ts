@@ -57,15 +57,16 @@ export default class DoctorScheduleManagementController
     next: NextFunction
   ): Promise<void> {
     try {
-      const date = req.query.date;
+      const date =req.query.date;
       const id = req.query.doctorId;
       const newDate = new Date(date as string);
-
+      console.log('hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii',date,id)
       const schedule =
         await this.doctorScheduleManagementUseCase.findDoctorSchedulePerticularDate(
           newDate,
           id as string
         );
+        console.log(schedule)
       res.status(StatusCode.success).json(schedule);
     } catch (error) {
       next(error);

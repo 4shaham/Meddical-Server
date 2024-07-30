@@ -10,6 +10,7 @@ export default interface IBookingController{
     findUserBooking(req:IAuthRequest,res:Response,next:NextFunction):Promise<void>
     makePayment(req:Request,res:Response,next:NextFunction):Promise<void>
     webhook(req:IAuthRequest,res:Response,next:NextFunction):Promise<void>
+    rescheduleBooking(req:IAuthRequest,res:Response,next:NextFunction):Promise<void>
 }
 
 

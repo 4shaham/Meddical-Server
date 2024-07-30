@@ -6,6 +6,8 @@ import IBookingUseCase, {
 import authorizationMiddleware from "../framework/Middleware/user/authorization";
 import IBooking from "../entity/bookingEntity";
 import { IStripe } from "../interface/utils/IStripeService";
+import Errors from "../erros/errors";
+import { StatusCode } from "../enums/statusCode";
 
 export default class BookingUseCase implements IBookingUseCase {
   private bookingRepositories: IBookingRepositories;
@@ -88,7 +90,7 @@ export default class BookingUseCase implements IBookingUseCase {
   async findBookingDataWithStatus(
     id: string,
     statausType: string
-  ): Promise<IBooking | null[]> {
+  ): Promise<IBooking[]> {
     try {
       return await this.bookingRepositories.fetchBookingdatasWithStatus(
         id,
@@ -137,5 +139,33 @@ export default class BookingUseCase implements IBookingUseCase {
       throw error
 
     }
+  }
+
+
+  async isRescheduling(slotId: string, slotNumber: number,scheduleId: string,newSlotNumber:number): Promise<void> {
+      try {
+         
+
+        const isAvailable = await this.bookingRepositories.verifyAvaliableSlot(
+          scheduleId,
+          newSlotNumber
+        );
+
+        console.log("isAvailable",isAvailable)
+        if(!isAvailable){
+           throw new Errors("this slot is not available",StatusCode.badRequest)
+        }
+         
+        await this.bookingRepositories.updatedScheduledStatus(scheduleId,slotNumber,false)
+        await this.bookingRepositories.updatedScheduledStatus(scheduleId,newSlotNumber,true)
+
+        await this.bookingRepositories.reschedulUpdateBookingDb(slotId,newSlotNumber)
+
+        
+
+
+      } catch (error) {
+         throw error
+      }   
   }
 }

@@ -1,10 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import IAdminController from "../../interface/controler/IAdminController";
 import IAdminUseCase from "../../interface/useCase/IAdminUseCase";
 import { Z_BEST_SPEED } from "zlib";
 import { error } from "console";
+import { StatusCode } from "../../enums/statusCode";
 
 export default class AdminController implements IAdminController {
 
@@ -271,6 +272,19 @@ export default class AdminController implements IAdminController {
       console.log(error);
       res.status(500).json("internal error")
     }
+  }
+
+
+
+  async getPaymentHistory(req: Request, res: Response, next: NextFunction): Promise<void> {
+       try {
+ 
+        const data=await this.adminUseCase.isGetPaymentHistoryData()
+        res.status(StatusCode.success).json({transactionData:data})
+        
+       } catch (error) {
+          next(error)
+       }
   }
 
 

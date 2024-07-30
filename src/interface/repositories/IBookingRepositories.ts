@@ -10,8 +10,9 @@ export default interface IBookingRepositories{
         updatedScheduledStatus(scheduleId:string,slotNumber:number,status:boolean):Promise<IDoctorSchedule|null>
         fetchBookingData(id:string):Promise<IBooking|null>
         canceledBookingStatus(bookingId:string):Promise<IBooking|null>
-        fetchBookingdatasWithStatus(id:string,statusType:string):Promise<IBooking|null[]>
+        fetchBookingdatasWithStatus(id:string,statusType:string):Promise<IBooking[]>
         updatedBookingDbCanceledStatus(id:string):Promise<IBooking|null>
         storePaymentData(tokenId:string,doctorId:string,transactionId:string,userId:string,amount:number,       paymentMethod:string):Promise<PaymentEntity>
         fetchSchedule(id:string):Promise<IDoctorSchedule|null>
+        reschedulUpdateBookingDb(id:string,newSlotNumber:number):Promise<IDoctorSchedule|null>
 }

@@ -113,6 +113,21 @@ export default class BookingController implements IBookingController {
   }
 
 
+  async rescheduleBooking(req: IAuthRequest, res: Response, next: NextFunction): Promise<void> {
+       try {
+          const {slotId,newSlotNumber,scheduleId,slotNumber}=req.body
+          
+
+          console.log(slotId,newSlotNumber,scheduleId)
+
+          await this.bookingUseCase.isRescheduling(slotId,slotNumber,scheduleId,newSlotNumber)
+          
+           res.status(StatusCode.success).json({message:"successfully updated schedule"})
+
+       } catch (error) {
+          next(error)
+       }
+  }
 
 
 

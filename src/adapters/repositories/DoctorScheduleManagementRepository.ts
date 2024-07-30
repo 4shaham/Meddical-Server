@@ -57,6 +57,23 @@ export default class DoctorScheduleManagementRepository
     }
   }
 
+  async storeScheduleInAlreadyAddedDate(scheduleId: string, slots: ISlot[]): Promise<void> {
+       try {
+
+        const data = await this.doctorSchedule.findOneAndUpdate(
+          { _id: scheduleId },
+          { $push: { slots: { $each: slots } } },
+          { new: true } // Option to return the updated document
+      );
+
+        
+        
+       } catch (error) {
+           throw error
+       }
+  }
+
+
   async isDateExide(date: Date, id: string): Promise<IDoctorSchedule | null> {
     try {
       const doctorId = new ObjectId(id);
@@ -83,6 +100,7 @@ export default class DoctorScheduleManagementRepository
   ): Promise<BookingDataWithUserData[]> {
     
     try {
+      
       const today = new Date();
       const dateString = today.toISOString().split("T")[0];
 
@@ -161,6 +179,8 @@ export default class DoctorScheduleManagementRepository
       }
       
   }
+
+
 
 
 

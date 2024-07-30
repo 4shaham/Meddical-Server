@@ -27,4 +27,5 @@ export default interface IDoctorScheduleManagmentRepositories{
     storePrescription(description:string,medicines:Object[],recoverySteps:string[],patientId:string,patientName:string,doctorID:string,doctorName:string,slotId:string):Promise<IPrescription>
     getDoctorData(doctorId:string):Promise<IDoctor|null>
     PateintStatusChanged(bookingSlot:string):Promise<IBooking|null>
+    storeScheduleInAlreadyAddedDate(scheduleId:string,slots:ISlot[]):Promise<void>
 }

@@ -32,6 +32,7 @@ router.post("/webhook",express.raw({type: 'application/json'}),bookingController
 router.delete("/cancelTokenBooking",authorizationMiddleware,bookingController.cancelTokenBooking.bind(bookingController))
 router.get("/findBookingDataWithStatus",authorizationMiddleware,bookingController.findUserBooking.bind(bookingController))
 router.post("/payment",bookingController.makePayment.bind(bookingController))
+router.put("/rescheduleBooking",authorizationMiddleware,bookingController.rescheduleBooking.bind(bookingController))
 // router.post("/webhook",bookingController.createTokenBooking.bind(bookingController))
 
 export default router

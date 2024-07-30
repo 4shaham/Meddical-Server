@@ -2,6 +2,9 @@ import { ObjectId } from "mongoose";
 import IDoctor from "../../entity/doctorEntity";
 import ISpecality from "../../entity/specalityEntity";
 import IKyc from "../../entity/kycEntity";
+import PaymentEntity from "../../entity/paymentEntity";
+import exp from "constants";
+import IUser from "../../entity/userEntity";
 
 
 
@@ -14,6 +17,11 @@ export interface IUData{
     image?:string
  }
 
+
+ export interface FetchPaymentData extends PaymentEntity{
+    doctorData:IDoctor
+    userData:IUser
+ }
 
 export default interface IAdminRepository{
     addSpecality(image:string,specalityName:string):Promise<ISpecality|null>
@@ -28,4 +36,5 @@ export default interface IAdminRepository{
     updateSpecality(id:string,data:IUData):Promise<ISpecality|null>
     deletedSpecalitys():Promise<ISpecality[]>
     updateRestoreSpecalitys(id:string):Promise<ISpecality|null>
+    fetchPaymentHistory():Promise<FetchPaymentData[]>
 }

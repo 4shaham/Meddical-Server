@@ -3,6 +3,7 @@ import IAdminRepository from "../interface/repositories/IAdminRepositories";
 import IAdminUseCase, {
   GetNewRequestData,
   IRestoreSpecalityResponse,
+  PaymentHistroyData,
   Response,
   SpecalityResponse,
   UpdateSpecalityResponse,
@@ -291,4 +292,16 @@ export default class AdminUseCase implements IAdminUseCase {
       throw error;
     }
   }
+
+  async isGetPaymentHistoryData(): Promise<PaymentHistroyData[]> {
+      try {
+        
+        return await this.adminRepository.fetchPaymentHistory()
+
+      } catch (error) {
+         throw error
+      }
+  }
+
+
 }

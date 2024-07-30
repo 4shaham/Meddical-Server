@@ -61,7 +61,7 @@ export default class BookingRepository implements IBookingRepositories {
         slots: {
           $elemMatch: {
             slotNumber: slotNumber,
-            isBooked: false,
+            isBooked:false,
           },
         },
       });
@@ -105,13 +105,22 @@ export default class BookingRepository implements IBookingRepositories {
   async fetchBookingdatasWithStatus(
     id: string,
     statusType: string
-  ): Promise<IBooking | null[]> {
+  ): Promise<IBooking[]> {
     try {
-      return await this.bookingDb.find({
+
+      let data = await this.bookingDb.find({
         userId: id,
         tokenStatus: statusType,
         isCanceled: false,
-      });
+      }).sort({ createdAt: -1 });
+
+      console.log("dahdhf",data);
+      return data
+      // return await this.bookingDb.find({
+      //   userId: id,
+      //   tokenStatus: statusType,  
+      //   isCanceled: false,
+      // });
     } catch (error) {
       throw error;
     }
@@ -168,6 +177,14 @@ export default class BookingRepository implements IBookingRepositories {
       }
   }
   
+
+  async reschedulUpdateBookingDb(id: string, newSlotNumber: number): Promise<IDoctorSchedule|null> {
+       try {
+        return await this.bookingDb.findOneAndUpdate({_id:id},{$set:{slotNumber:newSlotNumber}})
+       } catch (error) {
+           throw error
+       }
+  }
 
 
 }

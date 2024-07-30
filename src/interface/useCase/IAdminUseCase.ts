@@ -3,6 +3,8 @@ import ISpecality from "../../entity/specalityEntity"
 import IDoctor from "../../entity/doctorEntity"
 import { ObjectId } from "mongoose"
 import IKyc from "../../entity/kycEntity"
+import PaymentEntity from "../../entity/paymentEntity"
+import IUser from "../../entity/userEntity"
 
 export interface SpecalityResponse{
     status:boolean,
@@ -39,6 +41,11 @@ export interface IRestoreSpecalityResponse{
     message:string
 }
 
+export interface PaymentHistroyData extends PaymentEntity{
+    doctorData:IDoctor,
+    userData:IUser
+}
+
 export default interface IAdminUseCase{
 
     verificationLogin(email:string,password:string,AdminEmail:string,AdminPassword:string):Promise<Response>
@@ -53,4 +60,5 @@ export default interface IAdminUseCase{
     verifyUpdateSpecality(id:string,name:string|null,image:string|null):Promise<UpdateSpecalityResponse>
     getDataDeletedSpecality():Promise<ISpecality[]>
     updateRestoreSpecality(id:string):Promise<IRestoreSpecalityResponse>
+    isGetPaymentHistoryData():Promise<PaymentHistroyData[]>
 }

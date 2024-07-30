@@ -2,27 +2,32 @@
 import { Model } from "mongoose";
 import ISpecality from "../../entity/specalityEntity";
 import IAdminRepository, {
+  FetchPaymentData,
   GetNewRequestData,
   IUData,
 } from "../../interface/repositories/IAdminRepositories";
 import IDoctor from "../../entity/doctorEntity";
 import IKyc from "../../entity/kycEntity";
 import mongoose, { ObjectId } from "mongoose";
+import PaymentEntity from "../../entity/paymentEntity";
 const { ObjectId } = mongoose.Types;
 
 export default class AdminRepository implements IAdminRepository {
   private specality: Model<ISpecality>;
   private doctor: Model<IDoctor>;
   private kyc: Model<IKyc>;
+  private payment: Model<PaymentEntity>;
 
   constructor(
     specality: Model<ISpecality>,
     doctor: Model<IDoctor>,
-    kyc: Model<IKyc>
+    kyc: Model<IKyc>,
+    payment: Model<PaymentEntity>
   ) {
     this.specality = specality;
     this.doctor = doctor;
     this.kyc = kyc;
+    this.payment = payment;
   }
 
   async addSpecality(
@@ -58,11 +63,11 @@ export default class AdminRepository implements IAdminRepository {
   }
 
   async deletedSpecalitys(): Promise<ISpecality[]> {
-      try {
-        return await this.specality.find({isDeleted:true})
-      } catch (error) {
-         throw error
-      }
+    try {
+      return await this.specality.find({ isDeleted: true });
+    } catch (error) {
+      throw error;
+    }
   }
 
   async specalityDeleted(id: string): Promise<ISpecality | null> {
@@ -78,14 +83,17 @@ export default class AdminRepository implements IAdminRepository {
     }
   }
 
-  async updateRestoreSpecalitys(id:string): Promise<ISpecality | null> {
-         try {
-          const specalityId=new ObjectId(id)
-          return await this.specality.findByIdAndUpdate({_id:specalityId},{$set:{isDeleted:false}},{new:true})
-
-         } catch (error) {
-           throw error
-         }  
+  async updateRestoreSpecalitys(id: string): Promise<ISpecality | null> {
+    try {
+      const specalityId = new ObjectId(id);
+      return await this.specality.findByIdAndUpdate(
+        { _id: specalityId },
+        { $set: { isDeleted: false } },
+        { new: true }
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async getRequestedDoctor(): Promise<GetNewRequestData | null[]> {
@@ -160,22 +168,63 @@ export default class AdminRepository implements IAdminRepository {
 
   async getDataEditSpecality(specalityId: string): Promise<ISpecality | null> {
     try {
-      const id=new ObjectId(specalityId)
-      return await this.specality.findOne({_id:id})
+      const id = new ObjectId(specalityId);
+      return await this.specality.findOne({ _id: id });
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
- 
+  async updateSpecality(id: string, data: IUData): Promise<ISpecality | null> {
+    try {
+      const specalityId = new ObjectId(id);
+      return await this.specality.findByIdAndUpdate(
+        { _id: specalityId },
+        { $set: data },
+        { new: true }
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
 
-    async updateSpecality(id: string, data:IUData):Promise<ISpecality | null> {
-               try {
-                    const specalityId=new ObjectId(id)
-                    return await this.specality.findByIdAndUpdate({_id:specalityId},{$set:data},{new:true})
-               } catch (error) {
-                 throw error
-               }  
-   }
-
+  async fetchPaymentHistory(): Promise<FetchPaymentData[]> {
+    try {
+      const data=await this.payment.aggregate([
+        {
+          $match: {},
+        },
+        {
+          $lookup: {
+            from: "doctors",
+            localField: "doctorId",
+            foreignField: "_id",
+            as: "doctorData",
+          },
+        },
+        {
+          $unwind: {
+            path: "$doctorData",
+          },
+        },
+         {
+          '$lookup': {
+              'from': 'users', 
+              'localField': 'userId', 
+              'foreignField': '_id', 
+              'as': 'userData'
+          }
+      },{
+        $unwind: {
+          path: "$userData",
+        },
+      },
+      ]);
+      
+      console.log(data)
+      return data
+    } catch (error) {
+      throw error;
+    }
+  }
 }

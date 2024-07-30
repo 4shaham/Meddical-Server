@@ -14,6 +14,7 @@ import AdminUseCase from "../../useCase/AdminUseCase";
 import Specality from "../model/SpecalitySchema";
 import Doctor from "../model/DoctorSchema";
 import Kyc from "../model/KycSchema";
+import Payment from "../model/PaymentSchema";
 
 // service 
 
@@ -32,7 +33,7 @@ import authorizationMiddleware from "../Middleware/admin/authorization";
 
 
 
-const adminRepository=new AdminRepository(Specality,Doctor,Kyc)
+const adminRepository=new AdminRepository(Specality,Doctor,Kyc,Payment)
 const adminUseCase=new AdminUseCase(adminRepository,jwtService,cloudinaryServices)
 const adminController=new AdminController(adminUseCase)
     
@@ -50,7 +51,7 @@ router.get("/getEditSpecalityData",authorizationMiddleware,adminController.findE
 router.put("/updateSpecality",authorizationMiddleware,adminController.updateSpecality.bind(adminController))
 router.get("/deletedSpecalityData",authorizationMiddleware,adminController.findDeletedSpecality.bind(adminController))
 router.patch("/restoreSpecality",authorizationMiddleware,adminController.restoreSpecality.bind(adminController))
-
+router.get("/fetchPaymentHistory",authorizationMiddleware,adminController.getPaymentHistory.bind(adminController))
 
 export default router    
   

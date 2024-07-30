@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { ResolveSchemaOptions } from "mongoose";
 
 export default interface IAdminController {
@@ -15,4 +15,5 @@ export default interface IAdminController {
   updateSpecality(req:Request,res:Response):Promise<void>;
   findDeletedSpecality(req:Request,res:Response):Promise<void>
   restoreSpecality(req:Request,res:Response):Promise<void>
+  getPaymentHistory(req:Request,res:Response,next:NextFunction):Promise<void>
 }
