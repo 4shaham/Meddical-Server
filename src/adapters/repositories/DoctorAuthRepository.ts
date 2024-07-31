@@ -8,17 +8,20 @@ import {
 } from "../../interface/useCase/IDoctorUseCase";
 import IKyc from "../../entity/kycEntity";
 import IUserOtp from "../../interface/collection/IotpUser";
+import IUser from "../../entity/userEntity";
 
 
 export default class DoctorAuthRepository implements IDoctorAuthRepositories {
   private doctors: Model<IDoctor>;
   private kyc: Model<IKyc>;
   private otp:Model<IUserOtp>;
+  private user:Model<IUser>;
 
-  constructor(doctors: Model<IDoctor>, kyc: Model<IKyc>,otp:Model<IUserOtp>) {
+  constructor(doctors: Model<IDoctor>, kyc: Model<IKyc>,otp:Model<IUserOtp>,user:Model<IUser>) {
     this.doctors = doctors;
     this.kyc = kyc;
     this.otp=otp
+    this.user=user
   }
 
   async isDoctorExists(email?: string): Promise<IDoctor | null> {
@@ -147,4 +150,15 @@ export default class DoctorAuthRepository implements IDoctorAuthRepositories {
            throw error        
       }
   }
+
+  
+  async getUserProfileData(id: string): Promise<IUser | null> {
+      try {
+       return await this.user.findOne({_id:id})
+      } catch (error) {
+         throw error
+      }  
+  }
+
+
 }

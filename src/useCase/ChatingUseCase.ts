@@ -36,9 +36,9 @@ export default class ChatingUseCase implements IChatingUseCase {
   }
 
 
-  async handleStoreMessage(converasationId:string,sender:string,message:string): Promise<void> {
+  async handleStoreMessage(converasationId:string,sender:string,message:string): Promise<MessageEntity> {
        try {
-          await this.chatingRepositories.storeMessage(converasationId,sender,message)
+          return  await this.chatingRepositories.storeMessage(converasationId,sender,message)
        } catch (error) {
             throw error      
        }

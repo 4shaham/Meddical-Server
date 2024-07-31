@@ -6,7 +6,8 @@ import { googleAuthBody, loginBody, otpVerifyData, registerBody } from "../contr
 export  interface resObj{
     status:boolean,
     message:string,
-    token?:string
+    token?:string,
+    userData?:IUser,
 }
 
 

@@ -99,6 +99,7 @@ export default class BookingController implements IBookingController {
            const response=await this.bookingUseCase.verifyCreateToken(userId,fees,typeOfConsaltation,schedulesId,slotNumber,startTime,endTime)
            const transactionId=req.app.locals.chargeId
            console.log(transactionId,"transactionId it is your id of payment")
+             await this.bookingUseCase.createConverasation(userId,response.doctorId)
              await this.bookingUseCase.savePaymentData(response.slotId,schedulesId,transactionId,userId,fees,"cardPayment",slotNumber)
              res.status(200).json({messag:true})
           }

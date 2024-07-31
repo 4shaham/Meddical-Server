@@ -4,6 +4,6 @@ import MessageEntity from "../../entity/messageEntity"
 export default interface IChatingUseCase{
     verifyCreateConverasation(doctorId:string,userId:string):Promise<void>
     getConversationData(id:string):Promise<ConversationEntity|null[]>
-    handleStoreMessage(converasationId:string,sender:string,message:string):Promise<void>
+    handleStoreMessage(converasationId:string,sender:string,message:string):Promise<MessageEntity>
     handleGetMessage(convrasationId:string):Promise<MessageEntity|null[]>
 }

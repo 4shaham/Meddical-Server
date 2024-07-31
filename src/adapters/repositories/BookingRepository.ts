@@ -5,21 +5,25 @@ import { Mode } from "fs";
 import mongoose, { ObjectId } from "mongoose";
 import IDoctorSchedule from "../../entity/doctorScheduleEntity";
 import PaymentEntity from "../../entity/paymentEntity";
+import ConversationEntity from "../../entity/conversationEntity";
 const { ObjectId } = mongoose.Types;
 
 export default class BookingRepository implements IBookingRepositories {
   private bookingDb: Model<IBooking>;
   private doctorSchedule: Model<IDoctorSchedule>;
   private payment: Model<PaymentEntity>;
+  private converasation:Model<ConversationEntity>
 
   constructor(
     bookingDb: Model<IBooking>,
     doctorSchedule: Model<IDoctorSchedule>,
-    payment: Model<PaymentEntity>
+    payment: Model<PaymentEntity>,
+    converasation:Model<ConversationEntity>
   ) {
     this.bookingDb = bookingDb;
     this.doctorSchedule = doctorSchedule;
     this.payment = payment;
+    this.converasation=converasation
   }
 
   async storeToken(
@@ -186,5 +190,29 @@ export default class BookingRepository implements IBookingRepositories {
        }
   }
 
+
+  async isExists(userId: string, doctorId: string): Promise<ConversationEntity | null> {
+        try {
+              return await this.converasation.findOne({$and:[{"members.userId":userId},{"members.doctorId":doctorId}]})
+        } catch (error) {
+           throw error
+        }
+  }
+
+
+  async storeConverasation(userId: string, doctorId: string): Promise<ConversationEntity> {
+        try {
+          const converasation = new this.converasation({
+            members:[{
+              doctorId:doctorId,
+              userId:userId
+            }],
+          });
+          return await converasation.save();
+        } catch (error) {
+           throw error
+        }
+
+  }
 
 }

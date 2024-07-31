@@ -1,4 +1,5 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
+import IUser from "../../entity/userEntity"
 
 
 export default interface IDoctorAuthController{
@@ -12,6 +13,7 @@ export default interface IDoctorAuthController{
    resendOtp(req:Request,res:Response):Promise<void>
    logOut(req:Request,res:Response):Promise<void>
    getToken(req:Request,res:Response):Promise<void>
+   getUserData(req:Request,res:Response,next:NextFunction):Promise<void>
 }
 
 // export interface doctorRegisterBody{

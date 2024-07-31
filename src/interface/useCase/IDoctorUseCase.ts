@@ -1,7 +1,9 @@
 import IKyc from "../../entity/kycEntity";
+import IUser from "../../entity/userEntity";
 
 
 interface IDoctorData{
+    id:string,
     name:string,
     image:string,
     email:string
@@ -103,4 +105,5 @@ export default interface IDoctorUseCase{
     otpVerify(otp:string,email:string):Promise<{status:boolean,message:string}>  
     sendOtp(email:string):Promise<{status:true}> 
     verifyToken(token:string):Promise<VerifyResponse>
+    getUserProfileData(id:string):Promise<IUser>
 }

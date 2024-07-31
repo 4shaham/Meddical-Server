@@ -1,5 +1,6 @@
 import IDoctor from "../../entity/doctorEntity"
 import IKyc from "../../entity/kycEntity"
+import IUser from "../../entity/userEntity"
 import IUserOtp from "../collection/IotpUser"
 import { DatasKYCVerificationStep1, DatasKYCVerificationStep2, DatasOfDoctorRegistration } from "../useCase/IDoctorUseCase"
 
@@ -17,4 +18,6 @@ export default interface IDoctorAuthRepositories{
     kycStorStep2(data:DatasKYCVerificationStep2):Promise<IKyc|null>
     updateOtpVerified(email:string):Promise<IDoctor|null>
     isTokenDoctorData(id:string):Promise<IDoctor|null>
+    getUserProfileData(id:string):Promise<IUser|null>
+    
 }

@@ -55,7 +55,7 @@ export default class BookingUseCase implements IBookingUseCase {
         slotNumber,
         true
       );
-      return { status: true, message: "created successfully",slotId:storeBookingSlot?._id as string};
+      return { status: true, message:"created successfully",slotId:storeBookingSlot?._id as string,doctorId:isAvailable.doctorId};
     } catch (error) {
       throw error;
     }
@@ -168,4 +168,22 @@ export default class BookingUseCase implements IBookingUseCase {
          throw error
       }   
   }
+
+
+  async createConverasation(userId: string, doctorId: string): Promise<void> {
+      try {
+
+        const isData=await this.bookingRepositories.isExists(userId,doctorId)
+
+        if(!isData){
+            await this.bookingRepositories.storeConverasation(userId,doctorId)
+        }
+
+        
+      } catch (error) {
+         throw error
+      }
+  }
+
+
 }

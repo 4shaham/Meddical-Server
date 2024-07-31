@@ -4,7 +4,8 @@ import IBooking from "../../entity/bookingEntity"
 export  interface VerfiyResponse{
     status:boolean,
     message:string,
-    slotId:string
+    slotId:string,
+    doctorId:string
 }
 
 export default interface IBookingUseCase{
@@ -16,4 +17,5 @@ export default interface IBookingUseCase{
     verifyWebHook(req:any):Promise<boolean>
     savePaymentData(tokenId:string,scheduleId:string,transactionId:string,userId:string,amount:number,paymentMethod:string,slotNumber:number):Promise<void>
     isRescheduling(slotId:string,slotNumber:number,scheduleId:string,newSlotNumber:number):Promise<void>
+    createConverasation(userId:string,doctorId:string):Promise<void>
 }

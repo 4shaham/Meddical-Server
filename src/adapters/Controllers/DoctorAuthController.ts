@@ -1,10 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import IDoctorAuthController from "../../interface/controler/IDoctorAuthController";
 import IDoctorUseCase, {
   DatasKYCVerificationStep2,
 } from "../../interface/useCase/IDoctorUseCase";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
+import { StatusCode } from "../../enums/statusCode";
 
 export default class DoctorAuthController implements IDoctorAuthController {
   private doctorAuthUseCase: IDoctorUseCase;
@@ -215,5 +216,19 @@ export default class DoctorAuthController implements IDoctorAuthController {
           console.log(error)
        }
   }
+
+
+  async getUserData(req: Request, res: Response,next:NextFunction): Promise<void> {
+            try {
+                
+              const id=req.query.id
+              const data=await this.doctorAuthUseCase.getUserProfileData(id as string)
+              res.status(StatusCode.success).json({userData:data})
+              
+            } catch (error) { 
+              next(error)
+            }  
+  }
+
 
 }

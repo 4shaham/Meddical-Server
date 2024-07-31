@@ -105,7 +105,7 @@ class UserAuthUseCase implements IuserAuthUseCase {
          let token=await this.jwtServices.createToken(payload)
       
         // success response send 
-       return {token,status:true,message:"the login sucesss"}   
+       return {token,status:true,message:"the login sucesss",userData:values}   
    
       }else{
         // return 403 eroor
@@ -146,7 +146,7 @@ class UserAuthUseCase implements IuserAuthUseCase {
                      // it generate token
           let token=await this.jwtServices.createToken(payload)
 
-          return {status:true,message:"the Otp verification is completed",token}
+          return {status:true,message:"the Otp verification is completed",token,userData:values}
            
         }
        
@@ -241,6 +241,7 @@ class UserAuthUseCase implements IuserAuthUseCase {
     try {
         
       let response=this.jwtServices.verify(token)
+      console.log(response,"response sess");
       
       if(response?.role=="user"){
          
@@ -271,7 +272,7 @@ class UserAuthUseCase implements IuserAuthUseCase {
         console.log(user,"hiiiii user")
         if(!user){
           console.log("jiiiipan")
-          await this.userAuthRepository.saveGooogleAuth(data.email,data.userName,data.image)
+         user=await this.userAuthRepository.saveGooogleAuth(data.email,data.userName,data.image)
         }
 
         let Tuser=await this.userAuthRepository.checkEmailExists(data.email)
@@ -285,7 +286,7 @@ class UserAuthUseCase implements IuserAuthUseCase {
         // it generate token
         let token=await this.jwtServices.createToken(payload)
 
-        return {status:true,message:"googleAuthenticated Successfully",token}
+        return {status:true,message:"googleAuthenticated Successfully",token,userData:user}
    
      } catch (error) {
        throw Error()

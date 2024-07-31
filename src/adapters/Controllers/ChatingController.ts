@@ -63,12 +63,12 @@ export default class ChatingControllers implements IChatingContrller {
     try {
 
       const { conversationId, senderId, text } = req.body;
-      await this.chatingUseCase.handleStoreMessage(
+    const data=await this.chatingUseCase.handleStoreMessage(
         conversationId,
         senderId,
         text
       );
-      res.status(StatusCode.success).json({message:"sucessfully stored the message"})
+      res.status(StatusCode.success).json({message:"sucessfully stored the message",newMessage:data})
 
     } catch (error) {
       next(error);

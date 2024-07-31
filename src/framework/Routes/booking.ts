@@ -18,10 +18,11 @@ import BookingRepository from "../../adapters/repositories/BookingRepository"
 
 
 import StripePayment from "../utils/stripPayment"
+import Conversation from "../model/ConversationSchema"
 
 const stripePayment =new StripePayment()
 
-const bookingRepository=new BookingRepository(BookingDb,DoctorSchedule,Payment)
+const bookingRepository=new BookingRepository(BookingDb,DoctorSchedule,Payment,Conversation)
 const bookingUseCase=new BookingUseCase(bookingRepository,stripePayment)
 const bookingController=new BookingController(bookingUseCase)
 

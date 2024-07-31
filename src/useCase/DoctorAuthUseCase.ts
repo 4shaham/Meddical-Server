@@ -16,6 +16,10 @@ import IhasingService from "../interface/utils/IHasingService";
 import OtpService from "../framework/utils/otpService";
 import IOtpServices from "../interface/utils/IOtpServices";
 import IKyc from "../entity/kycEntity";
+import IUser from "../entity/userEntity";
+import { error } from "console";
+import Errors from "../erros/errors";
+import { StatusCode } from "../enums/statusCode";
 
 export default class DoctorAuthUseCase implements IDoctorUseCase {
   private doctorAuthRepository: IDoctorAuthRepositories;
@@ -118,6 +122,7 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
       let token = await this.jwtServices.createToken(tokendata);
 
       const doctorData = {
+        id:doctor._id,
         name:doctor.name,
         image:doctor.image,
         email:doctor.email,
@@ -305,4 +310,26 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
       throw error;
     }
   }
+
+  async getUserProfileData(id: string): Promise<IUser> {
+      try {
+
+        if(!id){
+            throw new Errors("the id is required",StatusCode.badRequest)
+        }
+        
+        const data=await this.doctorAuthRepository.getUserProfileData(id)
+         console.log(data);
+         
+        if(!data){
+          throw error
+        }
+        return data
+
+      } catch (error) {
+         throw error
+      }  
+  }
+
+
 }

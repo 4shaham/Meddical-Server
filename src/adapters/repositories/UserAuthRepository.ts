@@ -107,7 +107,7 @@ class UserAuthRepository implements IuserAuthRepositories {
 
   }
 
- async saveGooogleAuth(email: string, userName: string, image: string): Promise<void> {
+ async saveGooogleAuth(email: string, userName: string, image: string): Promise<IUser> {
      try {
       
       const user = new this.users({
@@ -117,8 +117,8 @@ class UserAuthRepository implements IuserAuthRepositories {
         image:image
       })
 
-     let a= await user.save()
-      console.log("hiii it is sved",a)  
+     return await user.save()
+     
 
      } catch (error) {
         console.log(error)

@@ -8,11 +8,13 @@ import { StatusCode } from "../../enums/statusCode";
 
 
 class UserAuthController implements IUserAuthController {
+  
   private userAuthUseCase: IuserAuthUseCase;
 
   constructor(userAuthUseCase: IuserAuthUseCase) {
     this.userAuthUseCase = userAuthUseCase;
   }
+
 
   /// user Register
 
@@ -59,6 +61,7 @@ class UserAuthController implements IUserAuthController {
     res: Response
   ): Promise<void> {
     try {
+
       const { otp,typeOfOtp} = req.body;
       const email = req.cookies.otpEmail;
       
@@ -97,7 +100,7 @@ class UserAuthController implements IUserAuthController {
         token: status?.token,
       });
     } catch (err) {
-      console.log(err);
+       console.log(err);
     }
   }
 

@@ -21,6 +21,7 @@ import OtpService from "../utils/otpService";
 
 // middleware 
 import authorization from "../Middleware/doctor/authorization";
+import Users from "../model/UserSchema";
 
 
 const jwtService=new JwtService()
@@ -32,7 +33,7 @@ const otpService=new OtpService()
 const router: Router = express.Router();
 
 
-const doctorAuthRepository=new DoctorAuthRepository(Doctor,Kyc,Otp)
+const doctorAuthRepository=new DoctorAuthRepository(Doctor,Kyc,Otp,Users)
 const doctorAuthUseCase=new DoctorAuthUseCase(doctorAuthRepository,jwtService,clodinaryService,hashingService,otpService)
 const doctorAuthController=new DoctorAuthController(doctorAuthUseCase,)
 
@@ -47,6 +48,8 @@ router.put("/storeKycData2",doctorAuthController.storeKYCDataStep2.bind(doctorAu
 router.get("/getKycStatus/:email",doctorAuthController.getKycinformation.bind(doctorAuthController))
 router.post("/logout",authorization,doctorAuthController.logOut.bind(doctorAuthController))
 router.get("/getToken",doctorAuthController.getToken.bind(doctorAuthController))
-  
+router.get("/getUserProfileDoctor",authorization,doctorAuthController.getUserData.bind(doctorAuthController))  
+
+
 export default router;
  

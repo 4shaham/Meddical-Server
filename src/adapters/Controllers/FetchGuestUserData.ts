@@ -36,10 +36,14 @@ export default class FetchGuestUserData
   ): Promise<void> {
     try {
       const id = req.query.doctorId;
+        console.log("hiiiiiiiiii");
+                  
+
       const doctorData =
         await this.fetchGuestUserDataUseCase.getDoctorProfileData(id as string);
       res.status(StatusCode.success).json({ data: doctorData });
     } catch (error) {
+      console.log("error")
       next(error);
     }
   }
