@@ -5,6 +5,7 @@ import IKyc from "../../entity/kycEntity";
 import PaymentEntity from "../../entity/paymentEntity";
 import exp from "constants";
 import IUser from "../../entity/userEntity";
+import IBooking from "../../entity/bookingEntity";
 
 
 
@@ -23,6 +24,11 @@ export interface IUData{
     userData:IUser
  }
 
+ export interface invoiceData extends PaymentEntity{
+    userData:IUser,
+    bookingData:IBooking
+}
+
 export default interface IAdminRepository{
     addSpecality(image:string,specalityName:string):Promise<ISpecality|null>
     isExists(speclaityName:string):Promise<ISpecality|null>
@@ -37,4 +43,5 @@ export default interface IAdminRepository{
     deletedSpecalitys():Promise<ISpecality[]>
     updateRestoreSpecalitys(id:string):Promise<ISpecality|null>
     fetchPaymentHistory():Promise<FetchPaymentData[]>
+    getInvoiceData(id:string):Promise<invoiceData[]>
 }

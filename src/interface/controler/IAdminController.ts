@@ -16,4 +16,5 @@ export default interface IAdminController {
   findDeletedSpecality(req:Request,res:Response):Promise<void>
   restoreSpecality(req:Request,res:Response):Promise<void>
   getPaymentHistory(req:Request,res:Response,next:NextFunction):Promise<void>
+  getInvoiceData(req:Request,res:Response,next:NextFunction):Promise<void>
 }

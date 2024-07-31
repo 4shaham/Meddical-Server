@@ -10,6 +10,7 @@ import IDoctor from "../../entity/doctorEntity";
 import IKyc from "../../entity/kycEntity";
 import mongoose, { ObjectId } from "mongoose";
 import PaymentEntity from "../../entity/paymentEntity";
+import { invoiceData } from "../../interface/useCase/IAdminUseCase";
 const { ObjectId } = mongoose.Types;
 
 export default class AdminRepository implements IAdminRepository {
@@ -227,4 +228,47 @@ export default class AdminRepository implements IAdminRepository {
       throw error;
     }
   }
+
+  async getInvoiceData(id: string): Promise<invoiceData[]> {
+      try {
+        console.log(id,"loooooo")
+        return  await this.payment.aggregate([
+          {
+            '$match': {
+              'tokenId': new ObjectId(id)
+            }
+          }
+          ,{
+            '$lookup': {
+              'from':'users', 
+              'localField':'userId', 
+              'foreignField': '_id', 
+              'as': 'userData'
+            }
+          },{
+            '$unwind': {
+              'path': '$userData'
+            }
+          }
+          ,{
+            '$lookup': {
+              'from': 'bookingdbs', 
+              'localField': 'tokenId', 
+              'foreignField': '_id', 
+              'as': 'bookingData'
+            }
+          },{
+            '$unwind': {
+              'path': '$bookingData'
+            }
+          }
+        ])
+
+      } catch (error) {
+         throw error
+      }
+  }
+
+
+
 }

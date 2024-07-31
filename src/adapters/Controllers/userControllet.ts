@@ -38,4 +38,22 @@ export default class UserController implements IUserController {
        }
   }
 
+
+  async getInvoiceData(req: IAuthRequest, res: Response, next: NextFunction): Promise<void> {
+        try {
+              
+         const id:string=req.query.id as string
+
+         const response=await this.userUseCase.isGetInvoiceData(id)
+
+         res.status(StatusCode.success).json({invoiceData:response})
+
+        } catch (error) {
+           next(error)
+        }
+  }
+
+
+
+
 }

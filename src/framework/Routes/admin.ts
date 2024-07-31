@@ -52,6 +52,7 @@ router.put("/updateSpecality",authorizationMiddleware,adminController.updateSpec
 router.get("/deletedSpecalityData",authorizationMiddleware,adminController.findDeletedSpecality.bind(adminController))
 router.patch("/restoreSpecality",authorizationMiddleware,adminController.restoreSpecality.bind(adminController))
 router.get("/fetchPaymentHistory",authorizationMiddleware,adminController.getPaymentHistory.bind(adminController))
+router.get("/invoiceData",authorizationMiddleware,adminController.getInvoiceData.bind(adminController))
 
 export default router    
   

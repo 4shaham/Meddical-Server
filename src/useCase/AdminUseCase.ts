@@ -2,6 +2,7 @@ import { Jwt } from "jsonwebtoken";
 import IAdminRepository from "../interface/repositories/IAdminRepositories";
 import IAdminUseCase, {
   GetNewRequestData,
+  invoiceData,
   IRestoreSpecalityResponse,
   PaymentHistroyData,
   Response,
@@ -301,6 +302,16 @@ export default class AdminUseCase implements IAdminUseCase {
       } catch (error) {
          throw error
       }
+  }
+
+  async isGetInvoiceData(id:string): Promise<invoiceData[]> {
+       try {
+
+        return await this.adminRepository.getInvoiceData(id)
+        
+       } catch (error) {
+           throw error
+       }  
   }
 
 

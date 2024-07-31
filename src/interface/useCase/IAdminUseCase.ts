@@ -5,6 +5,7 @@ import { ObjectId } from "mongoose"
 import IKyc from "../../entity/kycEntity"
 import PaymentEntity from "../../entity/paymentEntity"
 import IUser from "../../entity/userEntity"
+import IBooking from "../../entity/bookingEntity"
 
 export interface SpecalityResponse{
     status:boolean,
@@ -46,6 +47,14 @@ export interface PaymentHistroyData extends PaymentEntity{
     userData:IUser
 }
 
+export interface invoiceData extends PaymentEntity{
+    userData:IUser,
+    bookingData:IBooking
+}
+
+
+
+
 export default interface IAdminUseCase{
 
     verificationLogin(email:string,password:string,AdminEmail:string,AdminPassword:string):Promise<Response>
@@ -61,4 +70,5 @@ export default interface IAdminUseCase{
     getDataDeletedSpecality():Promise<ISpecality[]>
     updateRestoreSpecality(id:string):Promise<IRestoreSpecalityResponse>
     isGetPaymentHistoryData():Promise<PaymentHistroyData[]>
+    isGetInvoiceData(id:string):Promise<invoiceData[]>
 }

@@ -1,5 +1,5 @@
 import IuserRepositories, { PrescriptionData } from "../interface/repositories/IUserRepositories"
-import IUserUseCase from "../interface/useCase/IUseUseCase"
+import IUserUseCase, { InvoiceData } from "../interface/useCase/IUseUseCase"
 import { StatusCode } from "../enums/statusCode"
 import Errors from "../erros/errors";
 import IPrescription from "../entity/prescriptionEntity";
@@ -39,5 +39,15 @@ export default class userUseCase implements IUserUseCase{
          }      
     }
 
+
+    async isGetInvoiceData(id: string): Promise<InvoiceData[]> {
+           try {
+
+              return await this.userRepository.getInoviceData(id)
+            
+           } catch (error) {
+               throw error
+           }  
+    }
 
 }

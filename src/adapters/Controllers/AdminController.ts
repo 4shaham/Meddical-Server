@@ -288,5 +288,19 @@ export default class AdminController implements IAdminController {
   }
 
 
+  async getInvoiceData(req: Request, res: Response, next: NextFunction): Promise<void> {
+      try {
+
+        const id:string=req.query.id as string
+
+        const resposne=await this.adminUseCase.isGetInvoiceData(id)
+
+        res.status(StatusCode.success).json({invoiceData:resposne})
+        
+      } catch (error) {
+          throw error
+      }
+  }
+
   
 }

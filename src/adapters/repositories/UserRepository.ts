@@ -1,5 +1,5 @@
 import { Model } from "mongoose";
-import IUserUseCase from "../../interface/useCase/IUseUseCase";
+import IUserUseCase, { InvoiceData } from "../../interface/useCase/IUseUseCase";
 import IPrescription from "../../entity/prescriptionEntity";
 import IuserRepositories, { PrescriptionData } from "../../interface/repositories/IUserRepositories";
 import mongoose, { ObjectId } from "mongoose";
@@ -50,5 +50,48 @@ export default class UserRepository implements IuserRepositories{
             throw error
         }
     }
+
+    
+    async getInoviceData(id: string): Promise<InvoiceData[]> {
+         try {
+           
+        return  await this.payment.aggregate([
+            {
+              '$match': {
+                'tokenId': new ObjectId(id)
+              }
+            }
+            ,{
+              '$lookup': {
+                'from':'users', 
+                'localField':'userId', 
+                'foreignField': '_id', 
+                'as': 'userData'
+              }
+            },{
+              '$unwind': {
+                'path': '$userData'
+              }
+            }
+            ,{
+              '$lookup': {
+                'from': 'bookingdbs', 
+                'localField': 'tokenId', 
+                'foreignField': '_id', 
+                'as': 'bookingData'
+              }
+            },{
+              '$unwind': {
+                'path': '$bookingData'
+              }
+            }
+          ])
+
+
+         } catch (error) {
+             throw error
+         }
+    }
+
 
 }

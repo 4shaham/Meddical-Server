@@ -22,5 +22,6 @@ const userController=new UserController(userUseCase)
 
 router.get("/getPrescriptionData",authorizationMiddleware,userController.getPrescriptionData.bind(userController))
 router.get("/getTransactionHistory",authorizationMiddleware,userController.getPaymentHistory.bind(userController))
+router.get("/getInvoiceData",authorizationMiddleware,userController.getInvoiceData.bind(userController))
 
 export default router
