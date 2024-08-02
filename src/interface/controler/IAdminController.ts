@@ -17,4 +17,6 @@ export default interface IAdminController {
   restoreSpecality(req:Request,res:Response):Promise<void>
   getPaymentHistory(req:Request,res:Response,next:NextFunction):Promise<void>
   getInvoiceData(req:Request,res:Response,next:NextFunction):Promise<void>
+  getUsers(req:Request,res:Response,next:NextFunction):Promise<void>
+  getDoctors(req:Request,res:Response,next:NextFunction):Promise<void>
 }

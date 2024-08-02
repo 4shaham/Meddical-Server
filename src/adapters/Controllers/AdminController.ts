@@ -8,22 +8,16 @@ import { error } from "console";
 import { StatusCode } from "../../enums/statusCode";
 
 export default class AdminController implements IAdminController {
-
   private adminUseCase: IAdminUseCase;
   constructor(adminUseCase: IAdminUseCase) {
     this.adminUseCase = adminUseCase;
   }
 
-
-  async adminLogin(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  async adminLogin(req: Request, res: Response): Promise<void> {
     try {
-     
       const { email, password } = req.body;
 
-      const  adminEmail: string = process.env.ADMIN_EMAIL as string;
+      const adminEmail: string = process.env.ADMIN_EMAIL as string;
       const AdminPassword: string = process.env.ADMIN_PASSWORD as string;
 
       const response = await this.adminUseCase.verificationLogin(
@@ -31,25 +25,21 @@ export default class AdminController implements IAdminController {
         password,
         adminEmail,
         AdminPassword
-      ); 
+      );
 
       if (response.status) {
         res.cookie("adminToken", response.token, { maxAge: 3600000 });
         res.status(200).json(response);
       } else {
-        console.log("jiiiiiiiii")
+        console.log("jiiiiiiiii");
         res.status(401).json(response);
       }
-
     } catch (error) {
       console.log(error);
     }
   }
 
-  async adminLogOut(
-    req: Request,
-    res: Response
-  ):Promise<void>{
+  async adminLogOut(req: Request, res: Response): Promise<void> {
     try {
       res.cookie("adminToken", "", { httpOnly: true, expires: new Date() });
       res.status(200).json({ status: true });
@@ -61,10 +51,10 @@ export default class AdminController implements IAdminController {
   async getToken(
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
     res: Response<any, Record<string, any>>
-  ):Promise<void> {
+  ): Promise<void> {
     try {
       const token = req.cookies.adminToken;
-      console.log(token,"jiiii")
+      console.log(token, "jiiii");
       let verificationResponse = await this.adminUseCase.verifytoken(token);
 
       if (verificationResponse.status) {
@@ -78,10 +68,7 @@ export default class AdminController implements IAdminController {
     }
   }
 
-  async addSpecialty(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  async addSpecialty(req: Request, res: Response): Promise<void> {
     try {
       const { specalityName, image } = req.body;
 
@@ -102,10 +89,7 @@ export default class AdminController implements IAdminController {
     }
   }
 
-  async deleteSpecality(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  async deleteSpecality(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params.specalityId;
       console.log(id, "hihiihihi");
@@ -123,10 +107,7 @@ export default class AdminController implements IAdminController {
     }
   }
 
-  async findAllSpecality(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  async findAllSpecality(req: Request, res: Response): Promise<void> {
     try {
       let response = await this.adminUseCase.getSpecality();
       res.json(response);
@@ -136,10 +117,7 @@ export default class AdminController implements IAdminController {
     }
   }
 
-  async updateDoctorKycStatus(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  async updateDoctorKycStatus(req: Request, res: Response): Promise<void> {
     try {
       const { email, status } = req.body;
       console.log(email, "hi enterd updat kyc status routes");
@@ -155,10 +133,7 @@ export default class AdminController implements IAdminController {
     }
   }
 
-  async getNewDoctorRequest(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  async getNewDoctorRequest(req: Request, res: Response): Promise<void> {
     try {
       console.log("hiiii enter getnew Doctors applied Route");
       let datas = await this.adminUseCase.getDataNewRequestDoctor();
@@ -170,10 +145,7 @@ export default class AdminController implements IAdminController {
     }
   }
 
-  async getDoctorDataVerification(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  async getDoctorDataVerification(req: Request, res: Response): Promise<void> {
     try {
       const id = req.query.id;
       console.log("hiiii i am happy", id);
@@ -195,10 +167,7 @@ export default class AdminController implements IAdminController {
     }
   }
 
-  async findEditSpecalityData(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  async findEditSpecalityData(req: Request, res: Response): Promise<void> {
     try {
       const id = req.query.specalityId;
 
@@ -214,10 +183,7 @@ export default class AdminController implements IAdminController {
     }
   }
 
-  async updateSpecality(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  async updateSpecality(req: Request, res: Response): Promise<void> {
     try {
       const { image, name, id } = req.body;
       console.log(req.body);
@@ -239,68 +205,87 @@ export default class AdminController implements IAdminController {
     }
   }
 
-  async findDeletedSpecality(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  async findDeletedSpecality(req: Request, res: Response): Promise<void> {
     try {
-       
-      let data=await this.adminUseCase.getDataDeletedSpecality()
-      res.status(200).json(data)
+      let data = await this.adminUseCase.getDataDeletedSpecality();
+      res.status(200).json(data);
     } catch (error) {
       console.log(error);
-      res.status(500).json(error)
+      res.status(500).json(error);
     }
   }
 
-  async restoreSpecality(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  async restoreSpecality(req: Request, res: Response): Promise<void> {
     try {
-       const {id}=req.body 
-       const response=await this.adminUseCase.updateRestoreSpecality(id as string)
-        
-       if(response.status){
-        res.status(200).json(response)
-        return 
-       }
+      const { id } = req.body;
+      const response = await this.adminUseCase.updateRestoreSpecality(
+        id as string
+      );
 
-       res.status(401).json(response)
-
-    } catch (error) {
-      console.log(error);
-      res.status(500).json("internal error")
-    }
-  }
-
-
-
-  async getPaymentHistory(req: Request, res: Response, next: NextFunction): Promise<void> {
-       try {
- 
-        const data=await this.adminUseCase.isGetPaymentHistoryData()
-        res.status(StatusCode.success).json({transactionData:data})
-        
-       } catch (error) {
-          next(error)
-       }
-  }
-
-
-  async getInvoiceData(req: Request, res: Response, next: NextFunction): Promise<void> {
-      try {
-
-        const id:string=req.query.id as string
-
-        const resposne=await this.adminUseCase.isGetInvoiceData(id)
-
-        res.status(StatusCode.success).json({invoiceData:resposne})
-        
-      } catch (error) {
-          throw error
+      if (response.status) {
+        res.status(200).json(response);
+        return;
       }
+
+      res.status(401).json(response);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json("internal error");
+    }
   }
 
-  
+  async getPaymentHistory(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const data = await this.adminUseCase.isGetPaymentHistoryData();
+      res.status(StatusCode.success).json({ transactionData: data });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getInvoiceData(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const id: string = req.query.id as string;
+
+      const resposne = await this.adminUseCase.isGetInvoiceData(id);
+
+      res.status(StatusCode.success).json({ invoiceData: resposne });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getUsers(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const users = await this.adminUseCase.isGetUsers();
+      res.status(StatusCode.success).json({ users: users });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getDoctors(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const doctors = await this.adminUseCase.isGetDoctors();
+      res.status(StatusCode.success).json({ doctors: doctors });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

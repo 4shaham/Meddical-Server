@@ -44,4 +44,7 @@ export default interface IAdminRepository{
     updateRestoreSpecalitys(id:string):Promise<ISpecality|null>
     fetchPaymentHistory():Promise<FetchPaymentData[]>
     getInvoiceData(id:string):Promise<invoiceData[]>
+    getUsers():Promise<IUser[]>
+    getDoctors():Promise<IDoctor[]>
+
 }

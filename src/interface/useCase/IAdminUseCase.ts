@@ -71,4 +71,6 @@ export default interface IAdminUseCase{
     updateRestoreSpecality(id:string):Promise<IRestoreSpecalityResponse>
     isGetPaymentHistoryData():Promise<PaymentHistroyData[]>
     isGetInvoiceData(id:string):Promise<invoiceData[]>
+    isGetUsers():Promise<IUser[]>
+    isGetDoctors():Promise<IDoctor[]>
 }

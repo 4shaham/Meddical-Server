@@ -11,6 +11,7 @@ import IKyc from "../../entity/kycEntity";
 import mongoose, { ObjectId } from "mongoose";
 import PaymentEntity from "../../entity/paymentEntity";
 import { invoiceData } from "../../interface/useCase/IAdminUseCase";
+import IUser from "../../entity/userEntity";
 const { ObjectId } = mongoose.Types;
 
 export default class AdminRepository implements IAdminRepository {
@@ -18,17 +19,20 @@ export default class AdminRepository implements IAdminRepository {
   private doctor: Model<IDoctor>;
   private kyc: Model<IKyc>;
   private payment: Model<PaymentEntity>;
+  private users:Model<IUser>
 
   constructor(
     specality: Model<ISpecality>,
     doctor: Model<IDoctor>,
     kyc: Model<IKyc>,
-    payment: Model<PaymentEntity>
+    payment: Model<PaymentEntity>,
+    users:Model<IUser>
   ) {
     this.specality = specality;
     this.doctor = doctor;
     this.kyc = kyc;
     this.payment = payment;
+    this.users=users
   }
 
   async addSpecality(
@@ -263,6 +267,29 @@ export default class AdminRepository implements IAdminRepository {
             }
           }
         ])
+
+      } catch (error) {
+         throw error
+      }
+  }
+
+
+   async getUsers(): Promise<IUser[]> {
+    
+    try {
+      
+      return await this.users.find({otpVerified:true})
+
+    } catch (error) {
+        throw error
+    }
+
+  }
+
+  async getDoctors(): Promise<IDoctor[]> {
+      try {
+        
+        return await this.doctor.find({otpVerified:true})
 
       } catch (error) {
          throw error

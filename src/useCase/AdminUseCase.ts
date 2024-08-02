@@ -16,6 +16,7 @@ import ICloudinaryService from "../interface/utils/ICloudinaryService";
 import ISpecality from "../entity/specalityEntity";
 import IDoctor from "../entity/doctorEntity";
 import { ObjectId } from "mongoose";
+import IUser from "../entity/userEntity";
 
 export default class AdminUseCase implements IAdminUseCase {
   private adminRepository: IAdminRepository;
@@ -313,6 +314,29 @@ export default class AdminUseCase implements IAdminUseCase {
            throw error
        }  
   }
+
+  async isGetUsers(): Promise<IUser[]> {
+       try {
+        
+        return await this.adminRepository.getUsers()
+
+       } catch (error) {
+          throw error
+       }
+  }
+
+  async isGetDoctors(): Promise<IDoctor[]> {
+         try {
+          
+          return await this.adminRepository.getDoctors()
+
+         } catch (error) {
+            throw error
+         }  
+  }
+
+
+
 
 
 }
