@@ -288,4 +288,67 @@ export default class AdminController implements IAdminController {
       next(error);
     }
   }
+
+  async userBlocked(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { userId } = req.body;
+
+      await this.adminUseCase.isUserBlocked(userId)
+      res.status(StatusCode.success).json({message:"successfully updated"})
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async doctorBlocked(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { doctorId } = req.body;
+
+      await this.adminUseCase.isDoctorBlocked(doctorId)
+      res.status(StatusCode.success).json({message:"successfully updated"})
+
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async userUnBlocked(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { userId } = req.body;
+
+      await this.adminUseCase.isUserUnBlocked(userId)
+      res.status(StatusCode.success).json({message:"successfully updated"})
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  
+  async doctorUnBlocked(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+          
+          const {doctorId}=req.body
+          
+          await this.adminUseCase.isDoctorUnBlocked(doctorId)
+          res.status(StatusCode.success).json({message:"successfully updated"})
+
+        } catch (error) {
+             next(error)
+        }
+  }
+
+
+
 }

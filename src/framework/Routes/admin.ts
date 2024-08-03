@@ -57,6 +57,10 @@ router.get("/fetchPaymentHistory",authorizationMiddleware,adminController.getPay
 router.get("/invoiceData",authorizationMiddleware,adminController.getInvoiceData.bind(adminController))
 router.get("/getUsers",authorizationMiddleware,adminController.getUsers.bind(adminController))
 router.get("/getDoctors",authorizationMiddleware,adminController.getDoctors.bind(adminController))
+router.patch("/userBlocked",authorizationMiddleware,adminController.userBlocked.bind(adminController))
+router.patch("/doctorBlocked",authorizationMiddleware,adminController.doctorBlocked.bind(adminController))
+router.patch("/userUnBlocked",authorizationMiddleware,adminController.userUnBlocked.bind(adminController))
+router.patch("/doctorUnBlocked",authorizationMiddleware,adminController.doctorUnBlocked.bind(adminController))
 
 export default router    
   

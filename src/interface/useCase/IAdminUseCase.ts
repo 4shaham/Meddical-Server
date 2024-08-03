@@ -73,4 +73,8 @@ export default interface IAdminUseCase{
     isGetInvoiceData(id:string):Promise<invoiceData[]>
     isGetUsers():Promise<IUser[]>
     isGetDoctors():Promise<IDoctor[]>
+    isUserBlocked(userId:string):Promise<void>
+    isUserUnBlocked(userId:string):Promise<void>
+    isDoctorBlocked(doctorId:string):Promise<void>
+    isDoctorUnBlocked(doctorId:string):Promise<void>
 }

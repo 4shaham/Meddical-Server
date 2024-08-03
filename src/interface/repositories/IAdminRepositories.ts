@@ -46,5 +46,7 @@ export default interface IAdminRepository{
     getInvoiceData(id:string):Promise<invoiceData[]>
     getUsers():Promise<IUser[]>
     getDoctors():Promise<IDoctor[]>
+    userBlockedStatusUpdate(userId:string,status:boolean):Promise<IUser|null>
+    doctorBlockedStatusUpdate(doctorId:string,status:boolean):Promise<IDoctor|null>
 
 }

@@ -19,4 +19,8 @@ export default interface IAdminController {
   getInvoiceData(req:Request,res:Response,next:NextFunction):Promise<void>
   getUsers(req:Request,res:Response,next:NextFunction):Promise<void>
   getDoctors(req:Request,res:Response,next:NextFunction):Promise<void>
+  userBlocked(req:Request,res:Response,next:NextFunction):Promise<void>
+  doctorBlocked(req:Request,res:Response,next:NextFunction):Promise<void>
+  userUnBlocked(req:Request,res:Response,next:NextFunction):Promise<void>
+  doctorUnBlocked(req:Request,res:Response,next:NextFunction):Promise<void>
 }

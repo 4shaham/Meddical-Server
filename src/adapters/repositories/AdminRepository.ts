@@ -297,5 +297,25 @@ export default class AdminRepository implements IAdminRepository {
   }
 
 
+  async userBlockedStatusUpdate(userId: string, status: boolean): Promise<IUser|null> {
+       try {
+        
+        return await this.users.findOneAndUpdate({_id:userId},{$set:{isBlock:status}},{new:true})
+
+       } catch (error) {
+           throw error
+       }
+  }
+
+  async doctorBlockedStatusUpdate(doctorId: string, status: boolean): Promise<IDoctor|null> {
+          try {
+
+            return await this.doctor.findOneAndUpdate({_id:doctorId},{$set:{isBlocked:status}},{new:true})
+            
+          } catch (error) {
+              throw error
+          }  
+  }
+
 
 }

@@ -17,6 +17,8 @@ import ISpecality from "../entity/specalityEntity";
 import IDoctor from "../entity/doctorEntity";
 import { ObjectId } from "mongoose";
 import IUser from "../entity/userEntity";
+import { StatusCode } from "../enums/statusCode";
+import Errors from "../erros/errors";
 
 export default class AdminUseCase implements IAdminUseCase {
   private adminRepository: IAdminRepository;
@@ -42,13 +44,12 @@ export default class AdminUseCase implements IAdminUseCase {
     try {
       if (email == AdminEmail && AdminPassword == password) {
         let token = this.jwtService.createToken({ id: email, role: "admin" });
-  
+
         return {
           status: true,
           message: "sucessfull Login",
           token,
         };
-
       }
 
       return {
@@ -296,47 +297,119 @@ export default class AdminUseCase implements IAdminUseCase {
   }
 
   async isGetPaymentHistoryData(): Promise<PaymentHistroyData[]> {
-      try {
-        
-        return await this.adminRepository.fetchPaymentHistory()
-
-      } catch (error) {
-         throw error
-      }
+    try {
+      return await this.adminRepository.fetchPaymentHistory();
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async isGetInvoiceData(id:string): Promise<invoiceData[]> {
-       try {
-
-        return await this.adminRepository.getInvoiceData(id)
-        
-       } catch (error) {
-           throw error
-       }  
+  async isGetInvoiceData(id: string): Promise<invoiceData[]> {
+    try {
+      return await this.adminRepository.getInvoiceData(id);
+    } catch (error) {
+      throw error;
+    }
   }
 
   async isGetUsers(): Promise<IUser[]> {
-       try {
-        
-        return await this.adminRepository.getUsers()
-
-       } catch (error) {
-          throw error
-       }
+    try {
+      return await this.adminRepository.getUsers();
+    } catch (error) {
+      throw error;
+    }
   }
 
   async isGetDoctors(): Promise<IDoctor[]> {
-         try {
-          
-          return await this.adminRepository.getDoctors()
-
-         } catch (error) {
-            throw error
-         }  
+    try {
+      return await this.adminRepository.getDoctors();
+    } catch (error) {
+      throw error;
+    }
   }
 
+  async isUserBlocked(userId: string): Promise<void> {
+    try {
+      if (!userId) {
+        throw new Errors("userId is required", StatusCode.badRequest);
+      }
 
+      const data = await this.adminRepository.userBlockedStatusUpdate(
+        userId,
+        true
+      );
 
+      if (data == null) {
+        throw new Errors("user Blocked is not changed", StatusCode.badRequest);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
 
+  async isUserUnBlocked(userId: string): Promise<void> {
+    try {
+      if (!userId) {
+        throw new Errors("userId is required", StatusCode.badRequest);
+      }
 
+      const data = await this.adminRepository.userBlockedStatusUpdate(
+        userId,
+        false
+      );
+
+      if (data == null) {
+        throw new Errors(
+          "user unBlocked is not changed",
+          StatusCode.badRequest
+        );
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async isDoctorBlocked(doctorId: string): Promise<void> {
+    try {
+      if (!doctorId) {
+        throw new Errors("doctorid is required", StatusCode.badRequest);
+      }
+
+      const data = await this.adminRepository.doctorBlockedStatusUpdate(
+        doctorId,
+        true
+      );
+
+      if (data == null) {
+        throw new Errors(
+          "doctor Blocked is not changed",
+          StatusCode.badRequest
+        );
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async isDoctorUnBlocked(doctorId: string): Promise<void> {
+    try {
+      if (!doctorId) {
+        throw new Errors("doctorid is required", StatusCode.badRequest);
+      }
+
+      const data = await this.adminRepository.doctorBlockedStatusUpdate(
+        doctorId,
+        false
+      );
+
+      if (data == null) {
+        throw new Errors(
+          "doctor unBlocked is not changed",
+          StatusCode.badRequest
+        );
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
 }
