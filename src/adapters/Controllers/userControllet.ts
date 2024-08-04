@@ -54,6 +54,16 @@ export default class UserController implements IUserController {
   }
 
 
+  async updateProfile(req: IAuthRequest, res: Response, next: NextFunction): Promise<void> {
+       try {
+         
+         
+
+       } catch (error) {
+          next(error)
+       }
+  }
+
 
 
 }
