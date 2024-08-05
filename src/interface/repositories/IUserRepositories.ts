@@ -13,4 +13,5 @@ export default interface IuserRepositories{
     findPrescriptionData(id:string):Promise<PrescriptionData[]>
     findPaymentHistory(id:string):Promise<PaymentEntity[]>
     getInoviceData(id:string):Promise<InvoiceData[]>
+    updateUserProfile(userId:string):Promise<IUser|null>
 }

@@ -185,6 +185,7 @@ export default class AdminController implements IAdminController {
 
   async updateSpecality(req: Request, res: Response): Promise<void> {
     try {
+      
       const { image, name, id } = req.body;
       console.log(req.body);
 

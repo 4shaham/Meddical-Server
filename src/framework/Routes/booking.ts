@@ -5,7 +5,7 @@ const router=express.Router()
 
 
 import authorizationMiddleware from "../Middleware/user/authorization"
-
+import isUserBlockedMiddleware from "../Middleware/user/isUserBlocked"
 
 // models
 import BookingDb from "../model/BookingSchema"
@@ -31,9 +31,9 @@ const bookingController=new BookingController(bookingUseCase)
 
 router.post("/webhook",express.raw({type: 'application/json'}),bookingController.webhook.bind(bookingController))
 router.delete("/cancelTokenBooking",authorizationMiddleware,bookingController.cancelTokenBooking.bind(bookingController))
-router.get("/findBookingDataWithStatus",authorizationMiddleware,bookingController.findUserBooking.bind(bookingController))
+router.get("/findBookingDataWithStatus",authorizationMiddleware,isUserBlockedMiddleware,bookingController.findUserBooking.bind(bookingController))
 router.post("/payment",bookingController.makePayment.bind(bookingController))
-router.put("/rescheduleBooking",authorizationMiddleware,bookingController.rescheduleBooking.bind(bookingController))
+router.put("/rescheduleBooking",authorizationMiddleware,isUserBlockedMiddleware,bookingController.rescheduleBooking.bind(bookingController))
 // router.post("/webhook",bookingController.createTokenBooking.bind(bookingController))
 
 export default router

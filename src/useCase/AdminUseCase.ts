@@ -206,6 +206,7 @@ export default class AdminUseCase implements IAdminUseCase {
       }
 
       if (name) {
+
         let data = await this.adminRepository.isExists(name.toLowerCase());
         if (data) {
           return {
@@ -213,6 +214,7 @@ export default class AdminUseCase implements IAdminUseCase {
             errMessage: "This name already used",
           };
         }
+        
       }
 
       if (name && image) {

@@ -14,4 +14,5 @@ export default interface IUserUseCase{
    isGetDataPrescription(id:string):Promise<PrescriptionData[]>
    isGetDataPayment(id:string):Promise<PaymentEntity[]>
    isGetInvoiceData(id:string):Promise<InvoiceData[]>
+   verifyUpdateUserProfile(userId:string):Promise<void>
 }

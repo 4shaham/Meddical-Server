@@ -108,7 +108,8 @@ class UserAuthController implements IUserAuthController {
 
   async login(
     req: Request,
-    res: Response
+    res: Response,
+    next:NextFunction
   ): Promise<void> {
     try {
 
@@ -136,6 +137,7 @@ class UserAuthController implements IUserAuthController {
       }
     } catch (error) {
       console.log(error);
+      next(error)
     }
   }
 
@@ -207,7 +209,7 @@ class UserAuthController implements IUserAuthController {
   async logOut(
     req: Request,
     res: Response
-  ): Promise<void> {
+  ):Promise<void>{
     try {
       res.cookie("token", "", { httpOnly: true, expires: new Date() });
       res.status(200).json({ status: true });
@@ -221,6 +223,7 @@ class UserAuthController implements IUserAuthController {
     res: Response
   ): Promise<void> {
     try {
+
       const token = req.cookies.token;
       console.log(token, "shdfhdjfhd");
       const response = await this.userAuthUseCase.verifyToken(token);
@@ -264,14 +267,13 @@ class UserAuthController implements IUserAuthController {
     } catch (error) {
       console.log(error);
     }
+
   }
 
 
   async getUserProfile(req: IAuthRequest, res: Response,next:NextFunction): Promise<void> {
       try {
         
-         
-
          let userId:string=req.userId as string  
          const data=await this.userAuthUseCase.verifyProfileData(userId)
 

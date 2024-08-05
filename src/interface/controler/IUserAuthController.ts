@@ -40,9 +40,9 @@ export interface otpVerifyData {
 }
 
 export default interface IUserAuthController {
-  register(req: Request, res: Response): Promise<void>;
+  register(req: Request, res:Response): Promise<void>;
   otpVerification(req: Request, res: Response): Promise<void>;
-  login(req: Request, res: Response): Promise<void>;
+  login(req: Request, res: Response,next:NextFunction): Promise<void>;
   forgotPassword(req: Request, res: Response): Promise<void>;
   updatePassword(req: Request, res: Response): Promise<void>;
   resendOtp(req:Request,res:Response):Promise<void>;

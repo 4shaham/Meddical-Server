@@ -45,12 +45,13 @@ export default class ChatingUseCase implements IChatingUseCase {
   }
 
 
-  async handleGetMessage(convrasationId: string): Promise<MessageEntity | null[]> {
+  async handleGetMessage(convrasationId: string): Promise<MessageEntity|null[]> {
        try {
           return await this.chatingRepositories.getMessage(convrasationId)
        } catch (error) {
          throw error
        }
+
   }
 
 

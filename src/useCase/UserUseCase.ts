@@ -50,4 +50,16 @@ export default class userUseCase implements IUserUseCase{
            }  
     }
 
+
+    async verifyUpdateUserProfile(userId:string): Promise<void> {
+         try {
+          
+          await this.userRepository.updateUserProfile(userId)
+          
+          
+         } catch (error) {
+            throw error
+         }
+    }
+
 }

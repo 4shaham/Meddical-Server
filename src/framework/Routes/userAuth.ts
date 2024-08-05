@@ -19,8 +19,9 @@ import Otp from "../model/UserOtpSchema";
 import HashingServices from "../utils/hashingService";
 import OtpService from "../utils/otpService";
 import JwtService from "../utils/jwtService";
-import authorizationMiddleware from "../Middleware/user/authorization";
 
+import authorizationMiddleware from "../Middleware/user/authorization";
+import isUserBlockedMiddleware from "../Middleware/user/isUserBlocked";
 
 // utiles object creation 
 
@@ -45,7 +46,7 @@ router.post("/resendOtp",userAuthController.resendOtp.bind(userAuthController))
 router.post("/logOut",userAuthController.logOut.bind(userAuthController))
 router.get("/getToken",userAuthController.getToken.bind(userAuthController))
 router.post("/googleAuth",userAuthController.googleAuth.bind(userAuthController))
-router.get("/profileData",authorizationMiddleware,userAuthController.getUserProfile.bind(userAuthController))
+router.get("/profileData",authorizationMiddleware,isUserBlockedMiddleware,userAuthController.getUserProfile.bind(userAuthController))
 
 
 export default router;

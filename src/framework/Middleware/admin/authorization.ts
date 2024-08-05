@@ -9,13 +9,15 @@ const authorization = async (
   next: NextFunction
 ) => {
   try {
+
     const token = req.cookies.adminToken;
     const verification = await jwtservice.verify(token); // ineed imple token veryifht
     next();
+
   } catch (error) {
     return res
-      .status(500)
-      .json({ message: "Internal Server Error", error: error });
+    .status(401)   
+    .json({ message:"Admin is not authenticated", error: error });
   }
 };
 
