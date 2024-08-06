@@ -414,4 +414,16 @@ export default class AdminUseCase implements IAdminUseCase {
       throw error;
     }
   }
+
+  async getDataSpecalityChart(): Promise<void> {
+         try {
+          
+          
+
+         } catch (error) {
+            throw error
+         }
+  }
+
+
 }

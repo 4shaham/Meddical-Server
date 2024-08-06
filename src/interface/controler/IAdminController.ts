@@ -23,4 +23,5 @@ export default interface IAdminController {
   doctorBlocked(req:Request,res:Response,next:NextFunction):Promise<void>
   userUnBlocked(req:Request,res:Response,next:NextFunction):Promise<void>
   doctorUnBlocked(req:Request,res:Response,next:NextFunction):Promise<void>
+  specalityChart(req:Request,res:Response,next:NextFunction):Promise<void>
 }

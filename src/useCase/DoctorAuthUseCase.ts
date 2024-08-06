@@ -106,12 +106,20 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
         };
       }
 
+      
+      if(doctor.isBlocked==true){
+         throw new Errors("doctor is blocked",StatusCode.forBidden)
+      }
+
+
       if (doctor.approved == false) {
         return {
           status: false,
           message: "kyc status not completed",
         };
       }
+
+
 
       const tokendata = {
         id:doctor._id,
@@ -134,9 +142,12 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
         message: "login succussfully",
         token: token,
       };
+
     } catch (error) {
+
       console.log(error);
-      throw Error();
+      throw error
+
     }
   }
 
@@ -189,7 +200,7 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
   }
 
   async handleKYCVerificationStep1(
-    data: DatasKYCVerificationStep1
+    data: DatasKYCVerificationStep1   
   ): Promise<ResponseKycFirstStep> {
     try {
       console.log("hii helloo bro");
@@ -228,7 +239,7 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
       let KycData = await this.doctorAuthRepository.kycStorStep1(data);
       console.log(KycData, "kiiiiiiiiii");
 
-      return {
+      return {   
         status: true,
         message: "fist step successfully completed",
       };

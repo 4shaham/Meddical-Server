@@ -21,7 +21,7 @@ const authorization=async(req:IRequest,res:Response,next:NextFunction)=>{
       } catch (error) {
          
          console.log("eroorr")
-         return res.status(500).json({ message: 'Internal Server Error', error: error });
+         return res.status(401).json({ message:'doctor token is expired', error: error });
       }
 }
 

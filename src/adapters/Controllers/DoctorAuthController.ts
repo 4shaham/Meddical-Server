@@ -16,7 +16,8 @@ export default class DoctorAuthController implements IDoctorAuthController {
 
   async register(
     req: Request,
-    res: Response
+    res: Response,
+    next:NextFunction
   ): Promise<void> {
     try {
       const {
@@ -50,13 +51,15 @@ export default class DoctorAuthController implements IDoctorAuthController {
       }
     } catch (error) {
       console.log(error, "jhh");
-      throw error;
+      // throw error;
+       next(error)
     }
   }
 
   async otpVerification(
     req: Request,
-    res: Response
+    res: Response,
+   
   ): Promise<void> {
     try {
       const { otp } = req.body;
@@ -69,13 +72,14 @@ export default class DoctorAuthController implements IDoctorAuthController {
 
       const response = await this.doctorAuthUseCase.otpVerify(otp, email);
 
-      if (response.status) {
+      if (response.status){
         res.status(200).json(response);
       } else {
         res.status(401).json(response);
       }
     } catch (error) {
-      throw error;
+      // throw error;
+    
     }
   }
 
@@ -98,7 +102,8 @@ export default class DoctorAuthController implements IDoctorAuthController {
 
   async login(
     req: Request,
-    res: Response
+    res: Response,
+    next:NextFunction
   ): Promise<void> {
     try {
 
@@ -112,9 +117,12 @@ export default class DoctorAuthController implements IDoctorAuthController {
       }else{
         res.status(401).json(response);
       }
+
     }catch(error){
-      console.log(error);
-      throw error;
+
+     console.log("hiiii errorr");
+      next(error)
+
     }
   }
 

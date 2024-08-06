@@ -351,5 +351,14 @@ export default class AdminController implements IAdminController {
   }
 
 
+  async specalityChart(req: Request, res: Response, next: NextFunction): Promise<void> {
+       try {
+        
+        
+       } catch (error) {
+          next (error)
+       }
+  }
+
 
 }

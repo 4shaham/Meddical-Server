@@ -15,9 +15,13 @@ import DoctorScheduleManagementRepository from "../../adapters/repositories/Doct
 import DoctorScheduleManagmentUseCase from "../../useCase/DoctorScheduleManagementUseCase";
 import DoctorScheduleManagementController from "../../adapters/controllers/DoctorScheduleManagementController";
 
+import authorization from "../Middleware/doctor/authorization";
+import { isDoctorBlockedMiddleware } from "../Middleware/doctor/isBlocked";
+
+
 
 import JwtService from "../utils/jwtService";
-import authorization from "../Middleware/doctor/authorization";
+
 
 const jwtService=new JwtService()
 
@@ -29,14 +33,15 @@ const doctorScheduleManagementController=new DoctorScheduleManagementController(
 
 
 
- router.post("/addSchedule",authorization,doctorScheduleManagementController.addSchedules.bind(doctorScheduleManagementController))
- router.get("/findDoctorBookingWithDate",authorization,doctorScheduleManagementController.findBookingSlotWithDate.bind(doctorScheduleManagementController))
- router.get("/findDoctorSchedule",authorization,doctorScheduleManagementController.findAllScehdules.bind(doctorScheduleManagementController))
+ router.post("/addSchedule",authorization,isDoctorBlockedMiddleware,doctorScheduleManagementController.addSchedules.bind(doctorScheduleManagementController))
+ router.get("/findDoctorBookingWithDate",authorization,isDoctorBlockedMiddleware,doctorScheduleManagementController.findBookingSlotWithDate.bind(doctorScheduleManagementController))
+ router.get("/findDoctorSchedule",authorization,isDoctorBlockedMiddleware,doctorScheduleManagementController.findAllScehdules.bind(doctorScheduleManagementController))
 
 
  //prescription  
- router.post("/addPrescription",authorization,doctorScheduleManagementController.createPrescription.bind(doctorScheduleManagementController))
+ router.post("/addPrescription",authorization,isDoctorBlockedMiddleware,doctorScheduleManagementController.createPrescription.bind(doctorScheduleManagementController))
  
  // userSide
  router.get("/findSchedulePerticularDate",doctorScheduleManagementController.findPerticularDateSchedule.bind(doctorScheduleManagementController))
+ 
 export default router

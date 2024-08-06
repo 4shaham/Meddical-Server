@@ -54,7 +54,6 @@ export interface invoiceData extends PaymentEntity{
 
 
 
-
 export default interface IAdminUseCase{
 
     verificationLogin(email:string,password:string,AdminEmail:string,AdminPassword:string):Promise<Response>
@@ -77,4 +76,5 @@ export default interface IAdminUseCase{
     isUserUnBlocked(userId:string):Promise<void>
     isDoctorBlocked(doctorId:string):Promise<void>
     isDoctorUnBlocked(doctorId:string):Promise<void>
+    getDataSpecalityChart():Promise<void>
 }
