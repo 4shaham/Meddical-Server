@@ -19,5 +19,6 @@ export default interface IDoctorAuthRepositories{
     updateOtpVerified(email:string):Promise<IDoctor|null>
     isTokenDoctorData(id:string):Promise<IDoctor|null>
     getUserProfileData(id:string):Promise<IUser|null>
+    getDoctorProfileData(id:string):Promise<IDoctor|null>
     
 }

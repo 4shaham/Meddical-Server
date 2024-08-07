@@ -5,6 +5,7 @@ import IAdminRepository, {
   FetchPaymentData,
   GetNewRequestData,
   IUData,
+  SpecialityCount,
 } from "../../interface/repositories/IAdminRepositories";
 import IDoctor from "../../entity/doctorEntity";
 import IKyc from "../../entity/kycEntity";
@@ -19,20 +20,20 @@ export default class AdminRepository implements IAdminRepository {
   private doctor: Model<IDoctor>;
   private kyc: Model<IKyc>;
   private payment: Model<PaymentEntity>;
-  private users:Model<IUser>
+  private users: Model<IUser>;
 
   constructor(
     specality: Model<ISpecality>,
     doctor: Model<IDoctor>,
     kyc: Model<IKyc>,
     payment: Model<PaymentEntity>,
-    users:Model<IUser>
+    users: Model<IUser>
   ) {
     this.specality = specality;
     this.doctor = doctor;
     this.kyc = kyc;
     this.payment = payment;
-    this.users=users
+    this.users = users;
   }
 
   async addSpecality(
@@ -195,7 +196,7 @@ export default class AdminRepository implements IAdminRepository {
 
   async fetchPaymentHistory(): Promise<FetchPaymentData[]> {
     try {
-      const data=await this.payment.aggregate([
+      const data = await this.payment.aggregate([
         {
           $match: {},
         },
@@ -212,110 +213,133 @@ export default class AdminRepository implements IAdminRepository {
             path: "$doctorData",
           },
         },
-         {
-          '$lookup': {
-              'from': 'users', 
-              'localField': 'userId', 
-              'foreignField': '_id', 
-              'as': 'userData'
-          }
-      },{
-        $unwind: {
-          path: "$userData",
+        {
+          $lookup: {
+            from: "users",
+            localField: "userId",
+            foreignField: "_id",
+            as: "userData",
+          },
         },
-      },
+        {
+          $unwind: {
+            path: "$userData",
+          },
+        },
       ]);
-      
-      console.log(data)
-      return data
+
+      console.log(data);
+      return data;
     } catch (error) {
       throw error;
     }
   }
 
   async getInvoiceData(id: string): Promise<invoiceData[]> {
-      try {
-        console.log(id,"loooooo")
-        return  await this.payment.aggregate([
-          {
-            '$match': {
-              'tokenId': new ObjectId(id)
-            }
-          }
-          ,{
-            '$lookup': {
-              'from':'users', 
-              'localField':'userId', 
-              'foreignField': '_id', 
-              'as': 'userData'
-            }
-          },{
-            '$unwind': {
-              'path': '$userData'
-            }
-          }
-          ,{
-            '$lookup': {
-              'from': 'bookingdbs', 
-              'localField': 'tokenId', 
-              'foreignField': '_id', 
-              'as': 'bookingData'
-            }
-          },{
-            '$unwind': {
-              'path': '$bookingData'
-            }
-          }
-        ])
-
-      } catch (error) {
-         throw error
-      }
+    try {
+      console.log(id, "loooooo");
+      return await this.payment.aggregate([
+        {
+          $match: {
+            tokenId: new ObjectId(id),
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "userId",
+            foreignField: "_id",
+            as: "userData",
+          },
+        },
+        {
+          $unwind: {
+            path: "$userData",
+          },
+        },
+        {
+          $lookup: {
+            from: "bookingdbs",
+            localField: "tokenId",
+            foreignField: "_id",
+            as: "bookingData",
+          },
+        },
+        {
+          $unwind: {
+            path: "$bookingData",
+          },
+        },
+      ]);
+    } catch (error) {
+      throw error;
+    }
   }
 
-
-   async getUsers(): Promise<IUser[]> {
-    
+  async getUsers(): Promise<IUser[]> {
     try {
-      
-      return await this.users.find({otpVerified:true})
-
+      return await this.users.find({ otpVerified: true });
     } catch (error) {
-        throw error
+      throw error;
     }
-
   }
 
   async getDoctors(): Promise<IDoctor[]> {
-      try {
-        
-        return await this.doctor.find({otpVerified:true})
-
-      } catch (error) {
-         throw error
-      }
+    try {
+      return await this.doctor.find({ otpVerified: true });
+    } catch (error) {
+      throw error;
+    }
   }
 
-
-  async userBlockedStatusUpdate(userId: string, status: boolean): Promise<IUser|null> {
-       try {
-        
-        return await this.users.findOneAndUpdate({_id:userId},{$set:{isBlock:status}},{new:true})
-
-       } catch (error) {
-           throw error
-       }
+  async userBlockedStatusUpdate(
+    userId: string,
+    status: boolean
+  ): Promise<IUser | null> {
+    try {
+      return await this.users.findOneAndUpdate(
+        { _id: userId },
+        { $set: { isBlock: status } },
+        { new: true }
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async doctorBlockedStatusUpdate(doctorId: string, status: boolean): Promise<IDoctor|null> {
-          try {
-
-            return await this.doctor.findOneAndUpdate({_id:doctorId},{$set:{isBlocked:status}},{new:true})
-            
-          } catch (error) {
-              throw error
-          }  
+  async doctorBlockedStatusUpdate(
+    doctorId: string,
+    status: boolean
+  ): Promise<IDoctor | null> {
+    try {
+      return await this.doctor.findOneAndUpdate(
+        { _id: doctorId },
+        { $set: { isBlocked: status } },
+        { new: true }
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
-
+  async getSpecalityChartData(): Promise<SpecialityCount[]> {
+    try {
+      return await this.doctor.aggregate([
+        {
+            '$match': {
+                'approved':true
+            }
+        },{
+            '$group': {
+                '_id': '$specialty', 
+                'totalCount': {
+                    '$sum': 1
+                }
+            }
+        }
+    ]);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

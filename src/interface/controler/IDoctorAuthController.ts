@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import IUser from "../../entity/userEntity"
+import IRequest from "./Request"
 
 
 export default interface IDoctorAuthController{
@@ -14,6 +15,7 @@ export default interface IDoctorAuthController{
    logOut(req:Request,res:Response):Promise<void>
    getToken(req:Request,res:Response):Promise<void>
    getUserData(req:Request,res:Response,next:NextFunction):Promise<void>
+   getDoctorProfileData(req:IRequest,res:Response,next:NextFunction):Promise<void>
 }
 
 // export interface doctorRegisterBody{

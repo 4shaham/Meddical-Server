@@ -29,6 +29,11 @@ export interface IUData{
     bookingData:IBooking
 }
 
+export interface SpecialityCount {
+    _id: string;
+    totalCount: number;
+}
+
 export default interface IAdminRepository{
     addSpecality(image:string,specalityName:string):Promise<ISpecality|null>
     isExists(speclaityName:string):Promise<ISpecality|null>
@@ -48,5 +53,6 @@ export default interface IAdminRepository{
     getDoctors():Promise<IDoctor[]>
     userBlockedStatusUpdate(userId:string,status:boolean):Promise<IUser|null>
     doctorBlockedStatusUpdate(doctorId:string,status:boolean):Promise<IDoctor|null>
+    getSpecalityChartData():Promise<SpecialityCount[]>
 
 }

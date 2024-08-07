@@ -6,6 +6,7 @@ import IDoctorUseCase, {
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import { StatusCode } from "../../enums/statusCode";
+import IRequest from "../../interface/controler/Request";
 
 export default class DoctorAuthController implements IDoctorAuthController {
   private doctorAuthUseCase: IDoctorUseCase;
@@ -238,5 +239,19 @@ export default class DoctorAuthController implements IDoctorAuthController {
             }  
   }
 
+
+   async getDoctorProfileData(req: IRequest, res: Response, next: NextFunction): Promise<void> {
+         try {
+          
+          const id:string=req.doctorID as string
+
+         const data=await this.doctorAuthUseCase.isGetDoctorProfileData(id)
+         res.status(StatusCode.success).json({profileData:data})
+
+         } catch (error) {
+            console.log(error)
+             next(error)
+         }
+  }
 
 }

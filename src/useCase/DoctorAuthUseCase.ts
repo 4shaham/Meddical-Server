@@ -20,6 +20,7 @@ import IUser from "../entity/userEntity";
 import { error } from "console";
 import Errors from "../erros/errors";
 import { StatusCode } from "../enums/statusCode";
+import IDoctor from "../entity/doctorEntity";
 
 export default class DoctorAuthUseCase implements IDoctorUseCase {
   private doctorAuthRepository: IDoctorAuthRepositories;
@@ -106,11 +107,9 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
         };
       }
 
-      
-      if(doctor.isBlocked==true){
-         throw new Errors("doctor is blocked",StatusCode.forBidden)
+      if (doctor.isBlocked == true) {
+        throw new Errors("doctor is blocked", StatusCode.forBidden);
       }
-
 
       if (doctor.approved == false) {
         return {
@@ -119,10 +118,8 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
         };
       }
 
-
-
       const tokendata = {
-        id:doctor._id,
+        id: doctor._id,
         userName: doctor.name,
         role: "doctor",
       };
@@ -130,10 +127,10 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
       let token = await this.jwtServices.createToken(tokendata);
 
       const doctorData = {
-        id:doctor._id,
-        name:doctor.name,
-        image:doctor.image,
-        email:doctor.email,
+        id: doctor._id,
+        name: doctor.name,
+        image: doctor.image,
+        email: doctor.email,
       };
 
       return {
@@ -142,12 +139,9 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
         message: "login succussfully",
         token: token,
       };
-
     } catch (error) {
-
       console.log(error);
-      throw error
-
+      throw error;
     }
   }
 
@@ -200,7 +194,7 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
   }
 
   async handleKYCVerificationStep1(
-    data: DatasKYCVerificationStep1   
+    data: DatasKYCVerificationStep1
   ): Promise<ResponseKycFirstStep> {
     try {
       console.log("hii helloo bro");
@@ -224,9 +218,9 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
           errMessage: "credientioal err",
         };
       }
-      console.log(data.email)
+      console.log(data.email);
       let isDoctor = await this.doctorAuthRepository.isDoctorExists(data.email);
-      console.log(isDoctor,"hiiiii");
+      console.log(isDoctor, "hiiiii");
       if (!isDoctor) {
         return {
           status: false,
@@ -239,7 +233,7 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
       let KycData = await this.doctorAuthRepository.kycStorStep1(data);
       console.log(KycData, "kiiiiiiiiii");
 
-      return {   
+      return {
         status: true,
         message: "fist step successfully completed",
       };
@@ -248,7 +242,6 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
       throw error;
     }
   }
-  
 
   async handleKYCVerificationStep2(
     data: DatasKYCVerificationStep2
@@ -323,24 +316,40 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
   }
 
   async getUserProfileData(id: string): Promise<IUser> {
-      try {
+    try {
+      if (!id) {
+        throw new Errors("the id is required", StatusCode.badRequest);
+      }
 
-        if(!id){
-            throw new Errors("the id is required",StatusCode.badRequest)
-        }
-        
-        const data=await this.doctorAuthRepository.getUserProfileData(id)
-         console.log(data);
-         
-        if(!data){
-          throw error
-        }
-        return data
+      const data = await this.doctorAuthRepository.getUserProfileData(id);
+      console.log(data);
 
-      } catch (error) {
-         throw error
-      }  
+      if (!data) {
+        throw error;
+      }
+      return data;
+    } catch (error) {
+      throw error;
+    }
   }
 
+  async isGetDoctorProfileData(id: string): Promise<IDoctor> {
+    try {
+      
+      if(!id){
+        throw new Errors("the id is required", StatusCode.badRequest);
+      }
 
+    let data=await this.doctorAuthRepository.getDoctorProfileData(id)
+
+    if(!data){
+      throw new Errors("this id is not valid", StatusCode.badRequest); 
+    }
+
+    return data
+
+    } catch (error) {
+      throw error;
+    }
+  }
 }

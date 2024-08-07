@@ -160,5 +160,14 @@ export default class DoctorAuthRepository implements IDoctorAuthRepositories {
       }  
   }
 
+  async getDoctorProfileData(id: string): Promise<IDoctor | null> {
+      try {
+        
+        return await this.doctors.findOne({_id:id})
+
+      } catch (error) {
+         throw error
+      }
+  }
 
 }

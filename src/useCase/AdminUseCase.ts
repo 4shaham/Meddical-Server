@@ -1,5 +1,5 @@
 import { Jwt } from "jsonwebtoken";
-import IAdminRepository from "../interface/repositories/IAdminRepositories";
+import IAdminRepository, { SpecialityCount } from "../interface/repositories/IAdminRepositories";
 import IAdminUseCase, {
   GetNewRequestData,
   invoiceData,
@@ -415,10 +415,10 @@ export default class AdminUseCase implements IAdminUseCase {
     }
   }
 
-  async getDataSpecalityChart(): Promise<void> {
+  async getDataSpecalityChart(): Promise<SpecialityCount[]> {
          try {
           
-          
+        return  await this.adminRepository.getSpecalityChartData()
 
          } catch (error) {
             throw error

@@ -48,7 +48,8 @@ router.put("/storeKycData2",doctorAuthController.storeKYCDataStep2.bind(doctorAu
 router.get("/getKycStatus/:email",doctorAuthController.getKycinformation.bind(doctorAuthController))
 router.post("/logout",authorization,doctorAuthController.logOut.bind(doctorAuthController))
 router.get("/getToken",doctorAuthController.getToken.bind(doctorAuthController))
-router.get("/getUserProfileDoctor",authorization,doctorAuthController.getUserData.bind(doctorAuthController))  
+router.get("/getUserProfileDoctor",authorization,doctorAuthController.getUserData.bind(doctorAuthController)) 
+router.get("/getDoctorProfile",authorization,doctorAuthController.getDoctorProfileData.bind(doctorAuthController)) 
 
 
 export default router;

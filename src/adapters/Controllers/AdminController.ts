@@ -353,12 +353,16 @@ export default class AdminController implements IAdminController {
 
   async specalityChart(req: Request, res: Response, next: NextFunction): Promise<void> {
        try {
-        
-        
+         const data=await this.adminUseCase.getDataSpecalityChart()
+         res.status(StatusCode.success).json({specalityChartData:data})
        } catch (error) {
           next (error)
        }
   }
+
+  
+
+
 
 
 }

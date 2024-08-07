@@ -3,6 +3,7 @@ import IUserUseCase, { InvoiceData } from "../../interface/useCase/IUseUseCase";
 import IPrescription from "../../entity/prescriptionEntity";
 import IuserRepositories, {
   PrescriptionData,
+  UpdateData,
 } from "../../interface/repositories/IUserRepositories";
 import mongoose, { ObjectId } from "mongoose";
 import { log } from "console";
@@ -97,15 +98,26 @@ export default class UserRepository implements IuserRepositories {
     }
   }
 
-  async updateUserProfile(userId: string): Promise<IUser | null> {
+  async updateUserProfile(
+    userId: string,
+    data: UpdateData
+  ): Promise<IUser | null> {
     try {
+       
+      console.log("updating data",data)
+
       return await this.users.findOneAndUpdate(
         { _id: userId },
-        { $set: {} },
+        {
+          $set: 
+            data
+        },
         {
           new: true,
         }
       );
+
+
     } catch (error) {
       throw error;
     }

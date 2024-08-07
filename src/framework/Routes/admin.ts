@@ -61,6 +61,7 @@ router.patch("/userBlocked",authorizationMiddleware,adminController.userBlocked.
 router.patch("/doctorBlocked",authorizationMiddleware,adminController.doctorBlocked.bind(adminController))
 router.patch("/userUnBlocked",authorizationMiddleware,adminController.userUnBlocked.bind(adminController))
 router.patch("/doctorUnBlocked",authorizationMiddleware,adminController.doctorUnBlocked.bind(adminController))
+router.get("/specalityChart",authorizationMiddleware,adminController.specalityChart.bind(adminController))
 
 export default router    
   

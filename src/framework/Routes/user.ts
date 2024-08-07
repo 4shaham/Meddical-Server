@@ -17,14 +17,21 @@ import Users from "../model/UserSchema";
 import authorizationMiddleware from "../Middleware/user/authorization";
 import isUserBlockedMiddleware from "../Middleware/user/isUserBlocked";
 
+
+import CloudinaryService from "../utils/cloudinaryService";
+
+const cloudinaryService=new CloudinaryService()
+
+
 const userRepository=new UserRepository(Prescription,Payment,Users)
-const userUseCase=new UserUseCase(userRepository)
+const userUseCase=new UserUseCase(userRepository,cloudinaryService)
 const userController=new UserController(userUseCase)
 
 
 router.get("/getPrescriptionData",authorizationMiddleware,isUserBlockedMiddleware,userController.getPrescriptionData.bind(userController))
 router.get("/getTransactionHistory",authorizationMiddleware,isUserBlockedMiddleware,userController.getPaymentHistory.bind(userController))
 router.get("/getInvoiceData",authorizationMiddleware,isUserBlockedMiddleware,userController.getInvoiceData.bind(userController))
+router.put("/updateProfile",authorizationMiddleware,isUserBlockedMiddleware,userController.updateProfile.bind(userController))
 
 
 export default router

@@ -6,6 +6,7 @@ import IKyc from "../../entity/kycEntity"
 import PaymentEntity from "../../entity/paymentEntity"
 import IUser from "../../entity/userEntity"
 import IBooking from "../../entity/bookingEntity"
+import { SpecialityCount } from "../repositories/IAdminRepositories"
 
 export interface SpecalityResponse{
     status:boolean,
@@ -76,5 +77,5 @@ export default interface IAdminUseCase{
     isUserUnBlocked(userId:string):Promise<void>
     isDoctorBlocked(doctorId:string):Promise<void>
     isDoctorUnBlocked(doctorId:string):Promise<void>
-    getDataSpecalityChart():Promise<void>
+    getDataSpecalityChart():Promise<SpecialityCount[]>
 }

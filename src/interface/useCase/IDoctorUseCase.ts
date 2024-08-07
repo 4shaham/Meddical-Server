@@ -1,3 +1,4 @@
+import IDoctor from "../../entity/doctorEntity";
 import IKyc from "../../entity/kycEntity";
 import IUser from "../../entity/userEntity";
 
@@ -106,4 +107,5 @@ export default interface IDoctorUseCase{
     sendOtp(email:string):Promise<{status:true}> 
     verifyToken(token:string):Promise<VerifyResponse>
     getUserProfileData(id:string):Promise<IUser>
+    isGetDoctorProfileData(id:string):Promise<IDoctor>
 }

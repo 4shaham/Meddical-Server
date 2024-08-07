@@ -57,13 +57,11 @@ export default class UserController implements IUserController {
   async updateProfile(req: IAuthRequest, res: Response, next: NextFunction): Promise<void> {
        try {
 
-         const {}=req.body
+         console.log(req.body)
+         const {userName,age,gender,phoneNumber,image}=req.body
          const id:string=req.userId as string
-
-             
-          await this.userUseCase.verifyUpdateUserProfile(id)
-             
-
+         await this.userUseCase.verifyUpdateUserProfile(id,userName,age,phoneNumber,gender,image)
+         res.status(StatusCode.success).json({message:"successfully updated"}) 
        } catch (error) {
           next(error)
        }
