@@ -44,6 +44,16 @@ export default  class FetchGuestUserDataUseCase implements IFetchGuestUserDataUs
      }
   }
 
+async getDoctorSortWithSpecality(specality: string): Promise<IDoctor[]> {
+    try {
+      
+      console.log(specality,"specality")
 
+      return await this.fetchGuestUserDataRepository.findGetDoctorWithSort(specality)
+
+    } catch (error) {
+        throw error
+    }
+} 
 
 }

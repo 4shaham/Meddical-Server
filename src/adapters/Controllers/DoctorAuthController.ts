@@ -2,11 +2,14 @@ import { NextFunction, Request, Response } from "express";
 import IDoctorAuthController from "../../interface/controler/IDoctorAuthController";
 import IDoctorUseCase, {
   DatasKYCVerificationStep2,
+  DoctorUpdateProfileData,
 } from "../../interface/useCase/IDoctorUseCase";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import { StatusCode } from "../../enums/statusCode";
 import IRequest from "../../interface/controler/Request";
+import { error } from "console";
+import Errors from "../../erros/errors";
 
 export default class DoctorAuthController implements IDoctorAuthController {
   private doctorAuthUseCase: IDoctorUseCase;
@@ -18,7 +21,7 @@ export default class DoctorAuthController implements IDoctorAuthController {
   async register(
     req: Request,
     res: Response,
-    next:NextFunction
+    next: NextFunction
   ): Promise<void> {
     try {
       const {
@@ -53,15 +56,11 @@ export default class DoctorAuthController implements IDoctorAuthController {
     } catch (error) {
       console.log(error, "jhh");
       // throw error;
-       next(error)
+      next(error);
     }
   }
 
-  async otpVerification(
-    req: Request,
-    res: Response,
-   
-  ): Promise<void> {
+  async otpVerification(req: Request, res: Response): Promise<void> {
     try {
       const { otp } = req.body;
       const email = req.cookies.doctorOtpEmail;
@@ -73,21 +72,17 @@ export default class DoctorAuthController implements IDoctorAuthController {
 
       const response = await this.doctorAuthUseCase.otpVerify(otp, email);
 
-      if (response.status){
+      if (response.status) {
         res.status(200).json(response);
       } else {
         res.status(401).json(response);
       }
     } catch (error) {
       // throw error;
-    
     }
   }
 
-  async resendOtp(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  async resendOtp(req: Request, res: Response): Promise<void> {
     try {
       const email = req.cookies.doctorOtpEmail;
       if (email == "") {
@@ -101,45 +96,34 @@ export default class DoctorAuthController implements IDoctorAuthController {
     }
   }
 
-  async login(
-    req: Request,
-    res: Response,
-    next:NextFunction
-  ): Promise<void> {
+  async login(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-
-      const {email,password} = req.body;
-      let response = await this.doctorAuthUseCase.DoctorAuth(email,password);
+      const { email, password } = req.body;
+      let response = await this.doctorAuthUseCase.DoctorAuth(email, password);
 
       if (response.status) {
-        res.cookie("doctorToken",response.token,{maxAge:3600000});
+        res.cookie("doctorToken", response.token, { maxAge: 3600000 });
         res.status(200).json(response);
         return;
-      }else{
+      } else {
         res.status(401).json(response);
       }
-
-    }catch(error){
-
-     console.log("hiiii errorr");
-      next(error)
-
+    } catch (error) {
+      console.log("hiiii errorr");
+      next(error);
     }
   }
 
-  async getKycinformation(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  async getKycinformation(req: Request, res: Response): Promise<void> {
     try {
       console.log("hyy kyc informaiton controller ");
-      const email=req.params.email;
-      
-      if(email==""){
-         res.status(401).json({
-           message:"email is not here"
-         })
-         return
+      const email = req.params.email;
+
+      if (email == "") {
+        res.status(401).json({
+          message: "email is not here",
+        });
+        return;
       }
 
       let response = await this.doctorAuthUseCase.getKycStatus(email);
@@ -152,12 +136,8 @@ export default class DoctorAuthController implements IDoctorAuthController {
     }
   }
 
-  async storeKYCDataStep1(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  async storeKYCDataStep1(req: Request, res: Response): Promise<void> {
     try {
-     
       let response = await this.doctorAuthUseCase.handleKYCVerificationStep1(
         req.body
       );
@@ -172,20 +152,18 @@ export default class DoctorAuthController implements IDoctorAuthController {
     }
   }
 
-  async storeKYCDataStep2(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  async storeKYCDataStep2(req: Request, res: Response): Promise<void> {
     try {
       console.log("bodydata", req.body);
 
-      const {yearsOfExperience,fullName,acheivemnts,idCardImage,email } = req.body;
+      const { yearsOfExperience, fullName, acheivemnts, idCardImage, email } =
+        req.body;
       let response = await this.doctorAuthUseCase.handleKYCVerificationStep2({
         yearsOfExperience,
         fullName,
-        acheivemnts,   
-        identityCardImage:idCardImage,
-        email
+        acheivemnts,
+        identityCardImage: idCardImage,
+        email,
       });
       console.log(response);
 
@@ -200,58 +178,91 @@ export default class DoctorAuthController implements IDoctorAuthController {
     }
   }
 
-  async logOut(req: Request,res:Response): Promise<void> {
-       try {
-        res.cookie("doctorToken", "", { httpOnly: true, expires: new Date() });
-        res.status(200).json({ status: true });
-       }catch(error) {
-          console.log(error)
-       }
+  async logOut(req: Request, res: Response): Promise<void> {
+    try {
+      res.cookie("doctorToken", "", { httpOnly: true, expires: new Date() });
+      res.status(200).json({ status: true });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  async getToken(req:Request,res:Response): Promise<void> {
-       try {
-
-        let token=req.cookies.doctorToken
-        console.log(token,"huhuhuhuh")
-        let response=await this.doctorAuthUseCase.verifyToken(token)
-        if(response.status){
-          res.status(200).json(response)
-          return 
-        }
-        console.log('hello bro how ')
-        res.status(401).json(response)
-       } catch (error) {
-          console.log(error)
-       }
+  async getToken(req: Request, res: Response): Promise<void> {
+    try {
+      let token = req.cookies.doctorToken;
+      console.log(token, "huhuhuhuh");
+      let response = await this.doctorAuthUseCase.verifyToken(token);
+      if (response.status) {
+        res.status(200).json(response);
+        return;
+      }
+      console.log("hello bro how ");
+      res.status(401).json(response);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-
-  async getUserData(req: Request, res: Response,next:NextFunction): Promise<void> {
-            try {
-                
-              const id=req.query.id
-              const data=await this.doctorAuthUseCase.getUserProfileData(id as string)
-              res.status(StatusCode.success).json({userData:data})
-              
-            } catch (error) { 
-              next(error)
-            }  
+  async getUserData(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const id = req.query.id;
+      const data = await this.doctorAuthUseCase.getUserProfileData(
+        id as string
+      );
+      res.status(StatusCode.success).json({ userData: data });
+    } catch (error) {
+      next(error);
+    }
   }
 
+  async getDoctorProfileData(
+    req: IRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const id: string = req.doctorID as string;
 
-   async getDoctorProfileData(req: IRequest, res: Response, next: NextFunction): Promise<void> {
-         try {
-          
-          const id:string=req.doctorID as string
-
-         const data=await this.doctorAuthUseCase.isGetDoctorProfileData(id)
-         res.status(StatusCode.success).json({profileData:data})
-
-         } catch (error) {
-            console.log(error)
-             next(error)
-         }
+      const data = await this.doctorAuthUseCase.isGetDoctorProfileData(id);
+      res.status(StatusCode.success).json({ profileData: data });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
   }
 
+  async updateDoctorProfile(
+    req: IRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { name, phoneNumber, fees, specialty, image } = req.body;
+      const id: string = req.doctorID as string;
+
+      if (!id || !name || !phoneNumber || !fees || !specialty) {
+        throw new Errors("all field is required", StatusCode.badRequest);
+      }
+
+      let data:DoctorUpdateProfileData = {
+        name,
+        phoneNumber,
+        fees,
+        specialty,
+      };
+
+      if (image) {
+        data.image = image as string; 
+      }
+      let response=await this.doctorAuthUseCase.isUpdateDoctorProfile(id,data);
+      res.status(StatusCode.success).json({newData:response})
+       
+    } catch (error) {
+      next(error);
+    }
+  }
 }

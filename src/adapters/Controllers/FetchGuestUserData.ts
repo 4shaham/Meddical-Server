@@ -54,9 +54,27 @@ export default class FetchGuestUserData
   ): Promise<void> {
     try {
       const response = await this.fetchGuestUserDataUseCase.getSpecalityData();
+      console.log(response)
       res.status(StatusCode.success).json({ data: response });
     } catch (error) {
       next(error);
     }
   }
+
+  async findDoctorWithSort(req: Request, res: Response, next: NextFunction): Promise<void> {
+      try {
+        
+        console.log('Hii enter in sorting page')
+
+         const specality:string=req.query.specality as string
+         const data=await this.fetchGuestUserDataUseCase.getDoctorSortWithSpecality(specality)
+         res.status(StatusCode.success).json({doctorData:data})        
+ 
+      } catch (error) {
+          next(error)
+      }
+  }
+
+
+
 }

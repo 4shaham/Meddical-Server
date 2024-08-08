@@ -16,6 +16,7 @@ export default interface IDoctorAuthController{
    getToken(req:Request,res:Response):Promise<void>
    getUserData(req:Request,res:Response,next:NextFunction):Promise<void>
    getDoctorProfileData(req:IRequest,res:Response,next:NextFunction):Promise<void>
+   updateDoctorProfile(req:IRequest,res:Response,next:NextFunction):Promise<void>
 }
 
 // export interface doctorRegisterBody{

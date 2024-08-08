@@ -4,6 +4,7 @@ import IDoctorUseCase, {
   DatasKYCVerificationStep1,
   DatasKYCVerificationStep2,
   DatasOfDoctorRegistration,
+  DoctorUpdateProfileData,
   RegesterResponse,
   ResponseKycFirstStep,
   VerifyResponse,
@@ -352,4 +353,29 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
       throw error;
     }
   }
+
+  
+  async isUpdateDoctorProfile(id: string, data:DoctorUpdateProfileData): Promise<IDoctor> {
+       try {
+        
+        if(data.image){
+            const image=await this.cloudinaryServices.uploadImage(data.image)
+            data.image=image
+        }
+        console.log(data)
+
+        let updatedData=await this.doctorAuthRepository.updateDoctorProfile(id,data)
+
+        if(!updatedData){
+           throw new Errors("doctor profile not updated",StatusCode.badRequest)
+        }
+
+        return updatedData
+
+       } catch (error) {
+          throw error
+       }  
+  }
+
+
 }

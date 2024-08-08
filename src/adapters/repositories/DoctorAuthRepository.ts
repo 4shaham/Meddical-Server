@@ -1,32 +1,37 @@
-import mongoose, { Model, isObjectIdOrHexString } from "mongoose";;
+import mongoose, { Model, isObjectIdOrHexString } from "mongoose";
 import IDoctor from "../../entity/doctorEntity";
 import IDoctorAuthRepositories from "../../interface/repositories/IDoctorAuthRepositories";
 import {
   DatasKYCVerificationStep1,
   DatasKYCVerificationStep2,
   DatasOfDoctorRegistration,
+  DoctorUpdateProfileData,
 } from "../../interface/useCase/IDoctorUseCase";
 import IKyc from "../../entity/kycEntity";
 import IUserOtp from "../../interface/collection/IotpUser";
 import IUser from "../../entity/userEntity";
 
-
 export default class DoctorAuthRepository implements IDoctorAuthRepositories {
   private doctors: Model<IDoctor>;
   private kyc: Model<IKyc>;
-  private otp:Model<IUserOtp>;
-  private user:Model<IUser>;
+  private otp: Model<IUserOtp>;
+  private user: Model<IUser>;
 
-  constructor(doctors: Model<IDoctor>, kyc: Model<IKyc>,otp:Model<IUserOtp>,user:Model<IUser>) {
+  constructor(
+    doctors: Model<IDoctor>,
+    kyc: Model<IKyc>,
+    otp: Model<IUserOtp>,
+    user: Model<IUser>
+  ) {
     this.doctors = doctors;
     this.kyc = kyc;
-    this.otp=otp
-    this.user=user
+    this.otp = otp;
+    this.user = user;
   }
 
   async isDoctorExists(email?: string): Promise<IDoctor | null> {
     try {
-      let details = await this.doctors.findOne({email:email });
+      let details = await this.doctors.findOne({ email: email });
       return details;
     } catch (error) {
       throw Error();
@@ -70,104 +75,111 @@ export default class DoctorAuthRepository implements IDoctorAuthRepositories {
 
   async kycStorStep2(data: DatasKYCVerificationStep2): Promise<IKyc | null> {
     try {
-      
-      console.log(data.yearsOfExperience,"hummmsmdf")
+      console.log(data.yearsOfExperience, "hummmsmdf");
 
       return await this.kyc.findOneAndUpdate(
         { email: data.email },
         {
-          $set:{
-            yearsOfexperience:Number(data.yearsOfExperience),
-            fullName:data.fullName, 
-            identityCardImage:data.identityCardImage,
-            achievements:data.acheivemnts,
-            appliedStatus:"applied",
-            step:2
+          $set: {
+            yearsOfexperience: Number(data.yearsOfExperience),
+            fullName: data.fullName,
+            identityCardImage: data.identityCardImage,
+            achievements: data.acheivemnts,
+            appliedStatus: "applied",
+            step: 2,
           },
-        },{
-          new:true
+        },
+        {
+          new: true,
         }
       );
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw error;
     }
   }
 
- async getKycDetails(email: string): Promise<IKyc|null> {
-      try {
-       return  await this.kyc.findOne({email:email})
-      } catch (error) {
-        throw error
-      }    
+  async getKycDetails(email: string): Promise<IKyc | null> {
+    try {
+      return await this.kyc.findOne({ email: email });
+    } catch (error) {
+      throw error;
+    }
   }
 
   async saveOtp(email: string, otp: string): Promise<void> {
-
     try {
-      
+      await this.otp.deleteMany({ email: email });
 
-      await this.otp.deleteMany({email:email})
+      const data = new this.otp({
+        email: email,
+        otp: otp,
+      });
 
-      const data=new this.otp({
-        email:email,
-        otp:otp,
-      })
-      
-      await data.save()
-      
+      await data.save();
     } catch (error) {
-       console.log(error,"'dfhdjhfjdfhjdhfj")
+      console.log(error, "'dfhdjhfjdfhjdhfj");
     }
-    
   }
 
-   async findOtpData(email: string): Promise<IUserOtp|null> {
-        try {
-          
-          return await this.otp.findOne({email:email})
-
-        } catch (error) {
-           console.log(error)
-           throw error
-        }  
-  }
-  
-  async updateOtpVerified(email: string): Promise<IDoctor|null>{
-         
-    try{
-      return  await this.doctors.findOneAndUpdate({email:email},{$set:{otpVerified:true}})
-    }catch(err){
-      throw Error()
+  async findOtpData(email: string): Promise<IUserOtp | null> {
+    try {
+      return await this.otp.findOne({ email: email });
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
-    
   }
-  
+
+  async updateOtpVerified(email: string): Promise<IDoctor | null> {
+    try {
+      return await this.doctors.findOneAndUpdate(
+        { email: email },
+        { $set: { otpVerified: true } }
+      );
+    } catch (err) {
+      throw Error();
+    }
+  }
+
   async isTokenDoctorData(id: string): Promise<IDoctor | null> {
-      try {
-         return await this.doctors.findOne({_id:id})
-      } catch (error) {
-           throw error        
-      }
+    try {
+      return await this.doctors.findOne({ _id: id });
+    } catch (error) {
+      throw error;
+    }
   }
 
-  
   async getUserProfileData(id: string): Promise<IUser | null> {
-      try {
-       return await this.user.findOne({_id:id})
-      } catch (error) {
-         throw error
-      }  
+    try {
+      return await this.user.findOne({ _id: id });
+    } catch (error) {
+      throw error;
+    }
   }
 
   async getDoctorProfileData(id: string): Promise<IDoctor | null> {
-      try {
-        
-        return await this.doctors.findOne({_id:id})
-
-      } catch (error) {
-         throw error
-      }
+    try {
+      return await this.doctors.findOne({ _id: id });
+    } catch (error) {
+      throw error;
+    }
   }
 
+  async updateDoctorProfile(
+    id: string,
+    data: DoctorUpdateProfileData
+  ): Promise<IDoctor | null> {
+    try {
+      return await this.doctors.findOneAndUpdate(
+        { _id: id },
+        { $set: data },
+        {
+          new: true,
+        }
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
 }

@@ -26,7 +26,7 @@ const fetchGusetUserData=new FetchGuestUserData(fetchGuestUserDataUseCase)
 router.get("/getDoctors",fetchGusetUserData.getDoctors.bind(fetchGusetUserData))
 router.get("/getDoctorProfile",fetchGusetUserData.getDoctorProfile.bind(fetchGusetUserData))
 router.get("/getSpecality",fetchGusetUserData.findAllSpecality.bind(fetchGusetUserData))
-
+router.get("/getDoctorWithSpecalitySort",fetchGusetUserData.findDoctorWithSort.bind(fetchGusetUserData))
 
 
 

@@ -31,7 +31,7 @@ export default class FetchGuestUserDataRepository implements IFetchGuestUserData
        try {
            
          const doctorId= new ObjectId(id)
-         return await this.doctors.findOne({_id:doctorId,isBlocked:false,approved:true})
+         return await this.doctors.findOne({_id:doctorId,isBlocked:false,approved:true,otpVerified:true})
          console.log('doctorid',doctorId)
            
        } catch (error) {
@@ -47,6 +47,17 @@ export default class FetchGuestUserDataRepository implements IFetchGuestUserData
          throw error
        }
   }
+
+  async findGetDoctorWithSort(specality:string): Promise<IDoctor[]> {
+       try {
+   
+        return await this.doctors.find({specialty:specality,isBlocked:false,otpVerified:true,approved:true})
+ 
+    
+       } catch (error) {
+           throw error
+       }
+  } 
 
 
 }

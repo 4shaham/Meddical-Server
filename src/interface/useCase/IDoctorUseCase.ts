@@ -9,8 +9,6 @@ interface IDoctorData{
     image:string,
     email:string
 }
-
-
 export interface LoginResponse{
     status:boolean,
     doctor?:IDoctorData
@@ -18,9 +16,6 @@ export interface LoginResponse{
     Err?:string,
     token?:string
 }
-
-
-
 export interface DatasOfDoctorRegistration{
     name: string;
     specialty: string;
@@ -30,8 +25,6 @@ export interface DatasOfDoctorRegistration{
     fees: number;
     image:string;
 }
-
-
 interface ExperienceData{
   
     startDate: Date | null;
@@ -40,18 +33,12 @@ interface ExperienceData{
     responsibilities?: string;
 
 }
-
-
 export interface DatasKYCVerificationStep1{
     email:string,
     licenseNumber:string,
     image:string,
     experiences?:ExperienceData[]
 }
-
-
-
-
 interface AchievementsData{
   
     startDate: Date | null;
@@ -60,8 +47,7 @@ interface AchievementsData{
     responsibilities?: string;
 
 }
-
-    export interface DatasKYCVerificationStep2{
+export interface DatasKYCVerificationStep2{
 
         yearsOfExperience:number,
         fullName:string,
@@ -69,35 +55,33 @@ interface AchievementsData{
         email:string,
         acheivemnts?:AchievementsData[],
     }
-
-
 export interface ResponseKycFirstStep{
     status:boolean,
     message?:string,
     errMessage?:string,
 }
-
-
-
 export interface RegesterResponse extends ResponseKycFirstStep {
 
 }
-
 interface doctorData{
     image:string,
     name:string,
     email:string
 }
-
 export interface VerifyResponse{
     status:boolean,
     decoded?:object,
     doctorData?:doctorData
 }
- 
+export interface DoctorUpdateProfileData{
+    name:string;
+    specialty:string;
+    phoneNumber:string;
+    fees:number;
+    image?:string|null;
+}
 
 export default interface IDoctorUseCase{
-
     registerDoctor(data:DatasOfDoctorRegistration):Promise<RegesterResponse>
     DoctorAuth(email:string,password:string):Promise<LoginResponse>
     handleKYCVerificationStep1(data:DatasKYCVerificationStep1):Promise<ResponseKycFirstStep>
@@ -108,4 +92,5 @@ export default interface IDoctorUseCase{
     verifyToken(token:string):Promise<VerifyResponse>
     getUserProfileData(id:string):Promise<IUser>
     isGetDoctorProfileData(id:string):Promise<IDoctor>
+    isUpdateDoctorProfile(id:string,data:DoctorUpdateProfileData):Promise<IDoctor>
 }
