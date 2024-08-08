@@ -51,6 +51,7 @@ router.get("/getToken",doctorAuthController.getToken.bind(doctorAuthController))
 router.get("/getUserProfileDoctor",authorization,doctorAuthController.getUserData.bind(doctorAuthController)) 
 router.get("/getDoctorProfile",authorization,doctorAuthController.getDoctorProfileData.bind(doctorAuthController)) 
 router.put("/updateDoctorProfile",authorization,doctorAuthController.updateDoctorProfile.bind(doctorAuthController))
+router.patch("/updateDoctorPassword",authorization,doctorAuthController.updatePassword.bind(doctorAuthController))
 
 export default router;
  

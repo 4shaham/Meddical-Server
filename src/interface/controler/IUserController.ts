@@ -8,4 +8,5 @@ export default interface IUserController{
     getPaymentHistory(req:IAuthRequest,res:Response,next:NextFunction):Promise<void>
     getInvoiceData(req:IAuthRequest,res:Response,next:NextFunction):Promise<void>
     updateProfile(req:IAuthRequest,res:Response,next:NextFunction):Promise<void>
+    updatePasswordProfile(req:IAuthRequest,res:Response,next:NextFunction):Promise<void>
 }

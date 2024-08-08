@@ -103,21 +103,49 @@ export default class UserRepository implements IuserRepositories {
     data: UpdateData
   ): Promise<IUser | null> {
     try {
-       
-      console.log("updating data",data)
+      console.log("updating data", data);
 
       return await this.users.findOneAndUpdate(
         { _id: userId },
         {
-          $set: 
-            data
+          $set: data,
         },
         {
           new: true,
         }
       );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findUser(userId: string): Promise<IUser | null> {
+      try {
+        
+        return await this.users.findOne({_id:userId})
+
+      } catch (error) {
+          throw error
+      }
+  }
 
 
+  async updatePassword(
+    userId: string,
+    newPassword: string
+  ): Promise<IUser | null> {
+    try {
+      return await this.users.findOneAndUpdate(
+        { _id: userId },
+        {
+          $set: {
+            password: newPassword,
+          },
+        },
+        {
+          new: true,
+        }
+      );
     } catch (error) {
       throw error;
     }

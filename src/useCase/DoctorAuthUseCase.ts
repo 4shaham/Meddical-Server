@@ -378,4 +378,26 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
   }
 
 
+  async verifyUpdateDoctorPassword(id: string, oldPassword: string, newPassword: string): Promise<void> {
+       try {
+        
+        const doctor =await this.doctorAuthRepository.getDoctorProfileData(id)
+       
+        if(!doctor){
+          throw new Errors("doctor id is not valid",StatusCode.badRequest)
+        }
+        let status=await this.hashingServices.compare(oldPassword,doctor?.password)
+         
+        if(!status){
+           throw new Errors("password is not match",StatusCode.badRequest)
+        }
+
+        let hashedPassword=await this.hashingServices.hashing(newPassword)
+        await this.doctorAuthRepository.updateDoctorPassword(id,hashedPassword)
+        
+       } catch (error) {
+          throw error
+       }
+  }
+
 }

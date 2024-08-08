@@ -265,4 +265,30 @@ export default class DoctorAuthController implements IDoctorAuthController {
       next(error);
     }
   }
+  
+
+  async updatePassword(req: IRequest, res: Response, next: NextFunction): Promise<void> {
+       try {
+        
+           const {oldPassword,newPassword}=req.body  
+           const id=req.doctorID as string  
+
+           await this.doctorAuthUseCase.verifyUpdateDoctorPassword(id,oldPassword,newPassword)
+           res.status(StatusCode.success).json({message:"successfully updated"})
+
+       } catch (error) {
+          next(error)
+       }
+  }
+
+
+
+
+
+
+
+
+
+
+
 }

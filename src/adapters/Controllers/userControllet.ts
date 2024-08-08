@@ -68,5 +68,19 @@ export default class UserController implements IUserController {
   }
 
 
+  async updatePasswordProfile(req: IAuthRequest, res: Response, next: NextFunction): Promise<void> {
+       try {
+          const {oldPassword,newPassword}=req.body  
+          const id:string=req.userId as string
+
+          await this.userUseCase.verifyUpdatePassword(id,oldPassword,newPassword)
+          res.status(StatusCode.success).json({message:"successfully password updated"})
+
+       } catch (error) {
+          next(error)
+       }
+  }
+
+
 
 }

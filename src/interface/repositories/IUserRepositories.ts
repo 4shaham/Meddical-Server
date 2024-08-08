@@ -22,4 +22,6 @@ export default interface IuserRepositories{
     findPaymentHistory(id:string):Promise<PaymentEntity[]>
     getInoviceData(id:string):Promise<InvoiceData[]>
     updateUserProfile(userId:string,data:UpdateData):Promise<IUser|null>
+    findUser(userId:string):Promise<IUser|null>
+    updatePassword(userId:string,newPassword:string):Promise<IUser|null>
 }

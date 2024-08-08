@@ -21,4 +21,5 @@ export default interface IDoctorAuthRepositories{
     getUserProfileData(id:string):Promise<IUser|null>
     getDoctorProfileData(id:string):Promise<IDoctor|null>
     updateDoctorProfile(id:string,data:DoctorUpdateProfileData):Promise<IDoctor|null>
+    updateDoctorPassword(id:string,newPassword:string):Promise<IDoctor|null>
 }

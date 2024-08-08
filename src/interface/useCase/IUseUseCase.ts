@@ -15,4 +15,6 @@ export default interface IUserUseCase{
    isGetDataPayment(id:string):Promise<PaymentEntity[]>
    isGetInvoiceData(id:string):Promise<InvoiceData[]>
    verifyUpdateUserProfile(userId:string,userName:string,age:number,phoneNumber:string,gender:string,image?:string|null):Promise<void>
+   verifyUpdatePassword(userId:string,oldPassword:string,newPassword:string):Promise<void>
+   
 }

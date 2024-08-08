@@ -158,7 +158,7 @@ export default class DoctorAuthRepository implements IDoctorAuthRepositories {
     }
   }
 
-  async getDoctorProfileData(id: string): Promise<IDoctor | null> {
+  async getDoctorProfileData(id:string): Promise<IDoctor | null> {
     try {
       return await this.doctors.findOne({ _id: id });
     } catch (error) {
@@ -182,4 +182,22 @@ export default class DoctorAuthRepository implements IDoctorAuthRepositories {
       throw error;
     }
   }
+
+   async updateDoctorPassword(id: string, newPassword: string): Promise<IDoctor | null> {
+       try {
+        
+        return await this.doctors.findOneAndUpdate(
+          {_id:id},
+          {$set:{
+            password:newPassword
+          }},
+          {new:true}
+      )
+
+       } catch (error) {
+          throw error
+       }
+   }
+
+
 }

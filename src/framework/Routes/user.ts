@@ -19,12 +19,13 @@ import isUserBlockedMiddleware from "../Middleware/user/isUserBlocked";
 
 
 import CloudinaryService from "../utils/cloudinaryService";
+import HashingServices from "../utils/hashingService";
 
 const cloudinaryService=new CloudinaryService()
-
+const hashingService=new HashingServices()
 
 const userRepository=new UserRepository(Prescription,Payment,Users)
-const userUseCase=new UserUseCase(userRepository,cloudinaryService)
+const userUseCase=new UserUseCase(userRepository,cloudinaryService,hashingService)
 const userController=new UserController(userUseCase)
 
 
@@ -32,6 +33,6 @@ router.get("/getPrescriptionData",authorizationMiddleware,isUserBlockedMiddlewar
 router.get("/getTransactionHistory",authorizationMiddleware,isUserBlockedMiddleware,userController.getPaymentHistory.bind(userController))
 router.get("/getInvoiceData",authorizationMiddleware,isUserBlockedMiddleware,userController.getInvoiceData.bind(userController))
 router.put("/updateProfile",authorizationMiddleware,isUserBlockedMiddleware,userController.updateProfile.bind(userController))
-
+router.patch("/profilePasswordUpdate",authorizationMiddleware,isUserBlockedMiddleware,userController.updatePasswordProfile.bind(userController))
 
 export default router

@@ -93,4 +93,5 @@ export default interface IDoctorUseCase{
     getUserProfileData(id:string):Promise<IUser>
     isGetDoctorProfileData(id:string):Promise<IDoctor>
     isUpdateDoctorProfile(id:string,data:DoctorUpdateProfileData):Promise<IDoctor>
+    verifyUpdateDoctorPassword(id:string,oldPassword:string,newPassword:string):Promise<void>
 }
