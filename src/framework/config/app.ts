@@ -41,7 +41,7 @@ app.use(cookieParser());
 
 
 app.use(cors({
-    origin:"http://localhost:5173",
+    origin:"https://meddical.shaham.website",
     credentials:true
 }))
 
@@ -91,5 +91,4 @@ app.use("",bookingRouter)
 
 
 app.use(errorHandlerMiddleware)
-
 export default app

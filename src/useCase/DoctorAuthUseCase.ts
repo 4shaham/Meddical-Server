@@ -61,6 +61,7 @@ export default class DoctorAuthUseCase implements IDoctorUseCase {
 
       // data.password=
       data.password = await this.hashingServices.hashing(data.password);
+      data.image=url
       const storedDb = await this.doctorAuthRepository.isRegesterd(data);
 
       const otp = this.OtpService.generateOtp();

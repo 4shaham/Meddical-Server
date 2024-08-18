@@ -26,8 +26,8 @@ export default class StripePayment implements IStripe {
             }
         ]
         const session = await stripe.checkout.sessions.create({
-            success_url:'http://localhost:5173/successPage',
-            cancel_url:'http://localhost:5173/cancel',
+            success_url:'https://meddical.shaham.website/successPage',
+            cancel_url:'https://meddical.shaham.website/cancel',
             line_items:line_items,
             mode:'payment',
             billing_address_collection:'required'

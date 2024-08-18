@@ -98,6 +98,7 @@ class UserAuthController implements IUserAuthController {
       res.status(200).json({
         message: "OTP verification successful",
         token: status?.token,
+        user:status.userData
       });
     } catch (err) {
        console.log(err);
