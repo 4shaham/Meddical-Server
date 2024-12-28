@@ -42,7 +42,7 @@ export default class AdminUseCase implements IAdminUseCase {
     AdminPassword: string
   ): Promise<Response> {
     try {
-      if (email == AdminEmail && AdminPassword == password) {
+      if (email == AdminEmail && AdminPassword == password){
         let token = this.jwtService.createToken({ id: email, role: "admin" });
 
         return {

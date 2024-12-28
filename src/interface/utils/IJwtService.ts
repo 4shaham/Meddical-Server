@@ -10,7 +10,7 @@ export interface DecodedJwt {
        exp:number; // expiration time
        iat:number; // issued at time
        // Add other JWT payload properties as needed
-     }
+}
 
 // export interface JwtVerificationResponse {
 //   decoded?:DecodedJwt | string;
